@@ -150,5 +150,6 @@ $RECYCLE.BIN/
 
 # Custom 
 */META-INF/*
+pom.properties
 
 # End of https://www.gitignore.io/api/git,java,maven,windows,eclipse
