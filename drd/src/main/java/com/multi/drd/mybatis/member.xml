@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multi.drd.member"> 
+	
+	<select id="login" resultType="member" parameterType="member">
+		select * 
+		from member 
+		where email = #{email} and pass = #{pass}
+	</select>  
+	
+	<insert id="register" parameterType="member">
+		
+ 		<selectKey keyProperty="memberSEQ" resultType="int" order="BEFORE">
+ 	    	SELECT member_SEQ.nextval FROM DUAL <!-- member_SEQ.currval 호출을 위해 필요 --> 
+ 		</selectKey>	 
+		
+		insert into member(memberSEQ, email, nickName, pass, createdAt)
+		values (member_SEQ.currval,#{email},#{nickName},#{pass}, sysdate)
+	</insert> 
+	
+	<select id="findByNickName" resultType="member" parameterType="String">
+		select * 
+		from member 
+		where nickName = #{nickName}
+	</select>  
+
+	<select id="findByEmail" resultType="member" parameterType="String">
+		select * 
+		from member 
+		where email = #{email}
+	</select>  
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
