@@ -44,7 +44,9 @@
     		
     		$("#submitBTN").click(submitBTN_onClick);  
     		
-    		$("#routineList").css("display", routineList_display)
+    		$("#routineList").css("display", routineList_display); 
+    		
+    		$("#birth").focusout(get_age); 
     		
     		
     		
