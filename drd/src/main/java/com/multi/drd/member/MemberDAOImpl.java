@@ -32,6 +32,12 @@ public class MemberDAOImpl implements MemberDAO{
 	}
 	
 	@Override
+	public MemberDTO findById(String id) {
+		
+		return sqlSession.selectOne("com.multi.drd.member.findById", id);
+	}
+
+	@Override
 	public MemberDTO findByNickName(String nickName) {
 		
 		return sqlSession.selectOne("com.multi.drd.member.findByNickName", nickName);

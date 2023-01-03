@@ -6,6 +6,7 @@ public class MemberBioDTO {
 	
 	private int memberBioSEQ; // memberSEQ와 대응. 이름 중복이 안 되서 따로 씀.
 	private int age;
+	private int gender; // 1: 남성, 0: 여성
 	private double height;
 	private double weight;
 	private double waistline;
@@ -20,17 +21,20 @@ public class MemberBioDTO {
 	} 
 	
 	// 회원 가입 시 필요한 최소 정보 
-	public MemberBioDTO(double height, double weight, Date createdAt) {
-		super(); 
+	public MemberBioDTO(int age, int gender, double height, double weight, Date createdAt) {
+		super();
+		this.age = age;
+		this.gender = gender;
 		this.height = height;
 		this.weight = weight;
 		this.createdAt = createdAt;
 	}
-
-	public MemberBioDTO(int memberBioSEQ, int age, double height, double weight, double waistline, double bfp,
+	
+	public MemberBioDTO(int memberBioSEQ, int gender, int age, double height, double weight, double waistline, double bfp,
 			double mp, double bmr, double activityLevel, Date createdAt) {
 		super();
 		this.memberBioSEQ = memberBioSEQ;
+		this.gender = gender;
 		this.age = age;
 		this.height = height;
 		this.weight = weight;
@@ -40,16 +44,22 @@ public class MemberBioDTO {
 		this.bmr = bmr;
 		this.activityLevel = activityLevel;
 		this.createdAt = createdAt;
-	}
-
+	} 
 	
-
 	public int getMemberBioSEQ() {
 		return memberBioSEQ;
 	}
 
 	public void setMemberBioSEQ(int memberBioSEQ) {
 		this.memberBioSEQ = memberBioSEQ;
+	}
+
+	public int getGender() {
+		return gender;
+	}
+	
+	public void setGender(int gender) {
+		this.gender = gender;
 	}
 
 	public int getAge() {
@@ -122,12 +132,13 @@ public class MemberBioDTO {
 
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
-	}  	 
-	
+	}
+
 	@Override
 	public String toString() {
-		return "MemberBioDTO [memberBioSEQ=" + memberBioSEQ + ", age=" + age + ", height=" + height + ", weight="
-				+ weight + ", waistline=" + waistline + ", bfp=" + bfp + ", mp=" + mp + ", bmr=" + bmr
-				+ ", activityLevel=" + activityLevel + ", createdAt=" + createdAt + "]";
-	}
+		return "MemberBioDTO [memberBioSEQ=" + memberBioSEQ + ", age=" + age + ", gender=" + gender + ", height="
+				+ height + ", weight=" + weight + ", waistline=" + waistline + ", bfp=" + bfp + ", mp=" + mp + ", bmr="
+				+ bmr + ", activityLevel=" + activityLevel + ", createdAt=" + createdAt + "]";
+	}  	 
+	
 }

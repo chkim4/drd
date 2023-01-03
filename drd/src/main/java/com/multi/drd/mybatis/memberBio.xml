@@ -5,8 +5,8 @@
 <mapper namespace="com.multi.drd.memberBio"> 
 
 <insert id="register" parameterType="memberBio" >
-	insert into memberBio(memberBioSEQ, height, weight, createdAt)
-	values (member_SEQ.currval,#{height},#{weight}, sysdate)
+	insert into memberBio(memberBioSEQ, age, gender, height, weight, createdAt)
+	values (member_SEQ.currval, #{age}, #{gender}, #{height},#{weight}, sysdate)
 </insert>
 
 

@@ -33,6 +33,9 @@
     <script type = "text/javascript"> 
     	$(document).ready(function() {    
     		
+    		$("#id").keyup(id_onKeyUp);
+    		$("#checkIdBTN").click(checkIdBTN_onClick); 
+
     		$("#nickName").keyup(nickName_onKeyUp);
     		$("#checkNickNameBTN").click(checkNickNameBTN_onClick); 
     		
@@ -47,8 +50,6 @@
     		$("#routineList").css("display", routineList_display); 
     		
     		$("#birth").focusout(get_age); 
-    		
-    		
     		
     	})//$(document).ready 닫기
     
@@ -76,6 +77,16 @@
                                     </div>
                                     <form class="user" action="/member/register.do" method = "post" id="registerForm">
                                         <div class="form-group">
+                                            <div class="input-group">
+					                            <input type="text" class="form-control form-control-user" name="id"  id="id" placeholder="아이디를 입력하세요...">
+					                            <div class="input-group-append">
+					                                <button type="button" class="btn btn-primary btn" id="checkIdBTN">
+					                                	체크
+					                                </button>
+					                            </div>
+					                        </div>    
+					                     </div>
+					                     <div class="form-group">  
                                             <div class="input-group">
 					                            <input type="text" class="form-control form-control-user" name="nickName"  id="nickName" placeholder="닉네임을 입력하세요...">
 					                            <div class="input-group-append">
@@ -111,7 +122,8 @@
 			                                    <div class="col-sm-8">
 			                                        <input type="date" class="form-control form-control-user"
                                                 		id="birth" name="birth">
-			                                    </div>
+			                                    </div> 
+			                                    <input type="hidden" id="age" name="age"/>
                                 			</div>                                           
                                         </div> 
                                         
@@ -123,7 +135,7 @@
 			                                    <div class="col-sm-8">
 			                                    	<select class="form-control" id="gender" name="gender">
 												      <option value = "1" selected>남성</option>
-												      <option value = "2">여성</option>
+												      <option value = "0">여성</option>
 												    </select>
 			                                    </div>
                                 			</div>                                           
