@@ -8,6 +8,9 @@ public interface MemberService {
 	// 로그인 
 	MemberDTO login(MemberDTO loginMember);
 	
+	//아이디로 검색
+	MemberDTO findById(String id);
+	
 	//닉네임으로 검색 
 	MemberDTO findByNickName(String nickName);
 	

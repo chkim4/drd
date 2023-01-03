@@ -16,10 +16,17 @@
  	    	SELECT member_SEQ.nextval FROM DUAL <!-- member_SEQ.currval 호출을 위해 필요 --> 
  		</selectKey>	 
 		
-		insert into member(memberSEQ, email, nickName, pass, createdAt)
-		values (member_SEQ.currval,#{email},#{nickName},#{pass}, sysdate)
+		insert into member(memberSEQ, id, email, nickName, pass, birth, gender, createdAt)
+		values (member_SEQ.currval,#{id}, #{email},#{nickName},#{pass}, #{birth},#{gender}, sysdate) 
+		
 	</insert> 
 	
+	<select id="findById" resultType="member" parameterType="String">
+		select * 
+		from member 
+		where id = #{id}
+	</select>  
+
 	<select id="findByNickName" resultType="member" parameterType="String">
 		select * 
 		from member 

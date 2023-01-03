@@ -28,6 +28,11 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDTO login(MemberDTO loginMember) {
 		
 		return dao.login(loginMember);
+	} 
+	
+	@Override
+	public MemberDTO findById(String id) {
+		return dao.findById(id);
 	}
 
 	@Override

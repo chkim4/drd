@@ -1,11 +1,67 @@
+var isIdChecked = null; 
 var isNickNameChecked = null; 
 var isEmailChecked = null;  
 var isPassChecked = null;
 var age = -1;
 
+const ID_MIN_LENGTH = 5; 
 const NICKNAME_MIN_LENGTH = 5; 
 const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
 const PASS_MIN_LENGTH = 5; 
+
+// 아이디 변경 시 다시 체크하도록 함
+function id_onKeyUp(){  
+	// 공백 입력 방지
+	$("#id").val($("#id").val().replaceAll(" ", "")); 
+	isIdChecked = false; 
+} 
+
+// 아이디 사용 가능 여부 체크
+function checkIdBTN_onClick(){
+	var id = $("#id").val();	
+	
+	// HTML에서 minlength 가 안 되서 여기서 최소 길이 관련 로직 구현 함.
+	if(id.length < ID_MIN_LENGTH){
+		Swal.fire({
+		  icon: 'error',
+		  title: '아이디는 최소 ' + ID_MIN_LENGTH + ' 글자 이상이어야 합니다!',
+		})
+		return;
+	}
+
+	$.ajax({
+			url: "/member/findById.do", 
+			type: "POST",
+			data: {"id": id},
+			success: successRun,
+			error: errorRun 
+			}) 
+			function successRun(member){  
+				// DB에서 조회된 사용자(member)가 없을 때 사용자가 입력한 아이디 사용 가능
+				isIdChecked = (member == "");   
+				
+				if(isIdChecked){ 
+					Swal.fire({
+					  icon: 'success',
+					  title: '축하합니다!',
+					  text: '입력하신 아이디를 사용할 수 있습니다'
+					})
+					
+				}
+				else{
+					Swal.fire({
+					  icon: 'error',
+					  title: '안타깝습니다...',
+					  text: '입력하신 아이디를 사용할 수 없습니다'
+					})
+				}
+			}  
+			function errorRun(obj, msg,statusMsg){  
+				console.log(obj);
+				console.log(msg);
+				console.log(statusMsg);
+			} 			
+}  
 
 // 닉네임 변경 시 다시 체크하도록 함
 function nickName_onKeyUp(){  
@@ -166,6 +222,7 @@ function get_age(){
 	 
 	age = today.getFullYear() - birth.getFullYear(); 
 	age += todayMonthDate > birthMonthDate ? 0:-1; // 생일이 안 지났을 경우 나이-1 (만 나이 계산법 적용) 
+	$("#age").val(age); // 서버에 전달할 나이 정보
 }
  
 
