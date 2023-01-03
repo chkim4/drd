@@ -1,6 +1,7 @@
 var isNickNameChecked = null; 
 var isEmailChecked = null;  
 var isPassChecked = null;
+var age = -1;
 
 const NICKNAME_MIN_LENGTH = 5; 
 const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
@@ -156,11 +157,27 @@ function submitBTN_onClick(){
 	}
 } 
 
+function get_age(){
+	const today = new Date();
+	const birth = new Date($("#birth").val());
+	
+	var todayMonthDate = today.getMonth()*100+today.getDate();  
+	var birthMonthDate = birth.getMonth()*100+birth.getDate();  
+	 
+	age = today.getFullYear() - birth.getFullYear(); 
+	age += todayMonthDate > birthMonthDate ? 0:-1; // 생일이 안 지났을 경우 나이-1 (만 나이 계산법 적용) 
+}
+ 
+
 function routineList_display(){ 
 	
-	var display = "none";
+	var display = "none"; 
+	var height = $("#height").val();
+	var weight = $("#weight").val();
 	
-	if(isNickNameChecked && isEmailChecked && isPassChecked){
+	
+	
+	if(isNickNameChecked && isEmailChecked && isPassChecked && age>-1 && height !== "" && weight !== ""){
 		display = "block";
 	}
 
