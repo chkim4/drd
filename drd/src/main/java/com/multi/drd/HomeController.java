@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
  */
 @Controller
 public class HomeController {
-	int USER_ID_MOCK = 1;
+	int USER_ID_MOCK = 3;
 	int[] EXERCISE_LIST_MOCK = {1,2};  
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -35,7 +35,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "/dumdum";
+		return "/rumpumdumdum";
 	}
 	
 }
