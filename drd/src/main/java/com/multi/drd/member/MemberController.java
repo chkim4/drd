@@ -1,5 +1,7 @@
 package com.multi.drd.member;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,7 +55,7 @@ public class MemberController {
 			  viewName = "member/login"; 
 		  }  
 		  
-		  return viewName; 
+		  return viewName;
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.GET)
@@ -82,7 +84,7 @@ public class MemberController {
 		  }
 		 
 		  return viewName; 
-	}
+	} 
 	
 	// 아이디로 사용자 검색. (회원 가입 시 사용 가능 여부 체크 등에 활용)
 	@RequestMapping(value = "/findById.do", method = RequestMethod.POST) 
@@ -103,5 +105,17 @@ public class MemberController {
 	@ResponseBody
 	public MemberDTO findByEmail(String email) {
 		return memberService.findByEmail(email);
+	} 
+	
+	
+	/* 로그인 및 회원 가입 시 세션이 제대로 생성 되었는 지 확인하기 위함
+	 * 확인 방법: login혹은 register 메소드(POST)의 리턴 값을 다음의 값으로 변경 후 콘솔에 출력되는 값 확인
+	 * "redirect: /member/sessiontest.do"
+	 */
+	@RequestMapping(value = "/sessiontest.do", method = RequestMethod.GET)
+	public String sessionTest(HttpSession session) {
+		System.out.println("session: " + session.getAttribute("member"));
+		
+		return "member/index";
 	}
 }
