@@ -10,5 +10,6 @@
 	<mappers>
 		<mapper resource="com/multi/drd/mybatis/member.xml"/>
 		<mapper resource="com/multi/drd/mybatis/memberBio.xml"/>
+		<mapper resource="com/multi/drd/mybatis/dashboard.xml"/>
 	</mappers>
 </configuration>
