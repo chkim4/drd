@@ -29,6 +29,7 @@ public class RecordDAOImpl implements RecordDAO {
 		criteria.is(id);
 		Query query = new Query(criteria);
 		query.with(new Sort(new Order(Direction.DESC, "date")));
+		
 		return mongoTemplate.findOne(query, RecordDTO.class, "record");
 	}
 	
