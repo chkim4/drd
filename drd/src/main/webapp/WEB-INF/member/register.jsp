@@ -11,7 +11,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>회원 가입 페이지</title>
+    <title>회원 가입 페이지</title> 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
     <!-- Custom fonts for this template-->
     <link href="/sbadmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -22,17 +23,14 @@
     <!-- Custom styles for this template-->
     <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet"> 
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script> 
-    
     <script src="/sweetalert/sweetalert2.min.js"></script>
 	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
         
     <script src="/resources/jquery/member/register-script.js"></script> 
     
     <!-- jsp 내 태그와 register-script.js 내 함수들 연결 -->
-    <script type = "text/javascript"> 
+    <script type="text/javascript"> 
     	$(document).ready(function() {    
-    		
     		$("#id").keyup(id_onKeyUp);
     		$("#checkIdBTN").click(checkIdBTN_onClick); 
 
@@ -45,11 +43,13 @@
     		$("#pass").keyup(pass_onKeyUp); 
     		$("#pass").focusout(pass_onFocusout); 
     		
-    		$("#submitBTN").click(submitBTN_onClick);  
+    		$("#birth").focusout(get_age);
     		
-    		$("#routineList").css("display", routineList_display); 
+   			// 페이지가 로드될 때 추천 루틴 리스트는 보여서는 안 된다.
+    		$("#routineList").css("display", "none");
     		
-    		$("#birth").focusout(get_age); 
+    		$("#routineInfo").change(routineInfo_change); //나이, 성별, 키, 몸무게 변경 시 추천 루틴 변경
+    		$("#submitBTN").click(submitBTN_onClick);   
     		
     	})//$(document).ready 닫기
     
@@ -113,7 +113,7 @@
                                             <input type="password" class="form-control form-control-user"
                                                 id="pass" name="pass" placeholder="비밀번호를 입력하세요...">
                                         </div> 
-                                        
+                                      <div id = "routineInfo"> <!-- 루틴 추천에 필요한 정보 모음. -->
          								<div class="form-group"> 
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
@@ -126,15 +126,17 @@
 			                                    <input type="hidden" id="age" name="age"/>
                                 			</div>                                           
                                         </div> 
-                                        
+                                      
                                         <div class="form-group"> 
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
 			                                        <input type="text" value = "성별" class="form-control form-control-user" readonly>
-			                                    </div>
+			                                    </div> 
+			                               
 			                                    <div class="col-sm-8">
 			                                    	<select class="form-control" id="gender" name="gender">
-												      <option value = "1" selected>남성</option>
+												      <option value = "-1" selected>선택</option>
+												      <option value = "1">남성</option>
 												      <option value = "0">여성</option>
 												    </select>
 			                                    </div>
@@ -159,27 +161,31 @@
 			                                    	<input type = "number" class="form-control" id="weight" name="weight" min="0">
 			                                    </div>
                                 			</div>                                           
-                                        </div>  
+                                        </div> 
+                                      </div>  
                                         
                                         <div class="form-group" id="routineList"> 
-                                        	<span>Should be hidden</span> 
-                                        	<div class="col-xl-3 col-md-6 mb-4">
-				                            <div class="card border-left-primary shadow h-100 py-2">
-				                                <div class="card-body">
-				                                    <div class="row no-gutters align-items-center">
-				                                        <div class="col mr-2">
-				                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-				                                                Earnings (Monthly)</div>
-				                                            <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-				                                        </div>
-				                                        <div class="col-auto">
-				                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
-				                                        </div>
-				                                    </div>
-				                                </div>
-				                            </div>
-                        				</div>
-			                             </div>
+                                        	<span>당신만을 위한 추천 루틴</span> 
+			                                <div class="card-body">
+					                            <div class="table-responsive">
+					                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					                                    <thead>
+					                                        <tr>
+					                                        	<th>루틴 이름</th>
+					                                            <th>선택하기</th>
+					                                        </tr>
+					                                    </thead>
+					                                    
+					                                    <tbody>
+					                                        <tr>
+					                                            <td>Tiger Nixon</td>
+					                                            <td>System Architect</td>
+					                                        </tr>
+								                         </tbody>
+								                        </table> 
+								                      </div>
+				                  					</div> 
+				                  				</div>
 			                                                                       
                                         <input type="button" class="btn btn-primary btn-user btn-block" id = "submitBTN" value="가입하기">
                                         <hr>

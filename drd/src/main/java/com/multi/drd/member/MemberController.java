@@ -55,7 +55,7 @@ public class MemberController {
 			  viewName = "member/login"; 
 		  }  
 		  
-		  return viewName;
+		  return "redirect: /member/sessiontest.do";
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.GET)
@@ -83,7 +83,7 @@ public class MemberController {
 			  viewName = "member/register"; 
 		  }
 		 
-		  return viewName; 
+		  return "redirect: /member/sessiontest.do"; 
 	} 
 	
 	// 아이디로 사용자 검색. (회원 가입 시 사용 가능 여부 체크 등에 활용)
@@ -106,6 +106,8 @@ public class MemberController {
 	public MemberDTO findByEmail(String email) {
 		return memberService.findByEmail(email);
 	} 
+	
+	
 	
 	
 	/* 로그인 및 회원 가입 시 세션이 제대로 생성 되었는 지 확인하기 위함

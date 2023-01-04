@@ -2,12 +2,17 @@ var isIdChecked = null;
 var isNickNameChecked = null; 
 var isEmailChecked = null;  
 var isPassChecked = null;
-var age = -1;
+var isRoutineChecked = null;
+var height = -1;
+var weight = -1; 
+var age = -1;   
+var recommendedRoutineList = []; 
+
 
 const ID_MIN_LENGTH = 5; 
 const NICKNAME_MIN_LENGTH = 5; 
 const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
-const PASS_MIN_LENGTH = 5; 
+const PASS_MIN_LENGTH = 5;  
 
 // 아이디 변경 시 다시 체크하도록 함
 function id_onKeyUp(){  
@@ -84,7 +89,7 @@ function checkNickNameBTN_onClick(){
 	}
 
 	$.ajax({
-			url: "/member/findByNickName.do", 
+			url: "/routine/findByNickName.do", 
 			type: "POST",
 			data: {"nickName": nickName} ,
 			success: successRun,
@@ -184,9 +189,97 @@ function pass_onFocusout(){
 	
 } 
 
-// 회원 가입 전 닉네임, 이메일, 비밀번호를 체크 했는 지 확인
+function get_age(){
+	const today = new Date();
+	const birth = new Date($("#birth").val());
+	
+	var todayMonthDate = today.getMonth()*100+today.getDate();  
+	var birthMonthDate = birth.getMonth()*100+birth.getDate();  
+	 
+	age = today.getFullYear() - birth.getFullYear(); 
+	age += todayMonthDate > birthMonthDate ? 0:-1; // 생일이 안 지났을 경우 나이-1 (만 나이 계산법 적용) 
+	$("#age").val(age); // 서버에 전달할 나이 정보
+}
+ 
+/* 루틴 정보 div를 보여줄 지의 여부 결정하는 함수. 추 후 수정을 위한 주석 처리
+function routineList_display(){ 
+	
+	var display = "none";  
+	var routineListDisplayCondition = isNickNameChecked && isEmailChecked && isPassChecked 
+		&& age>-1 && height !== "" && weight !== ""; // 추천 루틴 정보를 보여주기 위한 조건
+	
+	
+	// 루틴 추천에 필요한 정보: 키, 몸무게, 나이
+	var height = $("#height").val();
+	var weight = $("#weight").val(); 
+	var age = $("#age").val(); 
+	
+	if(routineListDisplayCondition){
+		display = "block";
+	}
+
+	return display;
+} 
+*/   
+
+function routineInfo_change(){ 
+	
+	var isRoutineInfoChanged = (height != $("#height").val()) || (weight != $("#weight").val()) 
+		|| (age != $("#age").val());
+	
+	height = $("#height").val();
+	weight = $("#weight").val(); 
+	age = $("#age").val(); 
+	
+	// 추천 루틴 정보를 보여주기 위한 조건 
+	var routineListDisplayCondition = age>-1 && height !== "" && weight !== "";  
+	
+	// routineListDisplayCondition 조건 미달성 시 루틴 추천 가리기  
+	if(!routineListDisplayCondition){
+		$("#routineList").css("display","none");
+		return;
+	}  
+	else{
+		get_routineList(); //원래 여기 있어야 하지만 테스트를 위해 임시로 옮김.
+		$("#routineList").css("display","block");
+	} 
+	return;
+}
+
+function get_routineList(){ 
+	console.log("age: ", age);
+	console.log("gender: ", gender);
+	console.log("height: ", height);
+	console.log("weight: ", weight);
+	$.ajax({
+			url: "/routine/findByRegisterInfo.do", 
+			type: "POST",
+			data: {"age": age, "gender": $("#gender").val(), "height": height, "weight": weight},
+			success: successRun,
+			error: errorRun 
+			}) 
+			function successRun(routines){  
+				console.log("routines: ",routines);
+			}  
+			function errorRun(obj, msg,statusMsg){  
+				console.log(obj);
+				console.log(msg);
+				console.log(statusMsg);
+			} 			
+}
+	
+
+// 회원 가입 전 아이디, 닉네임, 이메일, 비밀번호를 체크 했는 지 확인
 function submitBTN_onClick(){
 	
+	if(!isIdChecked){
+		Swal.fire({
+		  icon: 'error',
+		  title: '아이디를 체크해주시기 바랍니다!',
+		}) 
+		return;	
+	} 
+
 	if(!isNickNameChecked){
 		Swal.fire({
 		  icon: 'error',
@@ -207,37 +300,17 @@ function submitBTN_onClick(){
 		  title: '비밀번호의 최소' + PASS_MIN_LENGTH + ' 글자 이상이어야 합니다!',
 		})
 		return;	
+	} 
+	else if(!isRoutineChecked){
+		$("#routineList").css("display", "block"); 
+		Swal.fire({
+		  icon: 'info',
+		  title: "당신만을 위한 최적의 운동 루틴을 찾았습니다. 아래에서 한 개를 선택해주세요!",
+		})
+		return;
 	}	 
 	else{
 		$("#registerForm").submit(); 
 	}
 } 
-
-function get_age(){
-	const today = new Date();
-	const birth = new Date($("#birth").val());
-	
-	var todayMonthDate = today.getMonth()*100+today.getDate();  
-	var birthMonthDate = birth.getMonth()*100+birth.getDate();  
-	 
-	age = today.getFullYear() - birth.getFullYear(); 
-	age += todayMonthDate > birthMonthDate ? 0:-1; // 생일이 안 지났을 경우 나이-1 (만 나이 계산법 적용) 
-	$("#age").val(age); // 서버에 전달할 나이 정보
-}
- 
-
-function routineList_display(){ 
-	
-	var display = "none"; 
-	var height = $("#height").val();
-	var weight = $("#weight").val();
-	
-	
-	
-	if(isNickNameChecked && isEmailChecked && isPassChecked && age>-1 && height !== "" && weight !== ""){
-		display = "block";
-	}
-
-	return display;
-}
 
