@@ -115,6 +115,7 @@ public class ExerciseController {
 				add.push("exerciseList", exerciseseq);
 				mongoTemplate.updateFirst(query, add, "test");			
 			}
+			
 			return "redirect: /extest1?date="+date;
 		}	
 }
