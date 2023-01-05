@@ -13,5 +13,8 @@
 			#{item}
 		</foreach>
 	</select>
+	<select id="test3" resultType="exercise">
+		select * from exercise where name like '%' || #{exercisename} || '%'
+	</select>
   </mapper>
   
