@@ -7,11 +7,13 @@
 		<typeAlias type="com.multi.drd.member.MemberDTO" alias="member"/>
 		<typeAlias type="com.multi.drd.memberbio.MemberBioDTO" alias="memberBio"/>
 		<typeAlias type="com.multi.drd.exercise.ExerciseDTO" alias="exercise"/>
+		<typeAlias type="com.multi.drd.routine.RoutineDTO" alias="routine"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/multi/drd/mybatis/member.xml"/>
 		<mapper resource="com/multi/drd/mybatis/memberBio.xml"/>
 		<mapper resource="com/multi/drd/mybatis/test.xml"/>
+		<mapper resource="com/multi/drd/mybatis/routine.xml"/>
 		<mapper resource="com/multi/drd/mybatis/dashboard.xml"/>
 	</mappers>
 </configuration>
