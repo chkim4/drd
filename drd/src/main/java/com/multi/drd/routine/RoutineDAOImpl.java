@@ -7,8 +7,6 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.multi.drd.member.MemberDTO;
-
 @Repository
 public class RoutineDAOImpl implements RoutineDAO { 
 	
@@ -22,6 +20,21 @@ public class RoutineDAOImpl implements RoutineDAO {
 	public RoutineDAOImpl(SqlSession sqlSession) {
 		super();
 		this.sqlSession = sqlSession;
+	} 
+	
+	
+	// 모든 루틴 조회. 회원 가입 시 '전체 보기'를 눌렀을 때 등에 사용 
+	@Override
+	public List<RoutineDTO> findAll() { 
+				
+		return sqlSession.selectList("com.multi.drd.routine.findAll");
+	}
+	
+	// 조회된 추천 루틴이 없을 경우 3개의 루틴 반환 
+	@Override
+	public List<RoutineDTO> findByNoInfo() { 
+				
+		return sqlSession.selectList("com.multi.drd.routine.findByNoInfo");
 	}
 
 	@Override
@@ -34,11 +47,16 @@ public class RoutineDAOImpl implements RoutineDAO {
 		
 		String bmi = String.format("%.1f", weight/(heightInMeter*heightInMeter));
 		
-		param.put("bmi", bmi); 
+		param.put("bmi", bmi);  
 		
-		System.out.println("param in DAO: "+ param);
+		List<RoutineDTO> routineList = sqlSession.selectList("com.multi.drd.routine.findByRegisterInfo", param); 
 		
-		return sqlSession.selectList("com.multi.drd.routine.findByRegisterInfo", param);
+		// 조회된 추천 루틴이 없을 경우 
+		if(routineList.isEmpty()) {
+			routineList = sqlSession.selectList("com.multi.drd.routine.findByNoInfo");
+		} 
+		
+		return routineList;
 	}
 
 }

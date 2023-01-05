@@ -4,12 +4,27 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.drd.routine"> 
 
+<!-- 모든 루틴 조회 -->
+<select id="findAll" resultType="routine">
+	select *
+	from routine
+</select>
+
+<!-- 회원 가입 시 추천할 루틴이 없는 경우 임의의 3개 루틴을 반환 -->
+<select id="findByNoInfo" resultType="routine">
+	select rownum, routine.*
+	from routine
+	where rownum between 1 and 3
+</select>
+
 <select id="findByRegisterInfo" resultType="routine" parameterType="hashmap">
 	select * 
 	from routine
 	where #{age} between minAge and maxAge 
 		and (#{bmi} between minBMI and maxBMI)
 		and #{gender} = gender
-</select>
+</select> 
+
+
 
 </mapper>

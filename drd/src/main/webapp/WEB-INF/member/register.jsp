@@ -48,12 +48,21 @@
    			// 페이지가 로드될 때 추천 루틴 리스트는 보여서는 안 된다.
     		$("#routineList").css("display", "none");
     		
-    		$("#routineInfo").change(routineInfo_change); //나이, 성별, 키, 몸무게 변경 시 추천 루틴 변경
+    		$("#routineInfo").change(routineInfo_change); //나이, 성별, 키, 몸무게 변경 시 추천 루틴 변경 
+    		
+    		$("#findAllRoutineBTN").click(findAllRoutineBTN_click); //루틴 전체 조회 기능
+    		
     		$("#submitBTN").click(submitBTN_onClick);   
     		
     	})//$(document).ready 닫기
     
-    </script>
+    </script> 
+    
+    <style type="text/css">
+    	th, td {
+		  text-align: center;
+		}
+    </style>
     
 </head>
 
@@ -135,7 +144,7 @@
 			                               
 			                                    <div class="col-sm-8">
 			                                    	<select class="form-control" id="gender" name="gender">
-												      <option value = "-1" selected>선택</option>
+												      <option value = "" selected>선택</option>
 												      <option value = "1">남성</option>
 												      <option value = "0">여성</option>
 												    </select>
@@ -165,23 +174,21 @@
                                       </div>  
                                         
                                         <div class="form-group" id="routineList"> 
-                                        	<span>당신만을 위한 추천 루틴</span> 
+                                        	<span> 
+                                        		당신만을 위한 추천 루틴
+                                        		<button type="button" class="btn btn-primary btn" id = "findAllRoutineBTN" style="float: right;">전체 조회</button>
+                                        	</span> 
 			                                <div class="card-body">
 					                            <div class="table-responsive">
-					                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					                                <table class="table table-bordered" id="routineListTable" width="100%" cellspacing="0">
 					                                    <thead>
 					                                        <tr>
-					                                        	<th>루틴 이름</th>
+					                                        	<th>루틴이름</th>
 					                                            <th>선택하기</th>
 					                                        </tr>
 					                                    </thead>
-					                                    
 					                                    <tbody>
-					                                        <tr>
-					                                            <td>Tiger Nixon</td>
-					                                            <td>System Architect</td>
-					                                        </tr>
-								                         </tbody>
+					                      				</tbody>
 								                        </table> 
 								                      </div>
 				                  					</div> 

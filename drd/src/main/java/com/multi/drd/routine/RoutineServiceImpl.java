@@ -21,7 +21,12 @@ public class RoutineServiceImpl implements RoutineService {
 	public RoutineServiceImpl(RoutineDAO dao) {
 		super();
 		this.dao = dao;
-	} 
+	}  
+	
+	@Override
+	public List<RoutineDTO> findAll() {
+		return dao.findAll();
+	}
 
 	@Override
 	public List<RoutineDTO> findByRegisterInfo(HashMap<String,Object> param) {

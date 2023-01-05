@@ -6,12 +6,12 @@ var isRoutineChecked = null;
 var height = -1;
 var weight = -1; 
 var age = -1;   
-var recommendedRoutineList = []; 
+var displayRoutineList = [];  
 
 
 const ID_MIN_LENGTH = 5; 
 const NICKNAME_MIN_LENGTH = 5; 
-const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
+const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-z]{2,3}$"; // . 없어도 통과되는 현상 확인 필요
 const PASS_MIN_LENGTH = 5;  
 
 // 아이디 변경 시 다시 체크하도록 함
@@ -89,7 +89,7 @@ function checkNickNameBTN_onClick(){
 	}
 
 	$.ajax({
-			url: "/routine/findByNickName.do", 
+			url: "/member/findByNickName.do", 
 			type: "POST",
 			data: {"nickName": nickName} ,
 			success: successRun,
@@ -200,57 +200,37 @@ function get_age(){
 	age += todayMonthDate > birthMonthDate ? 0:-1; // 생일이 안 지났을 경우 나이-1 (만 나이 계산법 적용) 
 	$("#age").val(age); // 서버에 전달할 나이 정보
 }
- 
-/* 루틴 정보 div를 보여줄 지의 여부 결정하는 함수. 추 후 수정을 위한 주석 처리
-function routineList_display(){ 
-	
-	var display = "none";  
-	var routineListDisplayCondition = isNickNameChecked && isEmailChecked && isPassChecked 
-		&& age>-1 && height !== "" && weight !== ""; // 추천 루틴 정보를 보여주기 위한 조건
-	
-	
-	// 루틴 추천에 필요한 정보: 키, 몸무게, 나이
+
+// 루틴을 조회하기 위한 정보가 입력되었는 지 확인
+function getRoutineListDisplayCondition(){ 
+	var birth = $("#birth").val();   
+	var gender = $("#gender").val(); 
 	var height = $("#height").val();
-	var weight = $("#weight").val(); 
-	var age = $("#age").val(); 
+	var weight = $("#weight").val();
 	
-	if(routineListDisplayCondition){
-		display = "block";
-	}
-
-	return display;
-} 
-*/   
-
+	return birth !=="" && gender !== "" && height !== "" && weight !== "";
+}
+ 
 function routineInfo_change(){ 
-	
-	var isRoutineInfoChanged = (height != $("#height").val()) || (weight != $("#weight").val()) 
-		|| (age != $("#age").val());
-	
+		
 	height = $("#height").val();
 	weight = $("#weight").val(); 
 	age = $("#age").val(); 
-	
-	// 추천 루틴 정보를 보여주기 위한 조건 
-	var routineListDisplayCondition = age>-1 && height !== "" && weight !== "";  
-	
+	  
 	// routineListDisplayCondition 조건 미달성 시 루틴 추천 가리기  
-	if(!routineListDisplayCondition){
+	if(!getRoutineListDisplayCondition()){ 
+		
 		$("#routineList").css("display","none");
 		return;
 	}  
 	else{
-		get_routineList(); //원래 여기 있어야 하지만 테스트를 위해 임시로 옮김.
+		get_routineList();
 		$("#routineList").css("display","block");
 	} 
 	return;
 }
 
 function get_routineList(){ 
-	console.log("age: ", age);
-	console.log("gender: ", gender);
-	console.log("height: ", height);
-	console.log("weight: ", weight);
 	$.ajax({
 			url: "/routine/findByRegisterInfo.do", 
 			type: "POST",
@@ -258,15 +238,59 @@ function get_routineList(){
 			success: successRun,
 			error: errorRun 
 			}) 
-			function successRun(routines){  
-				console.log("routines: ",routines);
+			function successRun(routines){   
+				// 이전에 조회한 내역 지우기 
+				$("#routineListTable > tbody").empty();	
+				console.log("routines[i].routineSEQ: " , routines[0].routineSEQ);
+				for(var i=0;i<routines.length;i++){
+					$("#routineListTable > tbody:last-child").append(
+						"<tr>" +
+							"<td>" +routines[i]["name"]+ "</td>" +  
+							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i]["routineSEQ"]+"'></td>" +  
+						"</tr>") 
+				} 
+				Swal.fire({
+				  icon: 'info',
+				  title: "당신만을 위한 최적의 운동 루틴을 찾았습니다. 아래에서 한 개를 선택해주세요!",
+				})
 			}  
 			function errorRun(obj, msg,statusMsg){  
 				console.log(obj);
 				console.log(msg);
 				console.log(statusMsg);
 			} 			
-}
+} 
+
+function findAllRoutineBTN_click(){ 
+	$.ajax({
+			url: "/routine/findAll.do", 
+			type: "POST",
+			success: successRun,
+			error: errorRun 
+			}) 
+			function successRun(routines){   
+				// 이전에 조회한 내역 지우기 
+				$("#routineListTable > tbody").empty();	
+				
+				for(var i=0;i<routines.length;i++){
+					
+					$("#routineListTable > tbody:last-child").append(
+						"<tr>" +
+							"<td>" +routines[i]["name"]+ "</td>" +  
+							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i].routineSEQ+"'></td>" +  
+						"</tr>") 
+				}  
+				Swal.fire({
+		  			icon: 'info',
+		  			title: "모든 루틴을 조회하였습니다!",
+				})
+			}  
+			function errorRun(obj, msg,statusMsg){  
+				console.log(obj);
+				console.log(msg);
+				console.log(statusMsg);
+			} 			
+} 
 	
 
 // 회원 가입 전 아이디, 닉네임, 이메일, 비밀번호를 체크 했는 지 확인
@@ -301,8 +325,14 @@ function submitBTN_onClick(){
 		})
 		return;	
 	} 
-	else if(!isRoutineChecked){
-		$("#routineList").css("display", "block"); 
+	else if(!getRoutineListDisplayCondition()){
+		Swal.fire({
+		  icon: 'error',
+		  title: '생년월일, 성별, 키, 몸무게 정보를 입력해주시기 바랍니다!',
+		})
+		return;
+	}
+	else if(!$("input[name='selectedRoutine']:checked").val()){
 		Swal.fire({
 		  icon: 'info',
 		  title: "당신만을 위한 최적의 운동 루틴을 찾았습니다. 아래에서 한 개를 선택해주세요!",
@@ -310,6 +340,7 @@ function submitBTN_onClick(){
 		return;
 	}	 
 	else{
+		console.log($('input[name=radioName]:checked', '#registerForm'))
 		$("#registerForm").submit(); 
 	}
 } 

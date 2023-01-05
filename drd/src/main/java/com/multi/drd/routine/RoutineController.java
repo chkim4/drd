@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller 
 @RequestMapping("/routine")
@@ -25,7 +26,14 @@ public class RoutineController {
 	public RoutineController(RoutineService routineService) {
 		super();
 		this.routineService = routineService;
-	} 
+	}  
+	
+	// 전체 루틴 조회 
+	@RequestMapping(value = "/findAll.do", method = RequestMethod.POST)
+	@ResponseBody
+	public List<RoutineDTO> findAll() {
+		return routineService.findAll();
+	}
 	
 	// 회원 가입 시 기입한 정보를 토대로 루틴 정보 호출
 	@RequestMapping(value = "/findByRegisterInfo.do",method = RequestMethod.POST)
@@ -41,7 +49,7 @@ public class RoutineController {
 
 	        param.put(key, value);  
 	    } 
-		List<RoutineDTO> routineList = routineService.findByRegisterInfo(param);
+		List<RoutineDTO> routineList = routineService.findByRegisterInfo(param); 
 		
 		return routineList;
 	} 

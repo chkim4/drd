@@ -9,7 +9,7 @@
 	</select>
 	<select id="readbio" resultType="memberBio" parameterType="String">
 		select * from memberbio
-		where memberseq = (select memberseq
+		where memberbioseq = (select memberseq
 							from member
 							where id = #{id})
 	</select>

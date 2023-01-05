@@ -14,5 +14,6 @@
 		<mapper resource="com/multi/drd/mybatis/memberBio.xml"/>
 		<mapper resource="com/multi/drd/mybatis/test.xml"/>
 		<mapper resource="com/multi/drd/mybatis/routine.xml"/>
+		<mapper resource="com/multi/drd/mybatis/dashboard.xml"/>
 	</mappers>
 </configuration>

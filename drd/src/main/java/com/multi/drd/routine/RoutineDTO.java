@@ -8,6 +8,7 @@ public class RoutineDTO {
 	private int minBMI;
 	private int maxBMI;
 	private int gender;
+	
 	public int getRoutineSEQ() {
 		return routineSEQ;
 	}

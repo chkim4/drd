@@ -1,5 +1,6 @@
 package com.multi.drd.member;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +50,13 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "member/index"; 
+			  viewName = "redirect: /dashboard/read"; 
 		  } 
 		  else {
 			  viewName = "member/login"; 
 		  }  
 		  
-		  return "redirect: /member/sessiontest.do";
+		  return viewName;
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.GET)
@@ -64,12 +65,15 @@ public class MemberController {
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.POST)
-	public String register(MemberDTO registerMember, MemberBioDTO registerMemberBio, Model model) {
+	public String register(MemberDTO registerMember, MemberBioDTO registerMemberBio, Model model, HttpServletRequest request) {
 				
 		
 		int registerSEQ = memberService.register(registerMember); 
 		String viewName = ""; 
-		 
+		
+		System.out.println("selectedRoutine: " + request.getParameter("selectedRoutine"));
+		
+		
 		 // 회원 가입 성공 시 
 		 if(registerSEQ > 0) {  
 			  //Bio 관련  등록    
@@ -77,13 +81,13 @@ public class MemberController {
 			  memberBioService.register(registerMemberBio);
 			  
 			  model.addAttribute("member", registerMember); 
-			  viewName = "member/index"; 
+			  viewName = "redirect: /dashboard/read"; 
 		  } 
 		  else {
 			  viewName = "member/register"; 
 		  }
 		 
-		  return "redirect: /member/sessiontest.do"; 
+		  return viewName; 
 	} 
 	
 	// 아이디로 사용자 검색. (회원 가입 시 사용 가능 여부 체크 등에 활용)
@@ -106,8 +110,6 @@ public class MemberController {
 	public MemberDTO findByEmail(String email) {
 		return memberService.findByEmail(email);
 	} 
-	
-	
 	
 	
 	/* 로그인 및 회원 가입 시 세션이 제대로 생성 되었는 지 확인하기 위함
