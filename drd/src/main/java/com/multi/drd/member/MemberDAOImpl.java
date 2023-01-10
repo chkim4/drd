@@ -4,6 +4,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.multi.drd.memberbio.MemberBioDTO;
+
 @Repository
 public class MemberDAOImpl implements MemberDAO{
 	
@@ -47,5 +49,4 @@ public class MemberDAOImpl implements MemberDAO{
 	public MemberDTO findByEmail(String email) {
 		return sqlSession.selectOne("com.multi.drd.member.findByEmail", email);
 	}
-
 }

@@ -15,6 +15,5 @@ public interface MemberService {
 	MemberDTO findByNickName(String nickName);
 	
 	//이메일로 검색 
-	MemberDTO findByEmail(String email); 
-	
+	MemberDTO findByEmail(String email);  	
 }

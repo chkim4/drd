@@ -9,10 +9,10 @@
 	values (member_SEQ.currval, #{age}, #{gender}, #{height},#{weight}, sysdate)
 </insert>
 
-<select id="findOne" parameterType="int" resultType="memberBio" >
-	find * 
+<select id="findByPK" parameterType="int" resultType="memberBio" >
+	select * 
 	from memberBio
-	where memberSEQ = ${memberSEQ}
+	where memberBioSEQ = #{memberSEQ}
 </select>
 
 

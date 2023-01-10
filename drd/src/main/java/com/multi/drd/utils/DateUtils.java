@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 
 public final class DateUtils {    
 
+	
+	private final static String DB_FORMAT_DAY = "yyyy-M-d";    
 	private final static String DB_FORMAT_DATE = "yyyy-M-d HH:mm:ss";    
 	private final static DateTimeFormatter isoFormatter = DateTimeFormatter.ofPattern(DB_FORMAT_DATE); 
      
@@ -45,13 +47,38 @@ public final class DateUtils {
         }
     }   
     
+    public static Date[] getDailyISODate(Date date){
+    	final DateFormat formatter = new SimpleDateFormat(DB_FORMAT_DAY); 
+    	
+    	String dateStr = formatter.format(date);
+    	String stringStartDate = dateStr + " 00:00:00";
+    	String stringEndDate = dateStr + " 23:59:59"; 
+    	
+    	
+    	
+    	Date startDate;
+    	Date endDate;
+		try {
+			startDate = new SimpleDateFormat(DB_FORMAT_DATE).parse(stringStartDate); 
+			endDate = new SimpleDateFormat(DB_FORMAT_DATE).parse(stringEndDate);
+		} 
+		catch (ParseException e) {	
+			e.printStackTrace(); 
+			return null;
+		}
+    	
+    	Date[] dates = {startDate, endDate};
+    	
+    	return dates;	
+    }  
+    
     /* 
      * input 값으로 들어온 날짜에 해당하는 월의 시작일과 마지막 일을 ISO 형태의 date로 리턴 
      * 시간될 때 LocalDate로 해보자. Mongo에서 LocalDate 적용하려면 설정할 게 많아보이지만, 
      * Date 객체는 Deprecated 되었기에 LocalDate로 작성하는 게 맞다. 
      * 일단 LocalDate로 전환하기 편하게 코딩함.
      */
-    public static Date[] getMonthlyISODate(int year, int month) throws ParseException {
+    public static Date[] getMonthlyISODate(int year, int month) {
     	
 	    	LocalDate rawStartDate = LocalDate.of(year,month,1);  
 	    	LocalDate rawEndDate = rawStartDate.plusDays(rawStartDate.lengthOfMonth()-1);    
@@ -62,9 +89,16 @@ public final class DateUtils {
     	    String stringStartDate = localStartDate.format(isoFormatter);
     	    String stringEndDate = localEndDate.format(isoFormatter);
     	    
-    	    Date startDate = new SimpleDateFormat(DB_FORMAT_DATE).parse(stringStartDate);
-    	    Date endDate = new SimpleDateFormat(DB_FORMAT_DATE).parse(stringEndDate);
-	    	
+    	    Date startDate;
+    	    Date endDate;
+			
+    	    try {
+				startDate = new SimpleDateFormat(DB_FORMAT_DATE).parse(stringStartDate); 
+				endDate = new SimpleDateFormat(DB_FORMAT_DATE).parse(stringEndDate);
+			} catch (ParseException e) {
+				e.printStackTrace(); 
+				return null;
+			}
     	    Date[] dates = {startDate, endDate};
 	    	
 	    	return dates;	
@@ -78,12 +112,7 @@ public final class DateUtils {
     	LocalDate localDate = date.toInstant().atZone(ZoneId.of("Asia/Seoul")).toLocalDate(); 
     	Date[] dates = null;
     	
-    	try {
-			dates = getMonthlyISODate(localDate.getYear(), localDate.getMonthValue()); // getMonthValue: 1~12
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} 
+    	dates = getMonthlyISODate(localDate.getYear(), localDate.getMonthValue()); // getMonthValue: 1~12 
     	return dates;
     }
 } 

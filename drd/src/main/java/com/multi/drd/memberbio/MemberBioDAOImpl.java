@@ -23,6 +23,10 @@ public class MemberBioDAOImpl implements MemberBioDAO {
 	public int register(MemberBioDTO registerMemberBio) {
 		// TODO Auto-generated method stub
 		return sqlSession.insert("com.multi.drd.memberBio.register",registerMemberBio);
+	} 
+	
+	@Override
+	public MemberBioDTO findByPK(int memberSEQ) {
+		return sqlSession.selectOne("com.multi.drd.memberBio.findByPK", memberSEQ);
 	}
-
 }
