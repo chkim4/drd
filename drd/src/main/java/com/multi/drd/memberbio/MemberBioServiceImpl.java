@@ -24,6 +24,12 @@ public class MemberBioServiceImpl implements MemberBioService {
 	public int register(MemberBioDTO registerMemberBio) {
 		
 		return dao.register(registerMemberBio);
+	} 
+	
+	@Override
+	public MemberBioDTO findByPK(int memberSEQ) {
+		// TODO Auto-generated method stub
+		return dao.findByPK(memberSEQ);
 	}
 
 }

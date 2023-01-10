@@ -10,8 +10,5 @@ public interface MemberDAO {
 
 	MemberDTO findByNickName(String nickName); 
 	
-	MemberDTO findByEmail(String email); 
-	
-	
-	
+	MemberDTO findByEmail(String email);  	
 }

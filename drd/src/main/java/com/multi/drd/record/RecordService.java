@@ -3,11 +3,13 @@ package com.multi.drd.record;
 import java.util.List;
 
 public interface RecordService {
-	public RecordDTO latestRecord(String id);
-	public List<RecordDTO> findFoodList(String id); 
+			
+	//가장 최신 기록 
+	public RecordDTO findLatestRecord(int memberSEQ); 
 	
-	// 테스트를 위해 추가
-	public RecordDTO latestRecord(int memberSEQ);
-	public List<RecordDTO> findFoodList(int memberSEQ); 
+	//오늘 기록 조회 
+	public RecordDTO findTodayRecord(int memberSEQ); 
 	
+	// 한 달 기록 조회. month: 1~12
+	public List<RecordDTO> findMonthlyRecord(int memberSEQ, int year, int month);
 }

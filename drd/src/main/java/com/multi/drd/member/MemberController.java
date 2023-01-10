@@ -50,7 +50,7 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "redirect: /exercise/read"; 
+			  viewName = "redirect: /member/biotest.do"; 
 		  } 
 		  else {
 			  viewName = "member/login"; 
@@ -122,5 +122,17 @@ public class MemberController {
 		
 		return "member/index";
 	} 
+	/*
+	 * Member의 기본키를 통해 MemberBio를 가져오는 기능 예시
+	 */
+	@RequestMapping(value = "/biotest.do", method = RequestMethod.GET)
+	public String bioTest(HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		System.out.println("memberSEQ: " + member.getMemberSEQ() );
+		System.out.println("Bio: "+ memberBioService.findByPK(member.getMemberSEQ()));
+		
+		return "member/index";
+	}
 	
 }

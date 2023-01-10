@@ -16,27 +16,17 @@ public class RecordServiceImpl implements RecordService {
 	}
 
 	@Override
-	public RecordDTO latestRecord(String id) {
-		// TODO Auto-generated method stub
-		return dao.latestRecord(id);
+	public RecordDTO findLatestRecord(int memberSEQ) {
+		return dao.findLatestRecord(memberSEQ);
 	}
 
 	@Override
-	public List<RecordDTO> findFoodList(String id) {
-		// TODO Auto-generated method stub
-		return dao.findFoodList(id);
+	public RecordDTO findTodayRecord(int memberSEQ) {
+		return dao.findTodayRecord(memberSEQ);
 	}
 
-	// 테스트용
 	@Override
-	public RecordDTO latestRecord(int memberSEQ) {
-		// TODO Auto-generated method stub
-		return dao.latestRecord(memberSEQ);
-	}
-	
-	@Override
-	public List<RecordDTO> findFoodList(int memberSEQ) {
-		// TODO Auto-generated method stub
-		return dao.findFoodList(memberSEQ);
+	public List<RecordDTO> findMonthlyRecord(int memberSEQ, int year, int month) {
+		return dao.findMonthlyRecord(memberSEQ, year, month);
 	}
 }

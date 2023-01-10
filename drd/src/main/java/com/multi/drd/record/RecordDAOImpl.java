@@ -24,63 +24,49 @@ public class RecordDAOImpl implements RecordDAO {
 	public RecordDAOImpl(MongoTemplate mongoTemplate) {
 		super();
 		this.mongoTemplate = mongoTemplate;
-	}
-
-//	최근트레이닝 기록 조회 =>컬렉션 제목 필요
+	}  
+	
 	@Override
-	public RecordDTO latestRecord(int memberSEQ) {
-		// TODO Auto-generated method stub
+	public RecordDTO findLatestRecord(int memberSEQ) {
+		
 		Criteria criteria = new Criteria("memberSEQ");
 		criteria.is(memberSEQ);
 		Query query = new Query(criteria);
 		query.with(new Sort(new Order(Direction.DESC, "date")));
 		
 		return mongoTemplate.findOne(query, RecordDTO.class, "record");
-	}
+	}	 
 	
 	@Override
-	public List<RecordDTO>findFoodList(int memberSEQ) { 
+	public RecordDTO findTodayRecord(int memberSEQ){
+		Date today = new Date(); 
+		Date[] dates = DateUtils.getDailyISODate(today);
 		
-//		Query query = new Query(
-//				  Criteria.where("memberSEQ").is(memberSEQ)
-//				  .andOperator(
-//			                Criteria.where("date").gte(DateUtils.getISODate("2023-01-01","start")),
-//			                Criteria.where("date").lte(DateUtils.getISODate("2023-01-31", "end"))
-//						)
-//				); 
-		
-		Date[] test = null;
-		
-		try {
-			test = DateUtils.getMonthlyISODate(2022, 12);
-		} 
-		catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	
-		Query query = new Query(
-				  Criteria.where("memberSEQ").is(memberSEQ)
-				  .andOperator(
-			                Criteria.where("date").gte(test[0]),
-			                Criteria.where("date").lte(test[1])
-						)
-				);
-		List<RecordDTO> docs =  mongoTemplate.find(query, RecordDTO.class, "record"); 
-//		System.out.println("docs[0].exerciseList: " + docs.get(0).exerciseList);
-	
-		return docs;
+		Criteria criteria = new Criteria().andOperator(
+				Criteria.where("memberSEQ").is(memberSEQ), 
+				Criteria.where("date").gte(dates[0]), 
+				Criteria.where("date").lte(dates[1]) 
+		);
+				
+		Query query = new Query(criteria); 
+				
+		return mongoTemplate.findOne(query, RecordDTO.class, "record");
 	}
-	
+
 	@Override
-	public RecordDTO latestRecord(String id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<RecordDTO> findMonthlyRecord(int memberSEQ, int year, int month) {
+		
+		Date[] dates = DateUtils.getMonthlyISODate(year, month);
+		
+		Criteria criteria = new Criteria().andOperator(
+				Criteria.where("memberSEQ").is(memberSEQ), 
+				Criteria.where("date").gte(dates[0]), 
+				Criteria.where("date").lte(dates[1]) 
+		); 
+		
+		Query query = new Query(criteria); 
+		
+		return mongoTemplate.find(query, RecordDTO.class, "record");
 	}
-	@Override
-	public List<RecordDTO> findFoodList(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}	
 	
 }
