@@ -1,61 +1,87 @@
 package com.multi.drd.routine;
 
 public class RoutineDTO {
-	private int routineSEQ;
-	private String name; 
-	private int minAge;
-	private int maxAge;
-	private int minBMI;
-	private int maxBMI;
-	private int gender;
+	private int routineSEQ; 
+	private String fitnessObj;
+	private String cardioObj;
+	private String name;
+	private String description;
+	private int routineStep;
+	private int disease;
+	private int period;
 	
+	public RoutineDTO() {
+		super();
+	}
+
 	public int getRoutineSEQ() {
 		return routineSEQ;
 	}
+
 	public void setRoutineSEQ(int routineSEQ) {
 		this.routineSEQ = routineSEQ;
 	}
+
+	public String getFitnessObj() {
+		return fitnessObj;
+	}
+
+	public void setFitnessObj(String fitnessObj) {
+		this.fitnessObj = fitnessObj;
+	}
+
+	public String getCardioObj() {
+		return cardioObj;
+	}
+
+	public void setCardioObj(String cardioObj) {
+		this.cardioObj = cardioObj;
+	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getMinAge() {
-		return minAge;
+
+	public String getDescription() {
+		return description;
 	}
-	public void setMinAge(int minAge) {
-		this.minAge = minAge;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	public int getMaxAge() {
-		return maxAge;
+
+	public int getRoutineStep() {
+		return routineStep;
 	}
-	public void setMaxAge(int maxAge) {
-		this.maxAge = maxAge;
+
+	public void setRoutineStep(int routineStep) {
+		this.routineStep = routineStep;
 	}
-	public int getMinBMI() {
-		return minBMI;
+
+	public int getDisease() {
+		return disease;
 	}
-	public void setMinBMI(int minBMI) {
-		this.minBMI = minBMI;
+
+	public void setDisease(int disease) {
+		this.disease = disease;
 	}
-	public int getMaxBMI() {
-		return maxBMI;
+
+	public int getPeriod() {
+		return period;
 	}
-	public void setMaxBMI(int maxBMI) {
-		this.maxBMI = maxBMI;
-	}
-	public int getGender() {
-		return gender;
-	}
-	public void setGender(int gender) {
-		this.gender = gender;
+
+	public void setPeriod(int period) {
+		this.period = period;
 	}
 
 	@Override
 	public String toString() {
-		return "RoutineDTO [routineSEQ=" + routineSEQ + ", name=" + name + ", minAge=" + minAge + ", maxAge=" + maxAge
-				+ ", minBMI=" + minBMI + ", maxBMI=" + maxBMI + ", gender=" + gender + "]";
-	} 
-	
+		return "RoutineDTO [routineSEQ=" + routineSEQ + ", fitnessObj=" + fitnessObj + ", cardioObj=" + cardioObj
+				+ ", name=" + name + ", description=" + description + ", routineStep=" + routineStep + ", disease="
+				+ disease + ", period=" + period + "]";
+	}
 }
