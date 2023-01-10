@@ -1,66 +1,64 @@
 package com.multi.drd.record;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+
+import com.multi.drd.json.CardioObj;
+import com.multi.drd.json.FitnessObj;
+
 @Document(collection = "record")
 public class RecordDTO {
 	@Id
-	String _id;
-	String memberSEQ;
-	List<Integer> foodList;
-	List<Integer> exerciseList;
-	Date date;
-	int totalExerciseHour;
-	int weight;
-	int bfp;
-	int mp;
- 	
-	public RecordDTO() {}
+	private String _id;
+	private int memberSEQ;
+	private CardioObj cardioList;
+	private FitnessObj fitnessList;
+	private Date date;  
+	private int totalExerciseHour;
+	private int totalCalory; 
 	
-	public RecordDTO(String _id, String memberSEQ, List<Integer> foodList, List<Integer> exerciseList, Date date,
-			int totalExerciseHour, int weight, int bfp, int mp) {
+	public RecordDTO() {
 		super();
-		
+	}
+	
+	public RecordDTO(String _id, int memberSEQ, CardioObj cardioList, FitnessObj fitnessList, Date date,
+			int totalExerciseHour, int totalCalory) {
+		super();
 		this._id = _id;
 		this.memberSEQ = memberSEQ;
-		this.foodList = foodList;
-		this.exerciseList = exerciseList;
+		this.cardioList = cardioList;
+		this.fitnessList = fitnessList;
 		this.date = date;
 		this.totalExerciseHour = totalExerciseHour;
-		this.weight = weight;
-		this.bfp = bfp;
-		this.mp = mp;
-	} 
-	
+		this.totalCalory = totalCalory;
+	}
+
 	public String get_id() {
 		return _id;
 	}
-
 	public void set_id(String _id) {
 		this._id = _id;
-	} 
-	
-	public String getMemberSEQ() {
+	}
+	public int getMemberSEQ() {
 		return memberSEQ;
 	}
-	public void setMemberSEQ(String memberSEQ) {
+	public void setMemberSEQ(int memberSEQ) {
 		this.memberSEQ = memberSEQ;
 	}
-	public List<Integer> getFoodList() {
-		return foodList;
+	public CardioObj getCardioList() {
+		return cardioList;
 	}
-	public void setFoodList(List<Integer> foodList) {
-		this.foodList = foodList;
+	public void setCardioList(CardioObj cardioList) {
+		this.cardioList = cardioList;
 	}
-	public List<Integer> getExerciseList() {
-		return exerciseList;
+	public FitnessObj getFitnessList() {
+		return fitnessList;
 	}
-	public void setExerciseList(List<Integer> exerciseList) {
-		this.exerciseList = exerciseList;
+	public void setFitnessList(FitnessObj fitnessList) {
+		this.fitnessList = fitnessList;
 	}
 	public Date getDate() {
 		return date;
@@ -74,29 +72,17 @@ public class RecordDTO {
 	public void setTotalExerciseHour(int totalExerciseHour) {
 		this.totalExerciseHour = totalExerciseHour;
 	}
-	public int getWeight() {
-		return weight;
+	public int getTotalCalory() {
+		return totalCalory;
 	}
-	public void setWeight(int weight) {
-		this.weight = weight;
-	}
-	public int getBfp() {
-		return bfp;
-	}
-	public void setBfp(int bfp) {
-		this.bfp = bfp;
-	}
-	public int getMp() {
-		return mp;
-	}
-	public void setMp(int mp) {
-		this.mp = mp;
+	public void setTotalCalory(int totalCalory) {
+		this.totalCalory = totalCalory;
 	}
 
 	@Override
 	public String toString() {
-		return "RecordDTO [_id=" + _id + ", memberSEQ=" + memberSEQ + ", foodList=" + foodList + ", exerciseList="
-				+ exerciseList + ", date=" + date + ", totalExerciseHour=" + totalExerciseHour + ", weight=" + weight
-				+ ", bfp=" + bfp + ", mp=" + mp + "]";
-	}  	
+		return "RecordDTO [_id=" + _id + ", memberSEQ=" + memberSEQ + ", cardioList=" + cardioList + ", fitnessList="
+				+ fitnessList + ", date=" + date + ", totalExerciseHour=" + totalExerciseHour + ", totalCalory="
+				+ totalCalory + "]";
+	} 
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multi.drd.personalroutine"> 
+
+	<select id="findOne" resultType="personalRoutine">
+		select *
+		from personalRoutine
+		where personalRoutineSEQ = 2
+	</select>
+
+	<update id="updateOne" parameterType="personalRoutine" >
+		update personalRoutine 
+		set cardioObj = #{cardioObj}, fitnessObj = #{fitnessObj} 
+		where personalRoutineSEQ = 2
+	</update>
+</mapper>

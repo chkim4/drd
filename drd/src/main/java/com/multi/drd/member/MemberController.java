@@ -45,12 +45,12 @@ public class MemberController {
 	public String login(MemberDTO loginMember, Model model) {
 		
 		MemberDTO member = memberService.login(loginMember);
-		String viewName = "";  
-	  
+		String viewName = "";   
+		
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "redirect: /dashboard/read"; 
+			  viewName = "redirect: /exercise/read"; 
 		  } 
 		  else {
 			  viewName = "member/login"; 
@@ -121,5 +121,6 @@ public class MemberController {
 		System.out.println("session: " + session.getAttribute("member"));
 		
 		return "member/index";
-	}
+	} 
+	
 }

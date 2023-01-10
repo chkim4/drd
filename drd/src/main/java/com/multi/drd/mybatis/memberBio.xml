@@ -9,6 +9,11 @@
 	values (member_SEQ.currval, #{age}, #{gender}, #{height},#{weight}, sysdate)
 </insert>
 
+<select id="findOne" parameterType="int" resultType="memberBio" >
+	find * 
+	from memberBio
+	where memberSEQ = ${memberSEQ}
+</select>
 
 
 </mapper>
