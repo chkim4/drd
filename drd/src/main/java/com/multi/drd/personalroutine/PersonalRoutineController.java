@@ -65,7 +65,7 @@ public class PersonalRoutineController {
 		 
 		// 추가 (cardioSEQ, time, calory) 
 		System.out.println("Before Insert: " + cardioObj.getCardioList());
-		CardioObj.CardioList cardio = new CardioObj.CardioList(3,30,100); 
+		CardioObj.CardioList cardio = new CardioObj.CardioList(3,30,100); // seq, time, cal
 		JsonUtils.insertCardio(cardioObj, cardio); 
 		System.out.println("After Insert: " + cardioObj.getCardioList());
 		

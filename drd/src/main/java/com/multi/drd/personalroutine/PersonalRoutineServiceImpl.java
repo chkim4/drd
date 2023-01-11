@@ -8,8 +8,7 @@ public class PersonalRoutineServiceImpl implements PersonalRoutineService {
 	
 	private PersonalRoutineDAO dao;
 	
-	
-	
+
 	public PersonalRoutineServiceImpl() {
 		super();
 	}
@@ -29,4 +28,5 @@ public class PersonalRoutineServiceImpl implements PersonalRoutineService {
 	public int updateOne(PersonalRoutineDTO pr) {
 		return dao.updateOne(pr);
 	}
+
 }

@@ -1,8 +1,5 @@
 package com.multi.drd.record;
 
-import java.text.ParseException;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +61,7 @@ public class RecordDAOImpl implements RecordDAO {
 				Criteria.where("date").lte(dates[1]) 
 		); 
 		
-		Query query = new Query(criteria); 
+		Query query = new Query(criteria);  
 		
 		return mongoTemplate.find(query, RecordDTO.class, "record");
 	}
