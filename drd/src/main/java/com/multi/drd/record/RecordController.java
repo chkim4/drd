@@ -54,4 +54,10 @@ public class RecordController {
 		return result;
 	}	
 
+	@RequestMapping(value = "/index.do",method = RequestMethod.GET) 
+	String indexPage(){ 
+		
+		return "record/index";
+	}	
+
 }

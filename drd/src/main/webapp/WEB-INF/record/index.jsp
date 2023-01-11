@@ -15,9 +15,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.2/index.global.js"></script> 	
 	<script src="/resources/jquery/record/index-script.js"></script>  
 	<script> 
-    document.addEventListener('DOMContentLoaded', function() {
-    	onDOMContentLoaded();
-      });
+	    document.addEventListener('DOMContentLoaded', function() {
+	    	onDOMContentLoaded();
+	      });
 	</script>
    <link rel="stylesheet" href="/resources/css/record/index.css"> 
    
