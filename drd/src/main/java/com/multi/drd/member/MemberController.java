@@ -1,5 +1,9 @@
 package com.multi.drd.member;
 
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.memberbio.MemberBioService;
+import com.multi.drd.routine.RoutineDTO;
 
 /*
  * @SessionAttributes("member") 
@@ -21,7 +26,7 @@ import com.multi.drd.memberbio.MemberBioService;
  */
 
 @Controller  
-@RequestMapping("/member")
+@RequestMapping("member")
 @SessionAttributes("member") 
 public class MemberController {
 	MemberService memberService; 
@@ -50,7 +55,7 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "redirect: /member/biotest.do"; 
+			  viewName = "member/index"; 
 		  } 
 		  else {
 			  viewName = "member/login"; 
@@ -81,20 +86,13 @@ public class MemberController {
 			  memberBioService.register(registerMemberBio);
 			  
 			  model.addAttribute("member", registerMember); 
-			  viewName = "redirect: /dashboard/read"; 
+			  viewName = "member/index"; 
 		  } 
 		  else {
 			  viewName = "member/register"; 
 		  }
 		 
 		  return viewName; 
-	} 
-	
-	// 아이디로 사용자 검색. (회원 가입 시 사용 가능 여부 체크 등에 활용)
-	@RequestMapping(value = "/findById.do", method = RequestMethod.POST) 
-	@ResponseBody
-	public MemberDTO findById(String id) {
-		return memberService.findById(id);
 	} 
 
 	// 닉네임으로 사용자 검색. (회원 가입 시 사용 가능 여부 체크 등에 활용)
@@ -129,10 +127,35 @@ public class MemberController {
 	public String bioTest(HttpSession session) {
 		
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
-		System.out.println("memberSEQ: " + member.getMemberSEQ() );
-		System.out.println("Bio: "+ memberBioService.findByPK(member.getMemberSEQ()));
 		
 		return "member/index";
-	}
+	} 
+
+	/*
+	 * 회원 가입 시 추천 루틴 가져오기 . 
+	 * 인송님께 말하기
+	 * 230112 현재 질병 정보만을 기반으로 루틴을 추천하지만, 추후 확장을 위해 param 변수 생성
+	 * 
+	 */
+	@RequestMapping(value = "/findRoutineByRegisterInfo.do", method = RequestMethod.POST) 
+	@ResponseBody
+	public List<RoutineDTO> findByRegisterInfo(HttpServletRequest request) {
+		
+		HashMap<String, Object> param = new HashMap<String, Object>();
+	    
+	    Enumeration<String> enumber = request.getParameterNames();
+	    
+	    while (enumber.hasMoreElements()) {
+	        String key = enumber.nextElement().toString();
+	        String value = request.getParameter(key);
+
+	        param.put(key, value);  
+	    }  
+		List<RoutineDTO> routineList = memberService.findRoutineByRegisterInfo(param);
+	
+		return routineList;
+	} 
+	
+	
 	
 }

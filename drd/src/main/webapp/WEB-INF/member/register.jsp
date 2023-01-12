@@ -31,10 +31,8 @@
     <!-- jsp 내 태그와 register-script.js 내 함수들 연결 -->
     <script type="text/javascript"> 
     	$(document).ready(function() {    
-    		$("#id").keyup(id_onKeyUp);
-    		$("#checkIdBTN").click(checkIdBTN_onClick); 
-
-    		$("#nickName").keyup(nickName_onKeyUp);
+    		
+   			$("#nickName").keyup(nickName_onKeyUp);
     		$("#checkNickNameBTN").click(checkNickNameBTN_onClick); 
     		
     		$("#email").keyup(email_onKeyUp);
@@ -85,27 +83,7 @@
                                         <h1 class="h4 text-gray-900 mb-4">Welcome to DRD!</h1>
                                     </div>
                                     <form class="user" action="/member/register.do" method = "post" id="registerForm">
-                                        <div class="form-group">
-                                            <div class="input-group">
-					                            <input type="text" class="form-control form-control-user" name="id"  id="id" placeholder="아이디를 입력하세요...">
-					                            <div class="input-group-append">
-					                                <button type="button" class="btn btn-primary btn" id="checkIdBTN">
-					                                	체크
-					                                </button>
-					                            </div>
-					                        </div>    
-					                     </div>
-					                     <div class="form-group">  
-                                            <div class="input-group">
-					                            <input type="text" class="form-control form-control-user" name="nickName"  id="nickName" placeholder="닉네임을 입력하세요...">
-					                            <div class="input-group-append">
-					                                <button type="button" class="btn btn-primary btn" id="checkNickNameBTN">
-					                                	체크
-					                                </button>
-					                            </div>
-					                        </div>    
-                                        </div>
-                                        <div class="form-group">
+                                   		<div class="form-group">
                                             <div class="input-group">  
 					                            <input type="email" class="form-control form-control-user"
                                                 	id="email" name="email" aria-describedby="emailHelp" placeholder="이메일을 입력하세요...">
@@ -117,7 +95,16 @@
 					                            </div> 
 					                       	</div>
 					                    </div>    
-					                                                          
+					                     <div class="form-group">  
+                                            <div class="input-group">
+					                            <input type="text" class="form-control form-control-user" name="nickName"  id="nickName" placeholder="닉네임을 입력하세요...">
+					                            <div class="input-group-append">
+					                                <button type="button" class="btn btn-primary btn" id="checkNickNameBTN">
+					                                	체크
+					                                </button>
+					                            </div>
+					                        </div>    
+                                        </div>                                                        
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
                                                 id="pass" name="pass" placeholder="비밀번호를 입력하세요...">
@@ -171,8 +158,24 @@
 			                                    </div>
                                 			</div>                                           
                                         </div> 
-                                      </div>  
-                                        
+                                        <div class="form-group"> 
+         									<div class="form-group row">
+			                                    <div class="col-sm-4 mb-3 mb-sm-0">
+			                                        <input type="text" value = "질병 유무" class="form-control form-control-user" readonly>
+			                                    </div> 
+			                               
+			                                    <div class="col-sm-8">
+			                                    	<select class="form-control" id="disease" name="disease">
+												      <option value = "" selected>선택</option>
+												      <option value = "0">정상</option>
+												      <option value = "1">당뇨</option>
+												      <option value = "2">고혈압</option>
+												    </select>
+			                                    </div>
+                                			</div>                                           
+                                        </div> 
+                                        </div>
+                                                                                        
                                         <div class="form-group" id="routineList"> 
                                         	<span> 
                                         		당신만을 위한 추천 루틴
@@ -183,7 +186,8 @@
 					                                <table class="table table-bordered" id="routineListTable" width="100%" cellspacing="0">
 					                                    <thead>
 					                                        <tr>
-					                                        	<th>루틴이름</th>
+					                                        	<th>루틴이름</th>				                             
+					                                            <th>설명</th> 
 					                                            <th>선택하기</th>
 					                                        </tr>
 					                                    </thead>

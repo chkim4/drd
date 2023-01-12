@@ -1,4 +1,3 @@
-var isIdChecked = null; 
 var isNickNameChecked = null; 
 var isEmailChecked = null;  
 var isPassChecked = null;
@@ -6,6 +5,7 @@ var isRoutineChecked = null;
 var height = -1;
 var weight = -1; 
 var age = -1;   
+var disease = -1;
 var displayRoutineList = [];  
 
 
@@ -14,60 +14,7 @@ const NICKNAME_MIN_LENGTH = 5;
 const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-z]{2,3}$"; // . 없어도 통과되는 현상 확인 필요
 const PASS_MIN_LENGTH = 5;  
 
-// 아이디 변경 시 다시 체크하도록 함
-function id_onKeyUp(){  
-	// 공백 입력 방지
-	$("#id").val($("#id").val().replaceAll(" ", "")); 
-	isIdChecked = false; 
-} 
-
-// 아이디 사용 가능 여부 체크
-function checkIdBTN_onClick(){
-	var id = $("#id").val();	
-	
-	// HTML에서 minlength 가 안 되서 여기서 최소 길이 관련 로직 구현 함.
-	if(id.length < ID_MIN_LENGTH){
-		Swal.fire({
-		  icon: 'error',
-		  title: '아이디는 최소 ' + ID_MIN_LENGTH + ' 글자 이상이어야 합니다!',
-		})
-		return;
-	}
-
-	$.ajax({
-			url: "/member/findById.do", 
-			type: "POST",
-			data: {"id": id},
-			success: successRun,
-			error: errorRun 
-			}) 
-			function successRun(member){  
-				// DB에서 조회된 사용자(member)가 없을 때 사용자가 입력한 아이디 사용 가능
-				isIdChecked = (member == "");   
-				
-				if(isIdChecked){ 
-					Swal.fire({
-					  icon: 'success',
-					  title: '축하합니다!',
-					  text: '입력하신 아이디를 사용할 수 있습니다'
-					})
-					
-				}
-				else{
-					Swal.fire({
-					  icon: 'error',
-					  title: '안타깝습니다...',
-					  text: '입력하신 아이디를 사용할 수 없습니다'
-					})
-				}
-			}  
-			function errorRun(obj, msg,statusMsg){  
-				console.log(obj);
-				console.log(msg);
-				console.log(statusMsg);
-			} 			
-}  
-
+ 
 // 닉네임 변경 시 다시 체크하도록 함
 function nickName_onKeyUp(){  
 	// 공백 입력 방지
@@ -207,8 +154,10 @@ function getRoutineListDisplayCondition(){
 	var gender = $("#gender").val(); 
 	var height = $("#height").val();
 	var weight = $("#weight").val();
+	var disease = $("#disease").val();
 	
-	return birth !=="" && gender !== "" && height !== "" && weight !== "";
+	return birth !=="" && gender !== "" && 
+		   height !== "" && weight !== "" && disease !== "";
 }
  
 function routineInfo_change(){ 
@@ -216,6 +165,7 @@ function routineInfo_change(){
 	height = $("#height").val();
 	weight = $("#weight").val(); 
 	age = $("#age").val(); 
+	disease = $("#disease").val(); 
 	  
 	// routineListDisplayCondition 조건 미달성 시 루틴 추천 가리기  
 	if(!getRoutineListDisplayCondition()){ 
@@ -232,26 +182,29 @@ function routineInfo_change(){
 
 function get_routineList(){ 
 	$.ajax({
-			url: "/routine/findByRegisterInfo.do", 
+			url: "/member/findRoutineByRegisterInfo.do", 
 			type: "POST",
-			data: {"age": age, "gender": $("#gender").val(), "height": height, "weight": weight},
+			data: {disease: $("#disease").val()},
 			success: successRun,
 			error: errorRun 
 			}) 
 			function successRun(routines){   
 				// 이전에 조회한 내역 지우기 
 				$("#routineListTable > tbody").empty();	
-				console.log("routines[i].routineSEQ: " , routines[0].routineSEQ);
+				
 				for(var i=0;i<routines.length;i++){
-					$("#routineListTable > tbody:last-child").append(
+				
+				$("#routineListTable > tbody:last-child").append(
 						"<tr>" +
 							"<td>" +routines[i]["name"]+ "</td>" +  
+							"<td>" +routines[i]["description"]+ "</td>" +  
 							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i]["routineSEQ"]+"'></td>" +  
 						"</tr>") 
-				} 
+				}  
+				
 				Swal.fire({
 				  icon: 'info',
-				  title: "당신만을 위한 최적의 운동 루틴을 찾았습니다. 아래에서 한 개를 선택해주세요!",
+				  title: "당신만을 위한 최적의 운동 루틴을 찾았습니다!",
 				})
 			}  
 			function errorRun(obj, msg,statusMsg){  
@@ -261,14 +214,15 @@ function get_routineList(){
 			} 			
 } 
 
+//230112 현재 미사용. 추후 사용할 수 있을 것 같아서 남겨둠.
 function findAllRoutineBTN_click(){ 
 	$.ajax({
-			url: "/routine/findAll.do", 
+			url: "/member/findRoutineByRegisterInfo.do", 
 			type: "POST",
 			success: successRun,
 			error: errorRun 
 			}) 
-			function successRun(routines){   
+			function successRun(routines){ 
 				// 이전에 조회한 내역 지우기 
 				$("#routineListTable > tbody").empty();	
 				
@@ -277,6 +231,7 @@ function findAllRoutineBTN_click(){
 					$("#routineListTable > tbody:last-child").append(
 						"<tr>" +
 							"<td>" +routines[i]["name"]+ "</td>" +  
+							"<td>" +routines[i]["description"]+ "</td>" +  
 							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i].routineSEQ+"'></td>" +  
 						"</tr>") 
 				}  
@@ -295,14 +250,6 @@ function findAllRoutineBTN_click(){
 
 // 회원 가입 전 아이디, 닉네임, 이메일, 비밀번호를 체크 했는 지 확인
 function submitBTN_onClick(){
-	
-	if(!isIdChecked){
-		Swal.fire({
-		  icon: 'error',
-		  title: '아이디를 체크해주시기 바랍니다!',
-		}) 
-		return;	
-	} 
 
 	if(!isNickNameChecked){
 		Swal.fire({
