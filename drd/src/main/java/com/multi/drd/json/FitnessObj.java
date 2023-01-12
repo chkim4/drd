@@ -30,6 +30,10 @@ public class FitnessObj{
 		private int set;
 		private int count;
 		private int weight; 
+		private String name; 
+		private String muscleGroup; 
+		private String equipment; 
+		
 		
 		public FitnessList() {} 
 		
@@ -65,6 +69,30 @@ public class FitnessObj{
 		}
 		public void setWeight(int weight) {
 			this.weight = weight;
+		} 
+		
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getMuscleGroup() {
+			return muscleGroup;
+		}
+
+		public void setMuscleGroup(String muscleGroup) {
+			this.muscleGroup = muscleGroup;
+		}
+
+		public String getEquipment() {
+			return equipment;
+		}
+
+		public void setEquipment(String equipment) {
+			this.equipment = equipment;
 		}
 
 		@Override

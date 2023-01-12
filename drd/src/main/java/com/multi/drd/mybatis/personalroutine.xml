@@ -7,7 +7,7 @@
 	<select id="findOne" resultType="personalRoutine">
 		select *
 		from personalRoutine
-		where personalRoutineSEQ = 2
+		where personalRoutineSEQ = 1
 	</select>
 
 	<update id="updateOne" parameterType="personalRoutine" >

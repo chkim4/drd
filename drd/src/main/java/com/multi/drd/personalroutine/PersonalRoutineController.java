@@ -12,7 +12,7 @@ import com.multi.drd.json.FitnessObj;
 import com.multi.drd.utils.JsonUtils;
 
 @Controller
-@RequestMapping("/PersonalRoutine")
+@RequestMapping("/personalroutine")
 public class PersonalRoutineController {
 	
 	private PersonalRoutineService service;
@@ -36,7 +36,8 @@ public class PersonalRoutineController {
 		CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
 		FitnessObj fitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 		
-		System.out.println("cardioObj before parsing: " + pRoutine.getCardioObj());
+		System.out.println("cardioObj before parsing: " + pRoutine.getCardioObj()); 
+		System.out.println("cardioObj: "+ cardioObj);
 		System.out.println("cardioObj totalTime: " + cardioObj.getTotalTime());
 		System.out.println("cardioList in cardioObj: " + cardioObj.getCardioList());
 		System.out.println("-----------------------");
@@ -65,7 +66,7 @@ public class PersonalRoutineController {
 		 
 		// 추가 (cardioSEQ, time, calory) 
 		System.out.println("Before Insert: " + cardioObj.getCardioList());
-		CardioObj.CardioList cardio = new CardioObj.CardioList(3,30,100); 
+		CardioObj.CardioList cardio = new CardioObj.CardioList(3,30,100); // seq, time, cal
 		JsonUtils.insertCardio(cardioObj, cardio); 
 		System.out.println("After Insert: " + cardioObj.getCardioList());
 		

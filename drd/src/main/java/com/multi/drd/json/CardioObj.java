@@ -28,7 +28,10 @@ public class CardioObj{
 	public static class CardioList{
 		private int cardioSEQ;
 		private int time;
-		private int calory; 
+		private int calory;  
+		private String name;
+		private int intensity;
+		
 		
 		public CardioList() {}
 
@@ -41,8 +44,8 @@ public class CardioObj{
 			this.cardioSEQ = cardioSEQ;
 			this.time = time;
 			this.calory = calory;
-		}
-
+		} 
+		
 		public void setCardioSEQ(int cardioSEQ) {
 			this.cardioSEQ = cardioSEQ;
 		}
@@ -59,10 +62,22 @@ public class CardioObj{
 			this.calory = calory;
 		}
 
-		@Override
-		public String toString() {
-			return "CardioList [cardioSEQ=" + cardioSEQ + ", time=" + time + ", calory=" + calory + "]";
-		}  
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public int getIntensity() {
+			return intensity;
+		}
+
+		public void setIntensity(int intensity) {
+			this.intensity = intensity;
+		}
+		
 	}
 
 	@Override
