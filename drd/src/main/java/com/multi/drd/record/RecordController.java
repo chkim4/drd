@@ -48,9 +48,8 @@ public class RecordController {
 
 	@RequestMapping(value = "/findMonthlyRecord.do",method = RequestMethod.GET) 
 	@ResponseBody
-	List<RecordDTO> findMonthlyRecord(HttpSession session){ 
+	List<RecordDTO> findMonthlyRecord(){
 		List<RecordDTO> result = recordService.findMonthlyRecord(1,2023,1); //memberSEQ가 들어가야 하지만, 테스트 상 1로 함.
-		System.out.println(result.get(0));
 		return result;
 	}	
 

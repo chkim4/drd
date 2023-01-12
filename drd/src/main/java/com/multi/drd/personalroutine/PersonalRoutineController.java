@@ -12,7 +12,7 @@ import com.multi.drd.json.FitnessObj;
 import com.multi.drd.utils.JsonUtils;
 
 @Controller
-@RequestMapping("/PersonalRoutine")
+@RequestMapping("/personalroutine")
 public class PersonalRoutineController {
 	
 	private PersonalRoutineService service;
@@ -36,7 +36,8 @@ public class PersonalRoutineController {
 		CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
 		FitnessObj fitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 		
-		System.out.println("cardioObj before parsing: " + pRoutine.getCardioObj());
+		System.out.println("cardioObj before parsing: " + pRoutine.getCardioObj()); 
+		System.out.println("cardioObj: "+ cardioObj);
 		System.out.println("cardioObj totalTime: " + cardioObj.getTotalTime());
 		System.out.println("cardioList in cardioObj: " + cardioObj.getCardioList());
 		System.out.println("-----------------------");

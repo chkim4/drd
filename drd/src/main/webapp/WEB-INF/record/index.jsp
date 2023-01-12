@@ -11,13 +11,12 @@
     <meta name="author" content=""> 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    
     <!-- Calendar 관련 --> 
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.2/index.global.js"></script> 	
 	<script src="/resources/jquery/record/index-script.js"></script>  
 	<script> 
-	    document.addEventListener('DOMContentLoaded', function() {
-	    	onDOMContentLoaded();
-	      });
+	    document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
 	</script>
    <link rel="stylesheet" href="/resources/css/record/index.css"> 
    
@@ -28,7 +27,11 @@
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet"> 
+    
+    <!-- SweetAlert 관련 -->
+    <script src="/sweetalert/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
    
 </head>
 
