@@ -23,7 +23,9 @@ public class PersonalRoutineServiceImpl implements PersonalRoutineService {
 	public PersonalRoutineDTO findOne() {
 		return dao.findOne();
 	}  
-	
+	public PersonalRoutineDTO findOne1(int PersonalRoutineSEQ) {
+		return dao.findOne1(PersonalRoutineSEQ);
+	}  	
 	@Override
 	public int updateOne(PersonalRoutineDTO pr) {
 		return dao.updateOne(pr);
