@@ -24,9 +24,42 @@
 
 <!-- Custom styles for this template-->
 <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
-
-
+<style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: sans-serif;
+      }
+      .chartMenu {
+        width: 100vw;
+        height: 40px;
+        background: #1A1A1A;
+        color: rgba(54, 162, 235, 1);
+      }
+      .chartMenu p {
+        padding: 10px;
+        font-size: 20px;
+      }
+      .chartCard {
+        width: 100vw;
+        height: calc(100vh - 40px);
+        background: rgba(54, 162, 235, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .chartBox {
+        width: 700px;
+        padding: 20px;
+        border-radius: 20px;
+        border: solid 3px rgba(54, 162, 235, 1);
+        background: white;
+      }
+    </style>
+ 
 </head>
+
+  
 
 <body id="page-top">
 
@@ -55,7 +88,7 @@
 
 			<!-- Nav Item - Dashboard -->
 			<li class="nav-item active"><a class="nav-link"
-				href="/dashboard/read/${member.id }"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>대시보드</span></a>
+				href="/dashboard/read"> <i class="fas fa-fw fa-tachometer-alt"></i> <span>대시보드</span></a>
 			</li>
 
 			<!-- Divider -->
@@ -400,9 +433,16 @@
 									<div class="card-section">
 										<div class="text-label text-small mb-8px">최근 활동</div>
 										<a class="text-large hover-orange"
-											href="/activities/8277089645"> <strong>점심 달리기</strong> •
+											href="/activities/8277089645"> <strong><%--  ${latestRecord.cardioObj}--%>
+											<c:forEach var="item" items="${latestRecord.fitnessObj.fitnessList}">
+
+     <p>운동정보 : ${item.fitnessSEQ}•세트 : ${item.set}•횟수 : ${item.count}•무게 : ${item.weight}</p>
+
+
+</c:forEach>
+											<%-- ${latestRecord.fitnessObj} --%></strong> •
 											<time class="timestamp text-medium"
-												datetime="2022-12-22 20:50:00 UTC"> 2022년 12월 22일 </time>
+												datetime="2022-12-22 20:50:00 UTC"> 날짜 :${latestRecord. date} </time>
 
 										</a>
 									</div>
@@ -578,9 +618,16 @@
 								<!-- Card Body -->
 								<div class="card-body">
 									<div class="chart-area">
-									 <canvas id="myAreaChart"></canvas>
+									<%--  <canvas id="myAreaChart"></canvas> --%>
 										<!-- <canvas id="line-chart"></canvas> -->
-										
+										<!-- <div class="chartCard"> -->
+											<!-- <div class="chartBox"> -->
+												<canvas id="myChart"></canvas>
+												<input onchange="filterData()" type="date" id="startdate"
+													value="2021-08-25"> <input onchange="filterData()"
+													type="date" id="enddate" value="2021-08-31">
+											<!-- </div> -->
+										<!-- </div> -->
 									</div>
 								</div>
 							</div>
@@ -711,13 +758,18 @@
 	<script src="/sbadmin/js/sb-admin-2.min.js"></script>
 
 	<!-- Page level plugins -->
-	<script src="/sbadmin/vendor/chart.js/Chart.min.js"></script>
+	<!-- <script src="/sbadmin/vendor/chart.js/Chart.min.js"></script> -->
 
 	<!-- Page level custom scripts -->
-	 <script src="/sbadmin/js/demo/chart-area-demo.js"></script>
-	<script src="/sbadmin/js/demo/chart-pie-demo.js"></script>
+	<!--  <script src="/sbadmin/js/demo/chart-area-demo.js"></script> -->
+	<!-- <script src="/sbadmin/js/demo/chart-pie-demo.js"></script> -->
 	<!-- <script src="/sbadmin/js/demo/mychart.js"></script> -->
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+ <script src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.9.0/date_fns.min.js"
+ integrity="sha512-ToehgZGJmTS39fU8sfP9/f0h2Zo6OeXXKgpdEgzqUtPfE5By1K/ZkD8Jtp5PlfdaWfGVx+Jw5j10h63wSwM1HA=="
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   <script src="/sbadmin/js/mixedchart.js"></script>
 </body>
 
 </html>
