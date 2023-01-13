@@ -54,7 +54,5 @@ public class MemberServiceImpl implements MemberService {
 		
 		return dao.findRoutineByRegisterInfo(param);
 	} 
-	
-	
 
 }

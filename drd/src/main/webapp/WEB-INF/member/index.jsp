@@ -365,7 +365,7 @@
 	                <button type="button" class="btn btn-primary btn" onclick="location.href='/record/index.do'" >기록</button>
 	                <button type="button" class="btn btn-primary btn" onclick="location.href='#'" >루틴</button>
 	                <button type="button" class="btn btn-primary btn" onclick="location.href='#'" >대시보드</button>
-	                <button type="button" class="btn btn-primary btn" onclick="location.href='#'" >목표 설정</button>
+	                <button type="button" class="btn btn-primary btn" onclick="location.href='/personalroutine/setpage'" >목표 설정</button>
 	           
                 </div>
                 <!-- /.container-fluid -->

@@ -55,7 +55,7 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "redirect: /personalroutine/setpage"; 
+			  viewName = "redirect: /member/index.do"; 
 		  } 
 		  else {
 			  viewName = "member/login"; 
@@ -86,7 +86,7 @@ public class MemberController {
 			  memberBioService.register(registerMemberBio);
 			  
 			  model.addAttribute("member", registerMember); 
-			  viewName = "member/index"; 
+			  viewName = "member/index.do"; 
 		  } 
 		  else {
 			  viewName = "member/register"; 
@@ -154,6 +154,13 @@ public class MemberController {
 		List<RoutineDTO> routineList = memberService.findRoutineByRegisterInfo(param);
 	
 		return routineList;
+	} 
+
+	@RequestMapping(value = "/index.do", method = RequestMethod.GET) 
+	public String indexPage() {
+		
+		
+		return "member/index";
 	} 
 	
 	
