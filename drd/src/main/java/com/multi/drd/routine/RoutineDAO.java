@@ -9,5 +9,7 @@ public interface RoutineDAO {
 
 	List<RoutineDTO> findByNoInfo();
 	
+	RoutineDTO findBySEQ(int RoutineSEQ);
+	
 	List<RoutineDTO> findByRegisterInfo(HashMap<String,Object> param);
 }

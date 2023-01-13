@@ -33,6 +33,10 @@ public class RoutineServiceImpl implements RoutineService {
 		return dao.findByRegisterInfo(param);
 	}
 	
+	@Override
+	public RoutineDTO findBySEQ(int RoutineSEQ) {
+		return dao.findBySEQ(RoutineSEQ);
+	}
 	
 
 }

@@ -19,7 +19,9 @@ public class PersonalRoutineDAOImpl implements PersonalRoutineDAO{
 	public PersonalRoutineDTO findOne() {
 		return sqlSession.selectOne("com.multi.drd.personalroutine.findOne");
 	}
-
+	public PersonalRoutineDTO findOne1(int PersonalRoutineSEQ) {
+		return sqlSession.selectOne("com.multi.drd.personalroutine.findOne1", PersonalRoutineSEQ);
+	}
 	public int updateOne(PersonalRoutineDTO pr) {
 		return sqlSession.update("com.multi.drd.personalroutine.updateOne", pr);
 	}
