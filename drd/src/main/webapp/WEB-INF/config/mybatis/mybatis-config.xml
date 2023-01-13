@@ -11,6 +11,7 @@
 		<typeAlias type="com.multi.drd.personalroutine.PersonalRoutineDTO" alias="personalRoutine"/>
 		<typeAlias type="com.multi.drd.cardio.CardioDTO" alias="cardio"/>
 		<typeAlias type="com.multi.drd.fitness.FitnessDTO" alias="fitness"/>
+		<typeAlias type="com.multi.drd.goal.GoalDTO" alias="goal"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/multi/drd/mybatis/member.xml"/>
@@ -21,5 +22,6 @@
 		<mapper resource="com/multi/drd/mybatis/personalroutine.xml"/>
 		<mapper resource="com/multi/drd/mybatis/cardio.xml"/>
 		<mapper resource="com/multi/drd/mybatis/fitness.xml"/>
+		<mapper resource="com/multi/drd/mybatis/goal.xml"/>
 	</mappers>
 </configuration>
