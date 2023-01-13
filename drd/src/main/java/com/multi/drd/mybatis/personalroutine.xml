@@ -9,7 +9,11 @@
 		from personalRoutine
 		where personalRoutineSEQ = 1
 	</select>
-
+	<select id="findOne1" parameterType="int" resultType="personalRoutine">
+		select *
+		from personalRoutine
+		where personalRoutineSEQ = #{personalRoutineSEQ}
+	</select>
 	<update id="updateOne" parameterType="personalRoutine" >
 		update personalRoutine 
 		set cardioObj = #{cardioObj}, fitnessObj = #{fitnessObj} 

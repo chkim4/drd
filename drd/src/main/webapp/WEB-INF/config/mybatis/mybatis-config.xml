@@ -9,6 +9,8 @@
 		<typeAlias type="com.multi.drd.exercise.ExerciseDTO" alias="exercise"/>
 		<typeAlias type="com.multi.drd.routine.RoutineDTO" alias="routine"/>
 		<typeAlias type="com.multi.drd.personalroutine.PersonalRoutineDTO" alias="personalRoutine"/>
+		<typeAlias type="com.multi.drd.cardio.CardioDTO" alias="cardio"/>
+		<typeAlias type="com.multi.drd.fitness.FitnessDTO" alias="fitness"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/multi/drd/mybatis/member.xml"/>
@@ -17,5 +19,7 @@
 		<mapper resource="com/multi/drd/mybatis/routine.xml"/>
 		<mapper resource="com/multi/drd/mybatis/dashboard.xml"/>
 		<mapper resource="com/multi/drd/mybatis/personalroutine.xml"/>
+		<mapper resource="com/multi/drd/mybatis/cardio.xml"/>
+		<mapper resource="com/multi/drd/mybatis/fitness.xml"/>
 	</mappers>
 </configuration>
