@@ -24,7 +24,10 @@
 		and (#{bmi} between minBMI and maxBMI)
 		and #{gender} = gender
 </select> 
-
-
+<select id="findOneBySEQ" resultType="routine">
+	select *
+	from routine
+	where routineseq = #{routineseq}
+</select>
 
 </mapper>

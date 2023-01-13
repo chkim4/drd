@@ -58,5 +58,9 @@ public class RoutineDAOImpl implements RoutineDAO {
 		
 		return routineList;
 	}
-
+	
+	public RoutineDTO findBySEQ(int RoutineSEQ) {
+		
+		return sqlSession.selectOne("com.multi.drd.routine.findOneBySEQ", RoutineSEQ);
+	}
 }
