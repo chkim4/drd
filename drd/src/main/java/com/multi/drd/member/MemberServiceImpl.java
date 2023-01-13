@@ -47,6 +47,13 @@ public class MemberServiceImpl implements MemberService {
 
 	@Override
 	public List<RoutineDTO> findRoutineByRegisterInfo(HashMap<String, Object> param) {
+		System.out.println("param: " + param.get("disease").getClass().getName());
+		System.out.println();
+		// 기타 질병일 경우 고혈압과 동일한 루틴을 추천하기 위함.
+		if(Integer.parseInt( param.get("disease").toString()) == 3) {
+			param.put("disease", "2");
+		}
+		
 		return dao.findRoutineByRegisterInfo(param);
 	} 
 	
