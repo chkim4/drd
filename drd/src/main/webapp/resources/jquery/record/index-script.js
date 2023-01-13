@@ -60,16 +60,17 @@ function onDOMContentLoaded() {
 	            eventClick: function(info){
 	            	showEventInfo(info)
 				}
-	          });
+	          }); //calendar 선언 닫기
 	              
 	           calendar.render();
-			  }   
+   
 		}
 		function errorRun(obj, msg,statusMsg){  
 			console.log(obj);
 			console.log(msg);
 			console.log(statusMsg);
-		} 			 
+		} 
+} // onDOMContentLoaded() 닫기		 
 
 function showEventInfo(info){
 	
@@ -95,5 +96,5 @@ function showEventInfo(info){
 		  title: title, 
 		  text: info.event.extendedProps.cardioList[0].name
 	})	
-}  
+} //showEventInfo 닫기
 

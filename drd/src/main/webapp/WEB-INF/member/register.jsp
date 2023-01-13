@@ -170,6 +170,7 @@
 												      <option value = "0">정상</option>
 												      <option value = "1">당뇨</option>
 												      <option value = "2">고혈압</option>
+												      <option value = "3">기타</option>
 												    </select>
 			                                    </div>
                                 			</div>                                           
@@ -179,7 +180,6 @@
                                         <div class="form-group" id="routineList"> 
                                         	<span> 
                                         		당신만을 위한 추천 루틴
-                                        		<button type="button" class="btn btn-primary btn" id = "findAllRoutineBTN" style="float: right;">전체 조회</button>
                                         	</span> 
 			                                <div class="card-body">
 					                            <div class="table-responsive">
