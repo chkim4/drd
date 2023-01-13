@@ -92,7 +92,8 @@ function showEventInfo(info){
 	
 	Swal.fire({
 		  icon: 'info',
-		  title: title
+		  title: title, 
+		  text: info.event.extendedProps.cardioList[0].name
 	})	
-}
+}  
 
