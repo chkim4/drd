@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multi.drd.goal">
+
+	<select id="readGoal" resultType="goal" parameterType="goal">
+		select * 
+		from goal
+		where memberseq = #{memberSEQ}
+	</select> 
+	<update id="updateTime" parameterType="goal">
+		update goal
+		set goalExerciseTime = #{goalExerciseTime}
+		where memberSEQ = #{memberSEQ}
+	</update>
+	<update id="updateCalory" parameterType="Integer">
+		update goal
+		set goalCalory = #{goalCalory}
+		where memberSEQ = #{memberSEQ}
+	</update>
+
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
