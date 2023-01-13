@@ -51,7 +51,7 @@ public class JsonUtils {
 	} 
 	
 	// PersonalRoutineDTO 관련 - Cardio
-	public static CardioObj parseCardioObj(PersonalRoutineDTO routine) {
+	public static CardioObj parseCardioList(PersonalRoutineDTO routine) {
 		 
 		CardioObj cardioList = null; 
 		

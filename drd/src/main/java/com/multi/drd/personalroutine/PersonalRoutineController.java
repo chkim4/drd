@@ -10,8 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.multi.drd.cardio.CardioDTO;
 import com.multi.drd.cardio.CardioService;
+import com.multi.drd.fitness.FitnessDTO;
 import com.multi.drd.fitness.FitnessService;
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.CardioObj.CardioList;
@@ -142,13 +145,13 @@ public class PersonalRoutineController {
 	}  
 	//test http://localhost:8088/personalroutine/setpage
 		@RequestMapping(value = "/setpage", method = RequestMethod.GET)
-		public String setroutinepage(Model model, HttpSession session) {
+		public String setRoutinePage(Model model, HttpSession session) {
 			MemberDTO member = (MemberDTO)session.getAttribute("member");
 			int personalRoutineSEQ = member.getPersonalRoutineSEQ();
-			
+			model.addAttribute("member", member);
 			//자신 루틴
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
-			CardioObj myCardioObj = JsonUtils.parseCardioObj(pRoutine); 
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine); 
 			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 			List<CardioList> myCardioList = myCardioObj.getCardioList();
 			model.addAttribute("myroutine_cardioList", myCardioList);
@@ -158,7 +161,7 @@ public class PersonalRoutineController {
 			//기본 루틴
 			RoutineDTO routine = routineservice.findBySEQ(pRoutine.getRoutineSEQ());
 			model.addAttribute("routine", routine);
-			CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
+			CardioObj cardioObj = JsonUtils.parseCardioList(pRoutine); 
 			FitnessObj fitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 			List<CardioList> cardioList = cardioObj.getCardioList();
 			model.addAttribute("routine_cardioList", cardioList);
@@ -191,5 +194,49 @@ public class PersonalRoutineController {
 //			pRoutine.getCreatedAt().getClass();
 			return "personalroutine/routineset";
 			
+		}
+		//루틴 누를 시 ajax로 지신의 personalroutine 표시(fitness)
+		@RequestMapping(value = "/ajax/setfitnesslist", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public List<FitnessList> SetfitnessList(int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			List<FitnessList> myFitnessList = myFitnessObj.getFitnessList();
+			return myFitnessList;
+			
+		}
+		//루틴 누를 시 ajax로 지신의 personalroutine 표시(cardio)
+		@RequestMapping(value = "/ajax/setcardiolist", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public List<CardioList> setCardioList(int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine); 
+			List<CardioList> myCardioList = myCardioObj.getCardioList();
+			return myCardioList;
+			
+		}
+		//루틴 수정 띄우기(fitness)
+		public FitnessDTO readFitness(int fitnessSEQ) {
+			return fitnessservice.findOne(fitnessSEQ);
+		}
+		//루틴 수정 띄우기(fitnessList)
+		public FitnessList readFitnessList(int fitnessSEQ, int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			int index = JsonUtils.getIndexBySEQ(myFitnessObj, fitnessSEQ);
+			FitnessList myFitnessList = myFitnessObj.getFitnessList().get(index);
+			return myFitnessList;
+		}
+		//루틴 수정 띄우기(cardio)
+		public CardioDTO readCaldio(int cardioSEQ) {
+			return cardioservice.findOne(cardioSEQ);
+		}
+		//루틴 수정 띄우기(CardioList)
+		public CardioList readCardioList(int cardioSEQ, int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
+			int index = JsonUtils.getIndexBySEQ(myCardioObj, cardioSEQ);
+			CardioList myCardiosList = myCardioObj.getCardioList().get(index);
+			return myCardiosList;
 		}
 }

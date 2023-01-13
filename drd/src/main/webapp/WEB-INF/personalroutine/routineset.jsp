@@ -30,30 +30,54 @@
 	$(document).ready(function() {
 		$("#myroutine").append("${routine.name}<hr/>${routine.description}")
 		$("#routineperiodtxt").empty()
-		$("#routineperiodtxt").append("${routine.period}주 중 ${days}일 진행 중(${progress}/%)")
+		$("#routineperiodtxt").append("<h5>${routine.period}주 중 ${days}일 진행중<br/>(${progress}%)</h5><br/>")
 		$("#routineperiodpersent").attr({"aria-valuenow":"${progress}","style":"width: ${progress}%"})
-		$("#submit").on("click",function(){
-			exercisename = $("#searchtext").text();
+		$("#routinelist").on("click",function(){
+			var personalRoutineSEQ = "${member.personalRoutineSEQ}"
 			$.ajax({
 			type:"post",
-			url:"/exercise/ajax/searchbyname",
+			url:"/personalroutine/ajax/setfitnesslist",
 			data:{
-				"exercisename":exercisename
+				"personalRoutineSEQ":personalRoutineSEQ
 			},
+			async : false,
 			success:function(data){
-				mydata = "";
+				mydata = "<table><thead><tr><th><h5>name</h5></th><th><h5>set</h5></th><th><h5>count</h5></th><th><h5>weight</h5></th></tr></thead><tbody>";
 				for (var i = 0; i < data.length; i++) {
 					mydata = mydata+
-					"<a href='/exercise/addtorecord?date=${param.date}&exerciseseq="+data[i].exerciseSEQ+"'>"+data[i].name+"</a><br/>"
+					"<tr><td>"+data[i].name+"</td><td>"+data[i].set+"</td><td>"+data[i].count+"</td><td>"+data[i].weight+"kg</td></tr>"
 				}
-			$("#from_exercise").empty();
-			$("#from_exercise").append(mydata);			
+				mydata = mydata+"</tbody></table>";
+			$("#myroutine_fitnessList").empty();
+			$("#myroutine_fitnessList").append(mydata);			
 			},
 			error:function(a,b,c){
 				alert(c);
 			}
 			
-			})//end ajax
+			})//end ajax1
+			$.ajax({
+				type:"post",
+				url:"/personalroutine/ajax/setcardiolist",
+				data:{
+					"personalRoutineSEQ":personalRoutineSEQ
+				},
+				async : false,
+				success:function(data){
+					mydata = "<table><thead><tr><th><h5>name</h5></th><th><h5>time</h5></th></tr></thead><tbody>";
+					for (var i = 0; i < data.length; i++) {
+						mydata = mydata+
+						"<tr><td>"+data[i].name+"</td><td>"+data[i].time+"분</td></tr>"
+					}
+					mydata = mydata+"</tbody></table>";
+				$("#myroutine_cardioList").empty();
+				$("#myroutine_cardioList").append(mydata);			
+				},
+				error:function(a,b,c){
+					alert(c);
+				}
+				
+				})//end ajax2
 		})//end click
 	})//end ready
 </script>
@@ -407,32 +431,32 @@
                         <div class="col-lg-3">
 
                             <!-- Default Card Example -->
-                            <div class="card mb-4">
+                            <div class="card mb-3">
                                 <div class="card-header">
                                     루틴 전체
                                 </div>
                                 <!-- 루틴 전체 리스트(차후 일별로 정리) -->
                                 <div class="card-body">
-                                <div class="card mb-4">
+                                <div class="card mb-2">
                                 <div class="card-header">
                                     ${routine.name}
                                 </div>
                                 <div class="card-body" id="routinelist">
-                                	<h4>Fitness</h4>
+                                	<h5>Fitness</h5>
 									<c:forEach var="data" items="${routine_fitnessList }">
-										<h5>${data.name}</h5>
+										<h6>${data.name}</h6>
 									</c:forEach>
 									<br/>
-									<h4>Cardio</h4>
+									<h5>Cardio</h5>
 									<c:forEach var="data" items="${routine_cardioList }">
-										<h5>${data.name}</h5>
+										<h6>${data.name}</h6>
 									</c:forEach>
                                 </div>
                                 </div>
                             </div>
                             </div>
                         <div class="row">
-                         <div class="col-xl-3 col-md-6 mb-4">
+                         <div class="col-xl-6 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -454,7 +478,7 @@
                             </div>
                         </div>
 						<!-- end of card1 -->
-						<div class="col-xl-3 col-md-6 mb-4">
+						<div class="col-xl-6 col-md-6 mb-4">
                             <div class="card border-left-info shadow h-100 py-2">
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
@@ -496,7 +520,7 @@
                                     무산소(Fitness)
                                 </div>
                                 <!-- fitnesslist 상세 정보 -->
-                                <div class="card-body" id="fitnesslist">
+                                <div class="card-body" id="myroutine_fitnessList">
                                 <table>
                                 	<thead>
                                 		<tr>
@@ -526,7 +550,7 @@
                                     유산소(Cardio)
                                 </div>
                                 <!-- cardiolist 상세 정보 -->
-                                <div class="card-body" id="cardiolist">
+                                <div class="card-body" id="myroutine_cardioList">
 	                                 <table>
 	                                	<thead>
 	                                		<tr>
