@@ -1,6 +1,6 @@
-$(document).on("change","#cardioEventListTable", function(){cardioEventSelector_change(); })
-
 var cardioList = [];
+var fitnessList = [];
+var foodList = [];
 var result = "";
 
 function onDOMContentLoaded() {   
@@ -31,7 +31,7 @@ function onDOMContentLoaded() {
 	           			"start": date, 
 	           			"backgroundColor": "#2C9FAF",
 	           			"extendedProps": { "totalTime": record.fitnessObj.totalTime, 
-	           							   "fitnessList": record.cardioObj.fitnessList}	
+	           							   "fitnessList": record.fitnessObj.fitnessList}	
            		}); 
             	 	
         		fetchedEvent.push({
@@ -79,42 +79,36 @@ function onDOMContentLoaded() {
 
 function showEventInfo(info){
 	
-	var title = ""; 
+	var title = "";  
+	var content = {icon: 'info',  
+				   customClass: 'event-read'};
 	
 	switch(info.event.groupId){
-		
 		case 'cardio': 
-			title = '유산소 운동 목록입니다.' 
+			title = '유산소 운동 목록입니다.'; 
+			content["title"] = title; 
+			content["html"] = readCardioEvent(info); 
 			break;
 		
 		case 'fitness': 
-			title = '무산소 운동 목록입니다.' 
+			title = '무산소 운동 목록입니다.'; 
+			content["title"] = title; 
+			content["html"] = readFitnessEvent(info); 	
 			break;
 		
 		case 'food': 
-			title = '음식 목록입니다.' 
+			title = '식사 목록입니다.';
+			content["title"] = title; 
+			content["html"] = readFoodEvent(info); 	
 			break;
-	} 
+	}  
 	
-	Swal.fire({
-		  icon: 'info',
-		  title: title, 
-		  html: readCardioEvent(info)
-		  /*
-		  didOpen: () => {
-		    var content = Swal.getHtmlContainer()
-   			var $ = content.querySelector.bind(content) 
-   			var cardioEventSelector= $("#cardioEventSelector"); 
-   			
-   			cardioEventSelector.addEventListener('change', () => {
-   				cardioEventSelector_change();
-   			});
-   			
-	      }  
-	      */
-	})
+	Swal.fire(content)
+	
+	
 } //showEventInfo 닫기
 
+// 유산소 운동 관련 시작
 function readCardioEvent(info){ 
 	cardioList = info.event.extendedProps.cardioList;
 	
@@ -144,32 +138,71 @@ function readCardioEvent(info){
 
 function getIntensityComment(intensity){
 	return intensity == 1 ? '고강도' : '저강도';
-} 
+}  
+// 유산소 운동 관련 끝
 
-/* dynamic 버전. 실패함.
-
-function readCardioEvent(info){ 
-	cardioList = info.event.extendedProps.cardioList;
+// 무산소 운동 관련 시작
+function readFitnessEvent(info){ 
+	fitnessList = info.event.extendedProps.fitnessList;
 	
 	result = '<div class = "swal-text">' +     
-				      '<table class="table table-bordered" id="cardioEventListTable" width="100%" cellspacing="0">' +  
+				      '<table class="table table-bordered" id="fitnessEventListTable" width="100%" cellspacing="0">' +  
                     	'<thead><tr>' + 
-	                    	'<th>' + '유산소 운동 목록' + '</th>' + 
-	                    	'<th>' + 
-	                    		'<select class="form-control" id="cardioEventSelector" name="cardioEventSelector">' + 
-						    		'<option value = "-1" selected>' + '목록 선택' + '</option>';						      
-								      cardioList.map(function(cardio, cardioIndex){								      	
-								      	result += '<option value = "' + cardioIndex + '">' + cardio.name + '</option>' 
-								      })
-					    		'</select>' + 
-					    	'</th>' + 
+	                    	'<th>' + '무산소 운동 이름' + '</th>' + 
+	                    	'<th>' + '세트 수' + '</th>' + 
+	                    	'<th>' + '세트 당 횟수' + '</th>' + 
+	                    	'<th>' + '중량' + '</th>' + 
+	                    	'<th>' + '근육 부위' + '</th>' + 
+	                    	'<th>' + '기구' + '</th>' + 
 				    	'</tr></thead>' +
-	      				'<tbody>' + 
+	      				'<tbody>';  
+		      				 fitnessList.map(function(fitness){								      	
+						      	result += '<tr>' +
+											'<td>' + fitness.name + '</td>' +  
+											'<td>' + fitness.set + '</td>' +  
+											'<td>' + fitness.count + '</td>' +    
+											'<td>' + fitness.weight + '</td>' +     
+											'<td>' + fitness.muscleGroup + '</td>' +    
+											'<td>' + fitness.equipment + '</td>' +    
+										  '</tr>';
+							 })
 	      				'</tbody>' + 
-	                  '</table>'              
+	                  '</table>' +            
 	   				'</div>' 
 	
 	return result; 
 } 
-*/
+// 무산소 운동 관련 끝
 
+// 음식 관련 시작
+function readFoodEvent(info){ 
+	foodObj = info.event.extendedProps.foodObj;
+	
+	result = '<div class = "swal-text">' +     
+				      '<table class="table table-bordered" id="foofEventListTable" width="100%" cellspacing="0">' +  
+                    	'<thead><tr>' + 
+	                    	'<th>' + '음식 이름' + '</th>' + 
+	                    	'<th>' + '섭취량' + '</th>' + 
+	                    	'<th>' + '총 칼로리' + '</th>' + 
+	                    	'<th>' + '단백질량' + '</th>' + 
+	                    	'<th>' + '지방량' + '</th>' + 
+	                    	'<th>' + '콜레스트롤' + '</th>' + 
+				    	'</tr></thead>' +
+	      				'<tbody>';  
+		      				 foodObj.map(function(food){								      	
+						      	result += '<tr>' +
+											'<td>' + food.name + '</td>' +  
+											'<td>' + food.amount + '</td>' +  
+											'<td>' + food.calory + '</td>' +    
+											'<td>' + food.protein + '</td>' +    
+											'<td>' + food.fat + '</td>' +    
+											'<td>' + food.cholesterol + '</td>' +    
+										  '</tr>';
+							 })
+	      				'</tbody>' + 
+	                  '</table>' +            
+	   				'</div>' 
+	
+	return result; 
+} 
+// 음식 관련 끝
