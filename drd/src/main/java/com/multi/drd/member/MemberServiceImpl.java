@@ -1,7 +1,12 @@
 package com.multi.drd.member;
 
+import java.util.HashMap;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import com.multi.drd.routine.RoutineDTO;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -31,11 +36,6 @@ public class MemberServiceImpl implements MemberService {
 	} 
 	
 	@Override
-	public MemberDTO findById(String id) {
-		return dao.findById(id);
-	}
-
-	@Override
 	public MemberDTO findByNickName(String nickName) {
 		return dao.findByNickName(nickName);
 	}
@@ -44,5 +44,12 @@ public class MemberServiceImpl implements MemberService {
 	public MemberDTO findByEmail(String email) {
 		return dao.findByEmail(email);
 	}
+
+	@Override
+	public List<RoutineDTO> findRoutineByRegisterInfo(HashMap<String, Object> param) {
+		return dao.findRoutineByRegisterInfo(param);
+	} 
+	
+	
 
 }
