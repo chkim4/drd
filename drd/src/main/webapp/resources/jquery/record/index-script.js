@@ -1,3 +1,8 @@
+$(document).on("change","#cardioEventListTable", function(){cardioEventSelector_change(); })
+
+var cardioList = [];
+var result = "";
+
 function onDOMContentLoaded() {   
     $.ajax({
 		url: "/record/findMonthlyRecord.do", 
@@ -70,7 +75,7 @@ function onDOMContentLoaded() {
 			console.log(msg);
 			console.log(statusMsg);
 		} 
-} // onDOMContentLoaded() 닫기		 
+} // onDOMContentLoaded() 닫기	 	 
 
 function showEventInfo(info){
 	
@@ -94,7 +99,77 @@ function showEventInfo(info){
 	Swal.fire({
 		  icon: 'info',
 		  title: title, 
-		  text: info.event.extendedProps.cardioList[0].name
-	})	
+		  html: readCardioEvent(info)
+		  /*
+		  didOpen: () => {
+		    var content = Swal.getHtmlContainer()
+   			var $ = content.querySelector.bind(content) 
+   			var cardioEventSelector= $("#cardioEventSelector"); 
+   			
+   			cardioEventSelector.addEventListener('change', () => {
+   				cardioEventSelector_change();
+   			});
+   			
+	      }  
+	      */
+	})
 } //showEventInfo 닫기
+
+function readCardioEvent(info){ 
+	cardioList = info.event.extendedProps.cardioList;
+	
+	result = '<div class = "swal-text">' +     
+				      '<table class="table table-bordered" id="cardioEventListTable" width="100%" cellspacing="0">' +  
+                    	'<thead><tr>' + 
+	                    	'<th>' + '유산소 운동 이름' + '</th>' + 
+	                    	'<th>' + '운동 시간 (분)' + '</th>' + 
+	                    	'<th>' + '소모 칼로리' + '</th>' + 
+	                    	'<th>' + '운동 강도' + '</th>' + 
+				    	'</tr></thead>' +
+	      				'<tbody>';  
+		      				 cardioList.map(function(cardio){								      	
+						      	result += '<tr>' +
+											'<td>' + cardio.name + '</td>' +  
+											'<td>' + cardio.time + '</td>' +  
+											'<td>' + cardio.calory + '</td>' +    
+											'<td>' + getIntensityComment(cardio.intensity) + '</td>' +    
+										  '</tr>';
+							 })
+	      				'</tbody>' + 
+	                  '</table>' +            
+	   				'</div>' 
+	
+	return result; 
+} 
+
+function getIntensityComment(intensity){
+	return intensity == 1 ? '고강도' : '저강도';
+} 
+
+/* dynamic 버전. 실패함.
+
+function readCardioEvent(info){ 
+	cardioList = info.event.extendedProps.cardioList;
+	
+	result = '<div class = "swal-text">' +     
+				      '<table class="table table-bordered" id="cardioEventListTable" width="100%" cellspacing="0">' +  
+                    	'<thead><tr>' + 
+	                    	'<th>' + '유산소 운동 목록' + '</th>' + 
+	                    	'<th>' + 
+	                    		'<select class="form-control" id="cardioEventSelector" name="cardioEventSelector">' + 
+						    		'<option value = "-1" selected>' + '목록 선택' + '</option>';						      
+								      cardioList.map(function(cardio, cardioIndex){								      	
+								      	result += '<option value = "' + cardioIndex + '">' + cardio.name + '</option>' 
+								      })
+					    		'</select>' + 
+					    	'</th>' + 
+				    	'</tr></thead>' +
+	      				'<tbody>' + 
+	      				'</tbody>' + 
+	                  '</table>'              
+	   				'</div>' 
+	
+	return result; 
+} 
+*/
 
