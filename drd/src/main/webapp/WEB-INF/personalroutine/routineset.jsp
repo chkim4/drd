@@ -578,8 +578,29 @@
 <!--                                 <div class="card-header" id="ajaxchangename">
                                 도움말
                                 </div> -->
+                               <div class="c" id="check">
+								name_1
+								</div>
+								<hr/>
                                 <div class="card-body" id="ajaxchangecontents">
-                                    
+                                <form action="">
+								 set : <input type="number" min="1" value="10" name="set"><br/>
+								 count : <input type="number" min="1" value="10" name="count"><br/>
+								 weight : <input type="number" min="1" value="10" name="weight"><br/>
+								 <div style="text-align: right; ">
+						         <a href="#" class="btn btn-success btn-icon-split">
+									<span class="icon text-white-50">
+									<i class="fas fa-check"></i>
+									</span>
+									 <span class="text">수정하기</span>
+								</a>
+								 <a href="#" class="btn btn-danger btn-icon-split" >
+									<span class="icon text-white-50">
+										<i class="fas fa-trash"></i>
+									</span>
+									<span class="text">삭제하기</span>
+						         </a>	 
+								 </div>
                                 </div>
                             </div>
                         </div>

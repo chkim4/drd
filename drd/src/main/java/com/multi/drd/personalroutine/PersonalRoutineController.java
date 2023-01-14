@@ -53,7 +53,7 @@ public class PersonalRoutineController {
 		
 		PersonalRoutineDTO pRoutine = service.findOne(); 
 		
-		CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
+		CardioObj cardioObj = JsonUtils.parseCardioList(pRoutine); 
 		FitnessObj fitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 		
 		System.out.println("cardioObj before parsing: " + pRoutine.getCardioObj()); 
@@ -82,7 +82,7 @@ public class PersonalRoutineController {
 		
 		//  -------------------- Cardio 관련 --------------------  
 		// String -> Object
-		CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
+		CardioObj cardioObj = JsonUtils.parseCardioList(pRoutine); 
 		 
 		// 추가 (cardioSEQ, time, calory) 
 		System.out.println("Before Insert: " + cardioObj.getCardioList());
