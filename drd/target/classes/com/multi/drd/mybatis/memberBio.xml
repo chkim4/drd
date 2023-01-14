@@ -5,8 +5,8 @@
 <mapper namespace="com.multi.drd.memberBio"> 
 
 <insert id="register" parameterType="memberBio" >
-	insert into memberBio(memberBioSEQ, height, weight, createdAt)
-	values (member_SEQ.currval, #{height},#{weight}, sysdate)
+	insert into memberBio(memberBioSEQ, height, weight, activityLevel, createdAt)
+	values (member_SEQ.currval, #{height},#{weight}, #{activityLevel}, sysdate)
 </insert>
 
 <select id="findByPK" parameterType="int" resultType="memberBio" >

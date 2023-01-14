@@ -83,6 +83,7 @@ public class MemberController {
 		 if(registerSEQ > 0) {  
 			  //Bio 관련  등록    
 			  registerMemberBio.setMemberBioSEQ(registerMember.getMemberSEQ());  
+			  System.out.println("registerMemberBio: " + registerMemberBio);
 			  memberBioService.register(registerMemberBio);
 			  
 			  model.addAttribute("member", registerMember); 

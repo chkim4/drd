@@ -1,6 +1,7 @@
 package com.multi.drd.member;
 
 import java.util.HashMap;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Override
 	public int register(MemberDTO registerMember) {
-		
+			
 		return dao.register(registerMember);
 	}
 	

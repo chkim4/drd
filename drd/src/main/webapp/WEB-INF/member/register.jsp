@@ -162,21 +162,37 @@
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
 			                                        <input type="text" value = "질병 유무" class="form-control form-control-user" readonly>
-			                                    </div> 
-			                               
-			                                    <div class="col-sm-8">
-			                                    	<select class="form-control" id="disease" name="disease">
-												      <option value = "" selected>선택</option>
-												      <option value = "0">정상</option>
-												      <option value = "1">당뇨</option>
-												      <option value = "2">고혈압</option>
-												      <option value = "3">기타</option>
-												    </select>
+			                                     </div> 
+			                                     <div class="col-sm-8">
+				                                 	<select class="form-control" id="disease" name="disease">
+														<option value = "" selected>선택</option>
+													    <option value = "0">정상</option>
+													    <option value = "1">당뇨</option>
+													    <option value = "2">고혈압</option>
+													    <option value = "3">기타</option>
+													</select>
 			                                    </div>
-                                			</div>                                           
-                                        </div> 
-                                        </div>
-                                                                                        
+			                                 </div> 
+                                			</div> 
+                                			                                           
+                                        </div>  <!-- 루틴 추천에 필요한 정보 모음 끝 -->
+                                        
+                                        <div class="form-group"> 
+                                        	<div class="form-group row">
+			                                    <div class="col-sm-4 mb-3 mb-sm-0">
+			                                        <input type="text" value = "일주일 운동 횟수" class="form-control form-control-user" readonly>
+			                                     </div> 
+			                                   <div class="col-sm-8">
+		                                   		<select class="form-control" id="activityLevel" name="activityLevel">
+											      <option value = "" selected>선택</option>
+											      <option value = "0">안 함</option>
+											      <option value = "1">1~2회</option>
+											      <option value = "2">3~5회</option>
+											      <option value = "3">5회 이상</option>
+											    </select>
+ 			                                 </div> 
+ 			                               </div> 
+ 			                             </div>                                              
                                         <div class="form-group" id="routineList"> 
                                         	<span> 
                                         		당신만을 위한 추천 루틴

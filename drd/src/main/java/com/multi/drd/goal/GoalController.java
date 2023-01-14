@@ -50,7 +50,7 @@ public class GoalController {
 //		model.addAttribute("todayExerciseTime", todayExerciseTime);
 		
 		PersonalRoutineDTO pRoutine = prservice.findOne();
-		CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
+		CardioObj cardioObj = JsonUtils.parseCardioList(pRoutine); 
 		FitnessObj fitnessObj = JsonUtils.parseFitnessList(pRoutine); 
 		
 		int cardioTotalTime = cardioObj.getTotalTime();

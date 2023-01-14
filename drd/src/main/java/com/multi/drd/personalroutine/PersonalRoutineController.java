@@ -50,7 +50,7 @@ public class PersonalRoutineController {
 		
 		PersonalRoutineDTO pRoutine = service.findOne(); 
 		
-		CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
+		CardioObj cardioObj = JsonUtils.parseCardioList(pRoutine); 
 		FitnessObj fitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 		
 		System.out.println("cardioObj before parsing: " + pRoutine.getCardioObj()); 
@@ -79,7 +79,7 @@ public class PersonalRoutineController {
 		
 		//  -------------------- Cardio 관련 --------------------  
 		// String -> Object
-		CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
+		CardioObj cardioObj = JsonUtils.parseCardioList(pRoutine); 
 		 
 		// 추가 (cardioSEQ, time, calory) 
 		System.out.println("Before Insert: " + cardioObj.getCardioList());
@@ -148,7 +148,7 @@ public class PersonalRoutineController {
 			
 			//자신 루틴
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
-			CardioObj myCardioObj = JsonUtils.parseCardioObj(pRoutine); 
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine); 
 			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 			List<CardioList> myCardioList = myCardioObj.getCardioList();
 			model.addAttribute("myroutine_cardioList", myCardioList);
@@ -158,7 +158,7 @@ public class PersonalRoutineController {
 			//기본 루틴
 			RoutineDTO routine = routineservice.findBySEQ(pRoutine.getRoutineSEQ());
 			model.addAttribute("routine", routine);
-			CardioObj cardioObj = JsonUtils.parseCardioObj(pRoutine); 
+			CardioObj cardioObj = JsonUtils.parseCardioList(pRoutine); 
 			FitnessObj fitnessObj = JsonUtils.parseFitnessList(pRoutine);  
 			List<CardioList> cardioList = cardioObj.getCardioList();
 			model.addAttribute("routine_cardioList", cardioList);

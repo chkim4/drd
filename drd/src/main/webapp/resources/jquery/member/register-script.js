@@ -8,7 +8,6 @@ var age = -1;
 var disease = -1;
 var displayRoutineList = [];  
 
-
 const ID_MIN_LENGTH = 5; 
 const NICKNAME_MIN_LENGTH = 5; 
 const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-z]{2,3}$"; // . 없어도 통과되는 현상 확인 필요
@@ -214,6 +213,7 @@ function get_routineList(){
 			} 			
 } 
 
+
 //230112 현재 미사용. 추후 사용할 수 있을 것 같아서 남겨둠.
 function findAllRoutineBTN_click(){ 
 	$.ajax({
@@ -276,6 +276,13 @@ function submitBTN_onClick(){
 		Swal.fire({
 		  icon: 'error',
 		  title: '생년월일, 성별, 키, 몸무게 정보를 입력해주시기 바랍니다!',
+		})
+		return;
+	}
+	else if($("#activityLevel").val() == ""){
+		Swal.fire({
+		  icon: 'error',
+		  title: '일주일 운동량을 입력해주시기 바랍니다!',
 		})
 		return;
 	}
