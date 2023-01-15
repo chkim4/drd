@@ -3,6 +3,7 @@ package com.multi.drd.member;
 import java.util.HashMap;
 import java.util.List;
 
+import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
 
 public interface MemberService {
@@ -25,7 +26,7 @@ public interface MemberService {
 	/* 가입 후 개인 루틴 생성. 
 	 * routine과 동일한 cardioObj, fintnessObj, routineSEQ 값을 지닌다. (createdAt은 null 값으로 지정) 인송님께 말하기
 	 */
-	int createPersonalRoutine(String routineStr); 
+	int createPersonalRoutine(PersonalRoutineDTO pRoutine); 
 	
 	int updatePersonalRoutineSEQ(int memberSEQ, int pRoutineSEQ);
 

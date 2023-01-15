@@ -248,17 +248,4 @@ public class JsonUtils {
 		return routine;
 	} 
 	
-	public static HashMap<String, String> stringToMapRoutineDTO(String routineStr){
-		
-		HashMap<String, String> routine = new HashMap<String, String>();
-		
-		try {
-			routine = mapper.readValue(routineStr,new TypeReference<HashMap<String,String>>() {});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return routine;
-		
-	}
-	
 } 

@@ -57,7 +57,13 @@
 		update member 
 		set personalRoutineSEQ = #{personalRoutineSEQ}
 		where memberSEQ = #{memberSEQ}
-	</update>
+	</update> 
+	
+	<insert id="createGoal" parameterType="goal">
+		insert into goal(goalSEQ, memberSEQ, goalExerciseTime, goalCalory, goalProtein)
+		values (goal_SEQ.nextval, #{memberSEQ}, #{goalExerciseTime}, #{goalCalory}, #{goalProtein})  
+	</insert>	
+	
 </mapper>
 
 

@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.memberbio.MemberBioService;
-import com.multi.drd.routine.RoutineDTO; 
+import com.multi.drd.personalroutine.PersonalRoutineDTO;
+import com.multi.drd.routine.RoutineDTO;
+import com.multi.drd.utils.JsonUtils; 
 
 /*
  * @SessionAttributes("member") 
@@ -80,16 +82,25 @@ public class MemberController {
 		 // 회원 가입 성공 시 
 		 if(isRegistered) {  
 			 int registerMemberSEQ = registerMember.getMemberSEQ();
-			 //Bio 관련  등록    
+			 
+			  //Bio 관련  등록    
 			  registerMemberBio.setMemberBioSEQ(registerMemberSEQ);  
 			  memberBioService.register(registerMemberBio); 			  
 			  
-			  // 추천된 루틴을 기반으로 PersonalRoutine Table 생성 및 member의 PersonalRoutineSEQ 업데이트 
-			  int pRoutineSEQ = memberService.createPersonalRoutine(request.getParameter("selectedRoutine")); 
+			  // 추천된 루틴을 기반으로 PersonalRoutine Table 생성 및 member의 PersonalRoutineSEQ 업데이트  		  
+			  RoutineDTO routine = JsonUtils.parseRoutineDTO(request.getParameter("selectedRoutine")); 
+			  PersonalRoutineDTO pRoutine = new PersonalRoutineDTO();
+			  pRoutine.setRoutineSEQ(routine.getRoutineSEQ());
+			  pRoutine.setCardioObj(routine.getCardioObj()); 
+			  pRoutine.setFitnessObj(routine.getFitnessObj()); 
+			  memberService.createPersonalRoutine(pRoutine);
+			  
+			  int pRoutineSEQ = pRoutine.getPersonalRoutineSEQ();
 			  memberService.updatePersonalRoutineSEQ(registerMemberSEQ, pRoutineSEQ);		  
 			  
 			  
-			  memberService.createGoal(registerMember); 
+			  // 사용자의 신체 정보 및 설정된 루틴 정보를 기반으로 목표 설정
+			  // memberService.createGoal(registerMember, selectedRoutineStr); 
 			  
 			  model.addAttribute("member", registerMember); 
 			  viewName = "member/index.do"; 

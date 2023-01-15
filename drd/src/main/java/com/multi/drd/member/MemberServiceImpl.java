@@ -58,17 +58,9 @@ public class MemberServiceImpl implements MemberService {
 	} 
 	
 	@Override
-	public int createPersonalRoutine(String routineStr) {
+	public int createPersonalRoutine(PersonalRoutineDTO pRoutine) {
 		
-		RoutineDTO routine = JsonUtils.parseRoutineDTO(routineStr);
-		PersonalRoutineDTO pRoutine = new PersonalRoutineDTO();
-		
-		pRoutine.setRoutineSEQ(routine.getRoutineSEQ());
-		pRoutine.setCardioObj(routine.getCardioObj()); 
-		pRoutine.setFitnessObj(routine.getFitnessObj()); 
-		dao.createPersonalRoutine(pRoutine);
-		
-		return pRoutine.getPersonalRoutineSEQ();
+		return dao.createPersonalRoutine(pRoutine);
 	}   
 
 	@Override
