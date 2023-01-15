@@ -3,6 +3,7 @@ package com.multi.drd.member;
 import java.util.HashMap;
 import java.util.List;
 
+import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
 
@@ -31,6 +32,6 @@ public interface MemberService {
 	int updatePersonalRoutineSEQ(int memberSEQ, int pRoutineSEQ);
 
 	// 가입 후 신체 정보 기반 목표 생성. 예나님께 말하기
-	int createGoal(MemberDTO member);
+	int createGoal(MemberDTO member, MemberBioDTO memberBio, PersonalRoutineDTO pRoutine);
 	
 }

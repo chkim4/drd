@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.multi.drd.goal.GoalDTO;
 import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
@@ -66,5 +67,10 @@ public class MemberDAOImpl implements MemberDAO{
 	public int updatePersonalRoutineSEQ(HashMap<String, Integer> param) { 
 		
 		return sqlSession.update("com.multi.drd.member.updatePersonalRoutineSEQ", param); 
+	}
+
+	@Override
+	public int createGoal(GoalDTO goal) {
+		return sqlSession.insert("com.multi.drd.member.createGoal", goal);
 	}
 }
