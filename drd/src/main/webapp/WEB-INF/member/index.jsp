@@ -366,6 +366,7 @@
 	                <button type="button" class="btn btn-primary btn" onclick="location.href='/personalroutine/setpage'" >루틴</button>
 	                <button type="button" class="btn btn-primary btn" onclick="location.href='/dashboard/read'" >대시보드</button>
 	                <button type="button" class="btn btn-primary btn" onclick="location.href='/goal/readAll'" >목표 설정</button>
+	                <button type="button" class="btn btn-primary btn" onclick="location.href='/member/logout.do'" >로그아웃</button>
 	           
                 </div>
                 <!-- /.container-fluid -->

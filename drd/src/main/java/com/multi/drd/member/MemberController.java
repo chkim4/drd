@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.memberbio.MemberBioService;
@@ -44,8 +45,16 @@ public class MemberController {
 	}     
 	
 	@RequestMapping(value = "/login.do",method = RequestMethod.GET)
-	public String loginPage() {
-		return "member/login";
+	public String loginPage(HttpSession session) {
+		
+		String viewName = "member/login";
+		
+		// 로그인이 되어 있다면 index 페이지로 이동
+		if(session.getAttribute("member") != null) {
+			viewName = "member/index";
+		}
+		
+		return viewName;
 	} 
 
 	@RequestMapping(value = "/login.do",method = RequestMethod.POST)
@@ -67,8 +76,14 @@ public class MemberController {
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.GET)
-	public String registerPage() {
-		return "member/register";
+	public String registerPage(HttpSession session) { 
+		String viewName = "member/register";
+		
+		// 로그인이 되어 있다면 index 페이지로 이동
+		if(session.getAttribute("member") != null) {
+			viewName = "member/index";
+		}
+		return viewName;
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.POST)
@@ -108,7 +123,7 @@ public class MemberController {
 			  memberService.createGoal(registerMember, registerMemberBio, pRoutine);
 			  
 			  model.addAttribute("member", registerMember); 
-			  viewName = "member/index.do"; 
+			  viewName = "member/index"; 
 		  } 
 		  else {
 			  viewName = "member/register"; 
@@ -131,28 +146,6 @@ public class MemberController {
 		return memberService.findByEmail(email);
 	} 
 	
-	
-	/* 로그인 및 회원 가입 시 세션이 제대로 생성 되었는 지 확인하기 위함
-	 * 확인 방법: login혹은 register 메소드(POST)의 리턴 값을 다음의 값으로 변경 후 콘솔에 출력되는 값 확인
-	 * "redirect: /member/sessiontest.do"
-	 */
-	@RequestMapping(value = "/sessiontest.do", method = RequestMethod.GET)
-	public String sessionTest(HttpSession session) {
-		System.out.println("session: " + session.getAttribute("member"));
-		
-		return "member/index";
-	} 
-	/*
-	 * Member의 기본키를 통해 MemberBio를 가져오는 기능 예시
-	 */
-	@RequestMapping(value = "/biotest.do", method = RequestMethod.GET)
-	public String bioTest(HttpSession session) {
-		
-		MemberDTO member = (MemberDTO)session.getAttribute("member");
-		
-		return "member/index";
-	} 
-
 	/*
 	 * 회원 가입 시 추천 루틴 가져오기 . 
 	 * 인송님께 말하기
@@ -179,12 +172,37 @@ public class MemberController {
 	} 
 
 	@RequestMapping(value = "/index.do", method = RequestMethod.GET) 
-	public String indexPage() {
-		
+	public String indexPage(){
 		
 		return "member/index";
 	} 
 	
-	
-	
+	 @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
+	 public String logout(SessionStatus status) {
+		 status.setComplete(); // 세션에 있는 memeber 객체를 제거 
+		 return "redirect: /member/login.do";
+	 } 
+	 
+	 // ---- 테스트용 메소드 ----
+	/* 로그인 및 회원 가입 시 세션이 제대로 생성 되었는 지 확인하기 위함
+	 * 확인 방법: login혹은 register 메소드(POST)의 리턴 값을 다음의 값으로 변경 후 콘솔에 출력되는 값 확인
+	 * "redirect: /member/sessiontest.do"
+	 */
+	@RequestMapping(value = "/sessiontest.do", method = RequestMethod.GET)
+	public String sessionTest(HttpSession session) {
+		System.out.println("session: " + session.getAttribute("member"));
+		
+		return "member/index";
+	} 
+	/*
+	 * Member의 기본키를 통해 MemberBio를 가져오는 기능 예시
+	 */
+	@RequestMapping(value = "/biotest.do", method = RequestMethod.GET)
+	public String bioTest(HttpSession session) {
+		
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		
+		return "member/index";
+	} 
+
 }
