@@ -10,7 +10,7 @@ import com.multi.drd.routine.RoutineDTO;
 public interface MemberService {
 	
 	// 회원가입 
-	int register(MemberDTO registerMember);
+	int register(MemberDTO registerMember, MemberBioDTO registerMemberBio, PersonalRoutineDTO pRoutine) throws Exception;
 	
 	// 로그인 
 	MemberDTO login(MemberDTO loginMember);
@@ -27,7 +27,7 @@ public interface MemberService {
 	/* 가입 후 개인 루틴 생성. 
 	 * routine과 동일한 cardioObj, fintnessObj, routineSEQ 값을 지닌다. (createdAt은 null 값으로 지정) 인송님께 말하기
 	 */
-	int createPersonalRoutine(PersonalRoutineDTO pRoutine); 
+	int createPersonalRoutine(PersonalRoutineDTO pRoutine) throws Exception; 
 	
 	int updatePersonalRoutineSEQ(int memberSEQ, int pRoutineSEQ);
 

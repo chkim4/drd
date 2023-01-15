@@ -88,40 +88,21 @@ public class MemberController {
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.POST)
 	public String register(MemberDTO registerMember, MemberBioDTO registerMemberBio, Model model, 
-			 HttpServletRequest request) {
-				
+			 HttpServletRequest request) throws Exception {
 		
-		boolean isRegistered = memberService.register(registerMember) > 0;   
+		 // String 으로 받은 routine 정보를 파싱한 후 pRoutine에 설정
+		 RoutineDTO routine = JsonUtils.parseRoutineDTO(request.getParameter("selectedRoutine")); 
+		 PersonalRoutineDTO pRoutine = new PersonalRoutineDTO();
+		 pRoutine.setRoutineSEQ(routine.getRoutineSEQ());
+		 pRoutine.setCardioObj(routine.getCardioObj()); 
+		 pRoutine.setFitnessObj(routine.getFitnessObj()); 
+		
+		boolean isRegistered = memberService.register(registerMember, registerMemberBio, pRoutine) > 0;   
+		
 		String viewName = "";  
 		
 		 // 회원 가입 성공 시 
 		 if(isRegistered) {  
-			 int registerMemberSEQ = registerMember.getMemberSEQ();
-			 
-			  //Bio 관련  등록    
-			  registerMemberBio.setMemberBioSEQ(registerMemberSEQ);  
-			  memberBioService.register(registerMemberBio); 			  
-			  
-			  // --- 추천된 루틴을 기반으로 PersonalRoutine Table 생성 및 member의 PersonalRoutineSEQ 업데이트 시작 ---
-			  // 사용자가 선택한 루틴의 정보를 PersonalRoutine 객체에 복사
-			  RoutineDTO routine = JsonUtils.parseRoutineDTO(request.getParameter("selectedRoutine")); 
-			  PersonalRoutineDTO pRoutine = new PersonalRoutineDTO();
-			  pRoutine.setRoutineSEQ(routine.getRoutineSEQ());
-			  pRoutine.setCardioObj(routine.getCardioObj()); 
-			  pRoutine.setFitnessObj(routine.getFitnessObj()); 
-			  
-			  // PersonalRoutine 생성
-			  memberService.createPersonalRoutine(pRoutine);
-			  
-			  // 생성된 PersonalRoutine을 Member의 personalRoutineSEQ에 등록
-			  int pRoutineSEQ = pRoutine.getPersonalRoutineSEQ();
-			  memberService.updatePersonalRoutineSEQ(registerMemberSEQ, pRoutineSEQ);		  
-			  
-			// --- 추천된 루틴을 기반으로 PersonalRoutine Table 생성 및 member의 PersonalRoutineSEQ 업데이트 끝 ---
-			  
-			  // --- 사용자의 신체 정보 및 설정된 루틴 정보를 기반으로 목표 설정 시작 ---
-			  memberService.createGoal(registerMember, registerMemberBio, pRoutine);
-			  
 			  model.addAttribute("member", registerMember); 
 			  viewName = "member/index"; 
 		  } 

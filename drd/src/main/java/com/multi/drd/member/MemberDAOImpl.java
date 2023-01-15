@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.multi.drd.goal.GoalDTO;
-import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
 
@@ -59,7 +58,6 @@ public class MemberDAOImpl implements MemberDAO{
 
 	@Override
 	public int createPersonalRoutine(PersonalRoutineDTO pRoutine) {
-		
 		return sqlSession.insert("com.multi.drd.member.createPersonalRoutine", pRoutine);
 	}
 

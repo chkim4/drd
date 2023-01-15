@@ -7,9 +7,6 @@ import org.springframework.stereotype.Service;
 public class MemberBioServiceImpl implements MemberBioService {
 	
 	MemberBioDAO dao;
-	
-	
-	
 	public MemberBioServiceImpl() {
 		super();
 	}
@@ -42,10 +39,10 @@ public class MemberBioServiceImpl implements MemberBioService {
 				registerMemberBio.setActivityLevel(1.0);
 				break;
 		
-		}
+		} 
 		
-		
-		return dao.register(registerMemberBio);
+		return dao.register(registerMemberBio); 
+		// 트랜잭션 테스트용: throw new RuntimeException();
 	} 
 	
 	@Override

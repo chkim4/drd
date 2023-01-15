@@ -5,32 +5,52 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.multi.drd.goal.GoalDTO;
 import com.multi.drd.memberbio.MemberBioDTO;
+import com.multi.drd.memberbio.MemberBioService;
 import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
 import com.multi.drd.utils.JsonUtils;
 
-@Service
+@Service 
 public class MemberServiceImpl implements MemberService {
 	
-	MemberDAO dao;  
+	MemberDAO dao;   
+	MemberBioService memberBioService;
 	
 	public MemberServiceImpl() {
 		super();
-	}
-
+	} 
+	
 	@Autowired
-	public MemberServiceImpl(MemberDAO dao) {
+	public MemberServiceImpl(MemberDAO dao, MemberBioService memberBioService) {
 		super();
 		this.dao = dao;
+		this.memberBioService = memberBioService;
 	}
-	
-	@Override
-	public int register(MemberDTO registerMember) {
-			
-		return dao.register(registerMember);
+
+	@Override  
+	@Transactional(rollbackFor = Exception.class)
+	public int register(MemberDTO registerMember, MemberBioDTO registerMemberBio, PersonalRoutineDTO pRoutine){
+
+		dao.register(registerMember); 
+		
+		// 가입 후 MemberBio 생성
+		int registerMemberSEQ = registerMember.getMemberSEQ();
+		registerMemberBio.setMemberBioSEQ(registerMemberSEQ);   
+		memberBioService.register(registerMemberBio);
+		
+		// 가입 후 개인화된 루틴 생성 및 생성된 PersonalRoutine을 Member의 personalRoutineSEQ에 등록
+		createPersonalRoutine(pRoutine);
+		int pRoutineSEQ = pRoutine.getPersonalRoutineSEQ();
+		updatePersonalRoutineSEQ(registerMemberSEQ, pRoutineSEQ);	
+		 	
+		// --- 사용자의 신체 정보 및 설정된 루틴 정보를 기반으로 목표 설정
+		int result = createGoal(registerMember, registerMemberBio, pRoutine);  
+		
+		return result;
 	}
 	
 	@Override
@@ -50,7 +70,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	// 회원 가입 전 루틴 조회
-	@Override
+	@Override 
 	public List<RoutineDTO> findRoutineByRegisterInfo(HashMap<String, Object> param) {
 		// 기타 질병일 경우 고혈압과 동일한 루틴을 추천하기 위함.
 		if(Integer.parseInt( param.get("disease").toString()) == 3) {
@@ -61,14 +81,14 @@ public class MemberServiceImpl implements MemberService {
 	} 
 	
 	// 회원 가입 후 선택한 루틴과 동일한 PersonalRoutine 생성
-	@Override
+	@Override 
 	public int createPersonalRoutine(PersonalRoutineDTO pRoutine) {
 		
-		return dao.createPersonalRoutine(pRoutine);
-	}   
+		return dao.createPersonalRoutine(pRoutine); 
+	}    
 	
 	// 회원 가입 후 member 테이블의 personalRoutineSEQ 업데이트 
-	@Override
+	@Override 
 	public int updatePersonalRoutineSEQ(int memberSEQ, int pRoutineSEQ) {
 		HashMap<String, Integer> param = new HashMap<String, Integer>();
 		param.put("memberSEQ", memberSEQ);
@@ -78,7 +98,7 @@ public class MemberServiceImpl implements MemberService {
 	}
 	
 	// 회원 가입 후 목표 자동 생성
-	@Override
+	@Override 
 	public int createGoal(MemberDTO member, MemberBioDTO memberBio, PersonalRoutineDTO pRoutine) {
 		GoalDTO goal = new GoalDTO();
 		
