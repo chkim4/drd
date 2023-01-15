@@ -32,10 +32,10 @@ public class MemberBioServiceImpl implements MemberBioService {
 				registerMemberBio.setActivityLevel(1.11); // 일주일 1~2회 운동: PA: 1.11로 설정 
 				break;			
 			case 2:
-				registerMemberBio.setActivityLevel(1.0); // 일주일 3~5회 운동: PA: 1.25 으로 설정 
+				registerMemberBio.setActivityLevel(1.25); // 일주일 3~5회 운동: PA: 1.25 으로 설정 
 				break;
 			case 3:
-				registerMemberBio.setActivityLevel(1.0); // 일주일 6회 이상 운동: PA: 1.48로 설정 
+				registerMemberBio.setActivityLevel(1.48); // 일주일 6회 이상 운동: PA: 1.48로 설정 
 				break; 
 				
 			default: 

@@ -1,13 +1,14 @@
 package com.multi.drd.member;
 
 import java.util.HashMap;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
+import com.multi.drd.utils.JsonUtils;
 
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -55,5 +56,35 @@ public class MemberServiceImpl implements MemberService {
 		
 		return dao.findRoutineByRegisterInfo(param);
 	} 
+	
+	@Override
+	public int createPersonalRoutine(String routineStr) {
+		
+		RoutineDTO routine = JsonUtils.parseRoutineDTO(routineStr);
+		PersonalRoutineDTO pRoutine = new PersonalRoutineDTO();
+		
+		pRoutine.setRoutineSEQ(routine.getRoutineSEQ());
+		pRoutine.setCardioObj(routine.getCardioObj()); 
+		pRoutine.setFitnessObj(routine.getFitnessObj()); 
+		dao.createPersonalRoutine(pRoutine);
+		
+		return pRoutine.getPersonalRoutineSEQ();
+	}   
+
+	@Override
+	public int updatePersonalRoutineSEQ(int memberSEQ, int pRoutineSEQ) {
+		HashMap<String, Integer> param = new HashMap<String, Integer>();
+		param.put("memberSEQ", memberSEQ);
+		param.put("personalRoutineSEQ", pRoutineSEQ);
+		
+		return dao.updatePersonalRoutineSEQ(param);
+	}
+	
+	@Override
+	public int createGoal(MemberDTO member) {
+		
+		return 0;
+	}
+	
 
 }

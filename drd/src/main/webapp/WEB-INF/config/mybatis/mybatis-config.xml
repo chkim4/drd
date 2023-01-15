@@ -2,7 +2,7 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
-<configuration>
+<configuration> 
 	<typeAliases>
 		<typeAlias type="com.multi.drd.member.MemberDTO" alias="member"/>
 		<typeAlias type="com.multi.drd.memberbio.MemberBioDTO" alias="memberBio"/>
@@ -23,5 +23,7 @@
 		<mapper resource="com/multi/drd/mybatis/cardio.xml"/>
 		<mapper resource="com/multi/drd/mybatis/fitness.xml"/>
 		<mapper resource="com/multi/drd/mybatis/goal.xml"/>
-	</mappers>
+	</mappers> 	 
+	
+	
 </configuration>

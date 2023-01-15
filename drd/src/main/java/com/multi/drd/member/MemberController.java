@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.memberbio.MemberBioService;
-import com.multi.drd.routine.RoutineDTO;
+import com.multi.drd.routine.RoutineDTO; 
 
 /*
  * @SessionAttributes("member") 
@@ -70,21 +70,26 @@ public class MemberController {
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.POST)
-	public String register(MemberDTO registerMember, MemberBioDTO registerMemberBio, Model model, HttpServletRequest request) {
+	public String register(MemberDTO registerMember, MemberBioDTO registerMemberBio, Model model, 
+			 HttpServletRequest request) {
 				
 		
-		int registerSEQ = memberService.register(registerMember); 
-		String viewName = ""; 
-		
-		System.out.println("selectedRoutine: " + request.getParameter("selectedRoutine"));
-		
+		boolean isRegistered = memberService.register(registerMember) > 0;   
+		String viewName = "";  
 		
 		 // 회원 가입 성공 시 
-		 if(registerSEQ > 0) {  
-			  //Bio 관련  등록    
-			  registerMemberBio.setMemberBioSEQ(registerMember.getMemberSEQ());  
-			  System.out.println("registerMemberBio: " + registerMemberBio);
-			  memberBioService.register(registerMemberBio);
+		 if(isRegistered) {  
+			 int registerMemberSEQ = registerMember.getMemberSEQ();
+			 //Bio 관련  등록    
+			  registerMemberBio.setMemberBioSEQ(registerMemberSEQ);  
+			  memberBioService.register(registerMemberBio); 			  
+			  
+			  // 추천된 루틴을 기반으로 PersonalRoutine Table 생성 및 member의 PersonalRoutineSEQ 업데이트 
+			  int pRoutineSEQ = memberService.createPersonalRoutine(request.getParameter("selectedRoutine")); 
+			  memberService.updatePersonalRoutineSEQ(registerMemberSEQ, pRoutineSEQ);		  
+			  
+			  
+			  memberService.createGoal(registerMember); 
 			  
 			  model.addAttribute("member", registerMember); 
 			  viewName = "member/index.do"; 

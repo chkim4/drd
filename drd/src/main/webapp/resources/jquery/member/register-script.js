@@ -154,9 +154,11 @@ function getRoutineListDisplayCondition(){
 	var height = $("#height").val();
 	var weight = $("#weight").val();
 	var disease = $("#disease").val();
+	var activityLevel = $("#activityLevel").val();
 	
-	return birth !=="" && gender !== "" && 
-		   height !== "" && weight !== "" && disease !== "";
+	return birth !=="" && gender !== ""  && 
+		   height !== "" && weight !== "" && disease !== "" 
+		   && activityLevel !== "";
 }
  
 function routineInfo_change(){ 
@@ -192,12 +194,11 @@ function get_routineList(){
 				$("#routineListTable > tbody").empty();	
 				
 				for(var i=0;i<routines.length;i++){
-				
 				$("#routineListTable > tbody:last-child").append(
 						"<tr>" +
 							"<td>" +routines[i]["name"]+ "</td>" +  
 							"<td>" +routines[i]["description"]+ "</td>" +  
-							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i]["routineSEQ"]+"'></td>" +  
+							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+convertString(routines[i])+"'></td>" +  
 						"</tr>") 
 				}  
 				
@@ -213,40 +214,10 @@ function get_routineList(){
 			} 			
 } 
 
+function convertString(obj){
+	return JSON.stringify(obj);
+}
 
-//230112 현재 미사용. 추후 사용할 수 있을 것 같아서 남겨둠.
-function findAllRoutineBTN_click(){ 
-	$.ajax({
-			url: "/member/findRoutineByRegisterInfo.do", 
-			type: "POST",
-			success: successRun,
-			error: errorRun 
-			}) 
-			function successRun(routines){ 
-				// 이전에 조회한 내역 지우기 
-				$("#routineListTable > tbody").empty();	
-				
-				for(var i=0;i<routines.length;i++){
-					
-					$("#routineListTable > tbody:last-child").append(
-						"<tr>" +
-							"<td>" +routines[i]["name"]+ "</td>" +  
-							"<td>" +routines[i]["description"]+ "</td>" +  
-							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i].routineSEQ+"'></td>" +  
-						"</tr>") 
-				}  
-				Swal.fire({
-		  			icon: 'info',
-		  			title: "모든 루틴을 조회하였습니다!",
-				})
-			}  
-			function errorRun(obj, msg,statusMsg){  
-				console.log(obj);
-				console.log(msg);
-				console.log(statusMsg);
-			} 			
-} 
-	
 
 // 회원 가입 전 아이디, 닉네임, 이메일, 비밀번호를 체크 했는 지 확인
 function submitBTN_onClick(){
@@ -293,9 +264,41 @@ function submitBTN_onClick(){
 		})
 		return;
 	}	 
-	else{
-		console.log($('input[name=radioName]:checked', '#registerForm'))
-		$("#registerForm").submit(); 
+	else{  
+		 $("#registerForm").submit(); 
 	}
 } 
 
+//230112 현재 미사용. 추후 사용할 수 있을 것 같아서 남겨둠. 
+/*
+function findAllRoutineBTN_click(){ 
+	$.ajax({
+			url: "/member/findRoutineByRegisterInfo.do", 
+			type: "POST",
+			success: successRun,
+			error: errorRun 
+			}) 
+			function successRun(routines){ 
+				// 이전에 조회한 내역 지우기 
+				$("#routineListTable > tbody").empty();	
+				
+				for(var i=0;i<routines.length;i++){
+					$("#routineListTable > tbody:last-child").append(
+						"<tr>" +
+							"<td>" +routines[i]["name"]+ "</td>" +  
+							"<td>" +routines[i]["description"]+ "</td>" +  
+							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i]+"'></td>" +  
+						"</tr>") 
+				}  
+				Swal.fire({
+		  			icon: 'info',
+		  			title: "모든 루틴을 조회하였습니다!",
+				})
+			}  
+			function errorRun(obj, msg,statusMsg){  
+				console.log(obj);
+				console.log(msg);
+				console.log(statusMsg);
+			} 			
+} 
+*/

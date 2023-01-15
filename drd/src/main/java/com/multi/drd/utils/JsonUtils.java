@@ -1,8 +1,10 @@
 package com.multi.drd.utils;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.FitnessObj;
@@ -233,4 +235,30 @@ public class JsonUtils {
 		
 		obj.getFitnessList().remove(index);		
 	} 
-}
+	
+	// 루틴 관련 파싱
+	public static RoutineDTO parseRoutineDTO(String routineStr) {
+		RoutineDTO routine = new RoutineDTO(); 
+		
+		try {
+			routine = mapper.readValue(routineStr, RoutineDTO.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return routine;
+	} 
+	
+	public static HashMap<String, String> stringToMapRoutineDTO(String routineStr){
+		
+		HashMap<String, String> routine = new HashMap<String, String>();
+		
+		try {
+			routine = mapper.readValue(routineStr,new TypeReference<HashMap<String,String>>() {});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return routine;
+		
+	}
+	
+} 
