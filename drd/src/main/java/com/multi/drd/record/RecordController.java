@@ -2,6 +2,7 @@ package com.multi.drd.record;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,9 +51,13 @@ public class RecordController {
 
 	@RequestMapping(value = "/findMonthlyRecord.do",method = RequestMethod.GET) 
 	@ResponseBody
-	List<RecordDTO> findMonthlyRecord(HttpSession session){ 
+	List<RecordDTO> findMonthlyRecord(HttpSession session, HttpServletRequest request){   
+		
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
-		List<RecordDTO> result = recordService.findMonthlyRecord(member.getMemberSEQ(),2023,1); //memberSEQ가 들어가야 하지만, 테스트 상 1로 함.
+		int year =  Integer.parseInt(request.getParameter("year"));
+		int month =  Integer.parseInt(request.getParameter("month"))+1; // JS: 0~11 / Java: 1~12
+		
+		List<RecordDTO> result = recordService.findMonthlyRecord(member.getMemberSEQ(),year,month);
 		return result;
 	}	
 

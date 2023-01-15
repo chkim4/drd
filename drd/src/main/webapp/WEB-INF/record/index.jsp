@@ -31,8 +31,7 @@
     
     <!-- SweetAlert 관련 -->
     <script src="/sweetalert/sweetalert2.min.js"></script>
-	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
-   
+	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css"> 
 </head>
 
   

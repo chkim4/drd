@@ -2,11 +2,15 @@ var cardioList = [];
 var fitnessList = [];
 var foodList = [];
 var result = "";
+var year = new Date().getFullYear(); 
+var month = new Date().getMonth(); 
+var date = new Date().getDate(); 
 
 function onDOMContentLoaded() {   
     $.ajax({
 		url: "/record/findMonthlyRecord.do", 
 		type: "GET",
+		data: ({"year": year, "month": month}),
 		success: successRun,
 		error: errorRun 
 		}) 
@@ -41,14 +45,41 @@ function onDOMContentLoaded() {
            			"backgroundColor": "#17A673",
            			"extendedProps": {"foodObj": record.foodObj}	
            			});  
+
+        		fetchedEvent.push({
+       				"groupId": "status",
+       				"title": "상태 점수", 
+           			"start": date, 
+           			"backgroundColor": "#17A673",
+           			"extendedProps": {"status": record.status}	
+           			});  
             }); // data map 닫기 
            		
 			 var calendarEl = document.getElementById('calendar');
 	         var calendar = new FullCalendar.Calendar(calendarEl, {
-	             initialDate: new Date(),
+	             //initialDate: new Date(),
+	             initialDate:  getInitialDate(),
 	             initialView: 'dayGridMonth',
+	             customButtons: {
+				    customPrev: {
+				      text: '<',
+				      click: () => {   
+					      customPrev_onClick(); 
+					      onDOMContentLoaded();
+					   }
+				    }, 
+				    customNext: {
+				      text: '>',
+				      click: () => {   
+					     customNext_onClick(); 
+					     onDOMContentLoaded();
+					     
+					   }
+				    }
+				  },
+	             
 	             headerToolbar: {
-	                left: 'prev,next today',
+	                left: 'customPrev,customNext today',
 	                center: 'title',
 	                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
 	             },
@@ -60,7 +91,8 @@ function onDOMContentLoaded() {
 	                    // if so, remove the element from the "Draggable Events" list
 	                    arg.draggedEl.parentNode.removeChild(arg.draggedEl);
 	                }
-	            },
+	            }, 
+	           
 	            events: fetchedEvent, 
 	            eventClick: function(info){
 	            	showEventInfo(info)
@@ -100,6 +132,12 @@ function showEventInfo(info){
 			title = '식사 목록입니다.';
 			content["title"] = title; 
 			content["html"] = readFoodEvent(info); 	
+			break;
+
+		case 'status': 
+			title = '상태 점수 입니다.';
+			content["title"] = title; 
+			content["html"] = readStatusEvent(info); 	
 			break;
 	}  
 	
@@ -206,3 +244,48 @@ function readFoodEvent(info){
 	return result; 
 } 
 // 음식 관련 끝
+
+// status 관련 시작
+function readStatusEvent(info){ 
+	var status = info.event.extendedProps.status;
+	
+	result = '<div class = "swal-text">' +     
+				'<div> 상태점수: ' + status + '</div>' + 	                  
+	   		 '</div>' 
+	
+	return result; 
+} 
+// status 관련 끝
+
+// 처음 보여지는 화면의 날짜 
+function getInitialDate(){
+	return new Date(year, month, date);
+}
+
+// 이전 월 조회 버튼 시작
+function customPrev_onClick() { 
+     
+     month -= 1;  
+     var date = new Date(year, month); 
+     year = date.getFullYear();
+     month = date.getMonth();  
+      
+	 return date;
+};
+
+// 이전 월 조회 버튼 끝  
+
+// 다음 월 조회 버튼 시작
+function customNext_onClick() {
+ 	 month += 1;  
+     var date = new Date(year, month); 
+     year = date.getFullYear();
+     month = date.getMonth();  
+      
+	 return date;
+};
+// 다음 월 조회 버튼 끝 
+
+
+
+
