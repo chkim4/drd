@@ -45,6 +45,7 @@ public class MemberServiceImpl implements MemberService {
 		// 가입 후 개인화된 루틴 생성 및 생성된 PersonalRoutine을 Member의 personalRoutineSEQ에 등록
 		createPersonalRoutine(pRoutine);
 		int pRoutineSEQ = pRoutine.getPersonalRoutineSEQ();
+		registerMember.setPersonalRoutineSEQ(pRoutineSEQ);
 		updatePersonalRoutineSEQ(registerMemberSEQ, pRoutineSEQ);	
 		 	
 		// --- 사용자의 신체 정보 및 설정된 루틴 정보를 기반으로 목표 설정

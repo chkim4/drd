@@ -26,7 +26,8 @@ function onDOMContentLoaded() {
 	       			"start": date, 
 	       			"backgroundColor": "#2E59D9",
 	       			"extendedProps": { "totalTime": record.cardioObj.totalTime, 
-	       				 			   "cardioList": record.cardioObj.cardioList}	
+	       				 			   "cardioList": record.cardioObj.cardioList, 
+	       				 			   "date": record.date}	
 	   			}); 
             	
             	fetchedEvent.push({ 
@@ -119,7 +120,7 @@ function showEventInfo(info){
 		case 'cardio': 
 			title = '유산소 운동 목록입니다.'; 
 			content["title"] = title; 
-			content["html"] = readCardioEvent(info); 
+			content["html"] = updateCardioEvent(info); 
 			break;
 		
 		case 'fitness': 
@@ -143,7 +144,6 @@ function showEventInfo(info){
 	
 	Swal.fire(content)
 	
-	
 } //showEventInfo 닫기
 
 // 유산소 운동 관련 시작
@@ -163,6 +163,36 @@ function readCardioEvent(info){
 						      	result += '<tr>' +
 											'<td>' + cardio.name + '</td>' +  
 											'<td>' + cardio.time + '</td>' +  
+											'<td>' + cardio.calory + '</td>' +    
+											'<td>' + getIntensityComment(cardio.intensity) + '</td>' +    
+										  '</tr>';
+							 })
+	      				'</tbody>' + 
+	                  '</table>' +            
+	   				'</div>' 
+	
+	return result; 
+}  
+
+function updateCardioEvent(info){ 
+	console.log("checkReadOnly: " ,checkReadOnly(info.event.extendedProps.date)); 
+	cardioList = info.event.extendedProps.cardioList;
+	
+	result = '<div class = "swal-text">' +     
+				      '<table class="table table-bordered" id="cardioEventListTable" width="100%" cellspacing="0">' +  
+                    	'<thead><tr>' + 
+	                    	'<th>' + '유산소 운동 이름' + '</th>' + 
+	                    	'<th>' + '운동 시간 (분)' + '</th>' + 
+	                    	'<th>' + '소모 칼로리' + '</th>' + 
+	                    	'<th>' + '운동 강도' + '</th>' + 
+				    	'</tr></thead>' +
+	      				'<tbody>';  
+		      				 cardioList.map(function(cardio,index){								      	
+						      	result += '<tr>' +
+											'<td>' + cardio.name + '</td>' +  
+											'<td>' + 
+												'<input type="number" id="cardio" class= "inputs" value=' + cardio.time + ' ' + checkReadOnly(info.event.extendedProps.date)  +'>' +  												 
+											'</td>' +  
 											'<td>' + cardio.calory + '</td>' +    
 											'<td>' + getIntensityComment(cardio.intensity) + '</td>' +    
 										  '</tr>';
@@ -217,7 +247,7 @@ function readFoodEvent(info){
 	foodObj = info.event.extendedProps.foodObj;
 	
 	result = '<div class = "swal-text">' +     
-				      '<table class="table table-bordered" id="foofEventListTable" width="100%" cellspacing="0">' +  
+				      '<table class="table table-bordered" id="foodEventListTable" width="100%" cellspacing="0">' +  
                     	'<thead><tr>' + 
 	                    	'<th>' + '음식 이름' + '</th>' + 
 	                    	'<th>' + '섭취량' + '</th>' + 
@@ -285,6 +315,23 @@ function customNext_onClick() {
 	 return date;
 };
 // 다음 월 조회 버튼 끝 
+
+
+// 기타
+
+// 오늘 이벤트가 아니면 편집 불가능하도록 처리. 미완성. YYY-MM-DD 꼴로 변경하여 비교 필요
+function checkReadOnly(date){
+	console.log("date: " ,date) 
+	cons
+	
+	var readOnly = "readonly";
+	
+	// 오늘 이벤트는 readonly가 안 되도록 설정
+	if(date == new Date()){
+		readOnly = "";
+	}
+	return readOnly;
+}	
 
 
 

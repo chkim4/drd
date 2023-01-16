@@ -14,3 +14,7 @@ body {
  .event-read{
  	width: 50% !important;
  }
+
+.inputs{
+	text-align: right;	
+}

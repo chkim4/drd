@@ -51,9 +51,10 @@ public class MemberController {
 		
 		// 로그인이 되어 있다면 index 페이지로 이동
 		if(session.getAttribute("member") != null) {
+			
 			viewName = "member/index";
-		}
-		
+		} 
+	
 		return viewName;
 	} 
 
@@ -66,7 +67,7 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "redirect: /member/index.do"; 
+			  viewName = "redirect: /member/index.do";  
 		  } 
 		  else {
 			  viewName = "member/login"; 
@@ -87,7 +88,7 @@ public class MemberController {
 	} 
 	
 	@RequestMapping(value = "/register.do",method = RequestMethod.POST)
-	public String register(MemberDTO registerMember, MemberBioDTO registerMemberBio, Model model, 
+	public String register(MemberDTO member, MemberBioDTO memberBio, Model model, 
 			 HttpServletRequest request) throws Exception {
 		
 		 // String 으로 받은 routine 정보를 파싱한 후 pRoutine에 설정
@@ -97,13 +98,14 @@ public class MemberController {
 		 pRoutine.setCardioObj(routine.getCardioObj()); 
 		 pRoutine.setFitnessObj(routine.getFitnessObj()); 
 		
-		boolean isRegistered = memberService.register(registerMember, registerMemberBio, pRoutine) > 0;   
+		boolean isRegistered = memberService.register(member, memberBio, pRoutine) > 0;   
 		
 		String viewName = "";  
 		
 		 // 회원 가입 성공 시 
-		 if(isRegistered) {  
-			  model.addAttribute("member", registerMember); 
+		 if(isRegistered) {   
+			 System.out.println("registerMember in memberDAO: " + member);
+			  model.addAttribute("member", member); 
 			  viewName = "member/index"; 
 		  } 
 		  else {
