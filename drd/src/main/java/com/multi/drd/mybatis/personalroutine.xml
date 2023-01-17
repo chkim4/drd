@@ -19,4 +19,14 @@
 		set cardioObj = #{cardioObj}, fitnessObj = #{fitnessObj} 
 		where personalRoutineSEQ = 2
 	</update>
+	<update id="updatefitness" parameterType="Map" >
+		update personalRoutine 
+		set fitnessObj = #{fitnessObj} 
+		where personalRoutineSEQ = #{personalRoutineSEQ}
+	</update>
+	<update id="updatefitness" parameterType="Map" >
+		update personalRoutine 
+		set cardioObj = #{cardioObj} 
+		where personalRoutineSEQ = #{personalRoutineSEQ}
+	</update>
 </mapper>

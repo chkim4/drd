@@ -29,8 +29,9 @@
 			$("#routineperiodtxt").empty()
 			$("#routineperiodtxt").append("<h5>${routine.period}주 중 ${days}일 진행중<br/>(${progress}%)</h5><br/>")
 			$("#routineperiodpersent").attr({"aria-valuenow":"${progress}","style":"width: ${progress}%"})
-				var personalRoutineSEQ = "${member.personalRoutineSEQ}";
-			$(document).on("click", "#routinelist",function(){
+		
+			$("#routinelist").on("click",function(){
+				var personalRoutineSEQ = "${member.personalRoutineSEQ}"
 				$.ajax({
 				type:"post",
 				url:"/personalroutine/ajax/setfitnesslist",
@@ -39,23 +40,10 @@
 				},
 				async : false,
 				success:function(data){
-					
-					mydata = "<div class='w-100' style='float:left; width:100%'>"
-					+"<div style='float:left; width:70%'>name</div>"
-					+"<div style='float:left; width:10%'>set</div>"
-					+"<div style='float:left; width:10%'>count</div>"
-					+"<div style='float:left; width:10%'>weight</div>"
-					+"</div><br/>";
+					mydata = "<div class='w-100' style='float:left'><div style='float:left; width:70%'>name</div><div style='float:left; width:10%'>set</div><div style='float:left; width:10%'>count</div><div style='float:left; width:10%'>weight</div></div><br/>";
 					for (var i = 0; i < data.length; i++) {
-						console.log(data[i].fitnessSEQ);
 						mydata = mydata+
-						"<div class='fitness' style='float:left; width:100%'>"
-						+"<div class='seq' style='display: none'>"+data[i].fitnessSEQ+"</div>"
-						+"<div style='float:left; width:70%'>"+data[i].name+"</div>"
-						+"<div style='float:left; width:10%'>"+data[i].set+"</div>"
-						+"<div style='float:left; width:10%'>"+data[i].count+"</div>"
-						+"<div style='float:left; width:10%'>"+data[i].weight+"kg</div>"
-						+"</div><br/>";
+						"<div class='fitness w-100' style='float:left'><div style='float:left; width:70%'>"+data[i].name+"</div><div style='float:left; width:10%'>"+data[i].set+"</div><div style='float:left; width:10%'>"+data[i].count+"</div><div style='float:left; width:10%'>"+data[i].weight+"kg</div></div><br/>"
 					}
 				$("#myroutine_fitnessList").empty();
 				$("#myroutine_fitnessList").append(mydata);			
@@ -73,18 +61,10 @@
 					},
 					async : false,
 					success:function(data){
-						mydata = "<div style='float:left; width:100%'>"
-						+"<div class='w-75' style='float:left'>name</div>"
-						+"<div class='w-auto' style='float:left'>time</div>"
-						+"</div><br/>";
+						mydata = "<div class='w-100' style='float:left'><div class='w-75' style='float:left'>name</div><div class='w-auto' style='float:left'>time</div></div><br/>";
 						for (var i = 0; i < data.length; i++) {
 							mydata = mydata+
-							"<div class='cardio' style='float:left; width:100%'>"
-							+"<div class='seq' style='display: none'>"+data[i].cardioSEQ+"</div>"
-							+"<div class='w-75' style='float:left'>"+data[i].name+"</div>"
-							+"<div class='w-auto' style='float:left'>"+data[i].time+"분</div>"
-							+"</div><br/>"
-							console.log(data[i].cardioSEQ);
+							"<div class='cardio w-100' style='float:left'><div class='w-75' style='float:left'>"+data[i].name+"</div><div class='w-auto' style='float:left'>"+data[i].time+"분</div></div><br/>"
 						}
 					$("#myroutine_cardioList").empty();
 					$("#myroutine_cardioList").append(mydata);			
@@ -94,121 +74,6 @@
 					}
 					
 					})//end ajax2
-			})//end click
-				$(document).on("click", ".fitness", function(){
-					console.log('피트니스');
-					var fitnessSEQ = $(this).children(".seq").text();
-						$.ajax({
-							type:"post",
-							url:"/personalroutine/ajax/setfitnesschange",
-							data:{
-								"personalRoutineSEQ":personalRoutineSEQ,
-								"fitnessSEQ":fitnessSEQ
-							},
-							async : false,
-							success:function(data){
-								mydata = "<form action=''>"
-									 + "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.set+"' name='set'></div></div><br/>"
-									 + "<div class='w-100'>count : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.count+"' name='count'></div></div><br/>"
-									 + "<div class='w-100'>weight : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.weight+"' name='weight'></div></div><br/>"
-									 + "<div style='text-align: right; '>"
-							         + "<a href='#' class='btn btn-success btn-icon-split'>"
-										+ "<span class='icon text-white-50'>"
-										+ "<i class='fas fa-check'></i>"
-										+ "</span>"
-										+ "<span class='text'>수정하기</span>"
-									+ "</a>"
-									 +"<a href='#' class='btn btn-danger btn-icon-split' >"
-										+ "<span class='icon text-white-50'>"
-											+ "<i class='fas fa-trash'></i>"
-										+ "</span>"
-										+ "<span class='text'>삭제하기</span>"
-									+ "</a>";
-							$("#ajaxchangename").empty();
-							$("#ajaxchangename").append("운동 수정");					
-							$("#ajaxchangecontents").empty();
-							$("#ajaxchangecontents").append(mydata);			
-							},
-							error:function(a,b,c){
-								alert(c);
-							}
-				})//end ajax1fitnesschange
-						$.ajax({
-							type:"post",
-							url:"/personalroutine/ajax/setfitness",
-							data:{
-								"fitnessSEQ":fitnessSEQ
-							},
-							async : false,
-							success:function(data){
-								mydata = "<div style='text-align: center;'>"+data.name+"</div><br/><div style='text-align: right; float:right;'>"+data.muscleGroup+"</div><br/><div style='text-align: right; float:right;'>"+data.equipment+"</div>"
-							$("#check").empty();
-							$("#check").append(mydata);			
-							},
-							error:function(a,b,c){
-								alert(c);
-							}
-				})//end ajax2fitnesschange
-			})//end click
-				$(document).on("click", ".cardio", function(){
-					console.log('카디오');
-					var cardioSEQ = $(this).children(".seq").text();
-					console.log(cardioSEQ)
-						$.ajax({
-							type:"post",
-							url:"/personalroutine/ajax/setcardiochange",
-							data:{
-								"personalRoutineSEQ":personalRoutineSEQ,
-								"cardioSEQ":cardioSEQ
-							},
-							async : false,
-							success:function(data){
-								mydata = "<form action=''>"
-									 + "<div class='w-100'>time : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.time+"' name='time'></div></div><br/>"
-									 + "<div style='text-align: right; '>"
-							         + "<a href='#' class='btn btn-success btn-icon-split'>"
-										+ "<span class='icon text-white-50'>"
-										+ "<i class='fas fa-check'></i>"
-										+ "</span>"
-										+ "<span class='text'>수정하기</span>"
-									+ "</a>"
-									 +"<a href='#' class='btn btn-danger btn-icon-split' >"
-										+ "<span class='icon text-white-50'>"
-											+ "<i class='fas fa-trash'></i>"
-										+ "</span>"
-										+ "<span class='text'>삭제하기</span>"
-									+ "</a>";
-							$("#ajaxchangename").empty();
-							$("#ajaxchangename").append("운동 수정");						
-							$("#ajaxchangecontents").empty();
-							$("#ajaxchangecontents").append(mydata);			
-							},
-							error:function(a,b,c){
-								alert(c);
-							}
-				})//end ajax1cardiochange
-						$.ajax({
-							type:"post",
-							url:"/personalroutine/ajax/setcardio",
-							data:{
-								"cardioSEQ":cardioSEQ
-							},
-							async : false,
-							success:function(data){
-								intensity = "";
-								if(data.intensity==0){
-									intensity = "저강도";
-								}else{
-									intensity = "고강도";
-								}
-								mydata = "<div style='text-align: center;'>"+data.name+"</div><br/><div style='text-align: right; float:right;'>"+intensity+"</div><br/><div style='text-align: right; float:right;'>시간당 칼로리: "+data.calory+"</div>"
-							$("#check").empty();
-							$("#check").append(mydata);			
-							},
-							error:function(a,b,c){
-								alert(c);
-							}
-				})//end ajax2cardiochange
 			})//end click
 		})//end ready
 	</script>
@@ -498,7 +363,6 @@
                                 <br/>	
                                 	<c:forEach var="data" items="${myroutine_fitnessList }">
 										<div class='fitness w-100' style='float:left'>
-											<div class='seq' style="display: none">${data.fitnessSEQ}</div>
 											<div style='float:left; width:70%'>${data.name}</div>
 											<div style='float:left; width:10%'>${data.set}</div>
 											<div style='float:left; width:10%'>${data.count}</div>
@@ -522,9 +386,7 @@
 	                                 </div>
 	                                 <br/>
 	                                	<c:forEach var="data" items="${myroutine_cardioList }">
-	                                			
 											<div class='cardio w-100' style='float:left'>
-												<div class='seq' style="display: none">${data.cardioSEQ}</div>
 												<div class='w-75' style='float:left'>${data.name}</div>
 												<div class='w-auto' style='float:left'>${data.time}분</div>
 											</div>
