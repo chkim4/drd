@@ -33,11 +33,10 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member/index.do">
+                <div>
+                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%"/>
                 </div>
-                <div class="sidebar-brand-text mx-3" onclick="/member/index.do">다루다 <sup>DRD</sup></div>
             </a>
             
             <!-- Divider -->

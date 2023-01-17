@@ -67,9 +67,11 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "redirect: /member/index.do";  
+			  viewName = "member/index";  
+			   
 		  } 
-		  else {
+		  else { 
+			  model.addAttribute("isLoginFailed", true);
 			  viewName = "member/login"; 
 		  }  
 		  

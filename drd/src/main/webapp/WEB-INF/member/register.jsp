@@ -30,8 +30,8 @@
     
     <!-- jsp 내 태그와 register-script.js 내 함수들 연결 -->
     <script type="text/javascript"> 
-    	$(document).ready(function() {    
-    		
+    	$(document).ready(function() {     
+    	    		
    			$("#nickName").keyup(nickName_onKeyUp);
     		$("#checkNickNameBTN").click(checkNickNameBTN_onClick); 
     		
@@ -79,9 +79,10 @@
                         <div class="row">
                             <div class="col-lg-8 mx-auto">
                                 <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome to DRD!</h1>
-                                    </div>
+                                   <div class="text-center">
+                                       <img src="../resources/static/logo/drd_blue.png" style="max-width: 50%;"/>
+                                    </div> 
+                                    <br/>
                                     <form class="user" action="/member/register.do" method = "post" id="registerForm">
                                    		<div class="form-group">
                                             <div class="input-group">  

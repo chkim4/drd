@@ -17,4 +17,7 @@ body {
 
 .inputs{
 	text-align: right;	
+	border: 0; 
+	width: 50%
+	
 }

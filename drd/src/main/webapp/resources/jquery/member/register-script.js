@@ -13,6 +13,12 @@ const NICKNAME_MIN_LENGTH = 5;
 const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-z]{2,3}$"; // . 없어도 통과되는 현상 확인 필요
 const PASS_MIN_LENGTH = 5;  
 
+//sweetalert 전역 설정
+var mySwal = Swal.mixin({ 
+				confirmButtonColor: '#4E73DF',		
+				confirmButtonText: '확인'
+			  })
+
  
 // 닉네임 변경 시 다시 체크하도록 함
 function nickName_onKeyUp(){  
@@ -27,7 +33,7 @@ function checkNickNameBTN_onClick(){
 	
 	// HTML에서 minlength 가 안 되서 여기서 최소 길이 관련 로직 구현 함.
 	if(nickName.length < NICKNAME_MIN_LENGTH){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'error',
 		  title: '닉네임은 최소 ' + NICKNAME_MIN_LENGTH + ' 글자 이상이어야 합니다!',
 		})
@@ -46,7 +52,7 @@ function checkNickNameBTN_onClick(){
 				isNickNameChecked = (member == "");   
 				
 				if(isNickNameChecked){ 
-					Swal.fire({
+					mySwal.fire({
 					  icon: 'success',
 					  title: '축하합니다!',
 					  text: '입력하신 닉네임을 사용할 수 있습니다',
@@ -54,7 +60,7 @@ function checkNickNameBTN_onClick(){
 					
 				}
 				else{
-					Swal.fire({
+					mySwal.fire({
 					  icon: 'error',
 					  title: '안타깝습니다...',
 					  text: '입력하신 닉네임을 사용할 수 없습니다',
@@ -82,9 +88,9 @@ function checkEmailBTN_onClick(){
 	
 	// HTML에서 이메일 체크가 제대로 안 되는 것 같아서 이메일 체크 기능 추가
 	if(notEmailRegexMatched){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'error',
-		  title: '이메일 형식에 맞게 작성해주세요!',
+		  title: '이메일 형식에 맞게 작성해주세요!'
 		})
 		return;
 	}
@@ -101,18 +107,20 @@ function checkEmailBTN_onClick(){
 				isEmailChecked = (member == "");   
 				
 				if(isEmailChecked){ 
-					Swal.fire({
+					mySwal.fire({
 					  icon: 'success',
 					  title: '축하합니다!',
-					  text: '입력하신 이메일을 사용할 수 있습니다',
+					  text: '입력하신 이메일을 사용할 수 있습니다', 
+					  confirmButtonColor: '#4E73DF'
 					})
 					
 				}
 				else{
-					Swal.fire({
+					mySwal.fire({
 					  icon: 'error',
 					  title: '안타깝습니다...',
-					  text: '입력하신 이메일을 사용할 수 없습니다',
+					  text: '입력하신 이메일을 사용할 수 없습니다', 
+					  confirmButtonColor: '#4E73DF'
 					})
 				}
 			}  
@@ -198,13 +206,14 @@ function get_routineList(){
 						"<tr>" +
 							"<td>" +routines[i]["name"]+ "</td>" +  
 							"<td>" +routines[i]["description"]+ "</td>" +  
-							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+convertString(routines[i])+"'></td>" +  
+							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='" + convertString(routines[i]) + "'></td>" +  
 						"</tr>") 
 				}  
 				
-				Swal.fire({
+				mySwal.fire({
 				  icon: 'info',
 				  title: "당신만을 위한 최적의 운동 루틴을 찾았습니다!",
+				  confirmButtonColor: '#4E73DF'
 				})
 			}  
 			function errorRun(obj, msg,statusMsg){  
@@ -223,42 +232,44 @@ function convertString(obj){
 function submitBTN_onClick(){
 
 	if(!isNickNameChecked){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'error',
 		  title: '닉네임을 체크해주시기 바랍니다!',
+		  confirmButtonColor: '#4E73DF'
 		}) 
 		return;	
 	} 
 	else if(!isEmailChecked){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'error',
-		  title: '이메일을 체크해주시기 바랍니다!',
+		  title: '이메일을 체크해주시기 바랍니다!', 
+		  confirmButtonColor: '#4E73DF',
 		})
 		return;	
 	} 
 	else if(!isPassChecked){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'error',
-		  title: '비밀번호의 최소' + PASS_MIN_LENGTH + ' 글자 이상이어야 합니다!',
+		  title: '비밀번호의 최소' + PASS_MIN_LENGTH + ' 글자 이상이어야 합니다!'
 		})
 		return;	
 	} 
 	else if(!getRoutineListDisplayCondition()){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'error',
 		  title: '생년월일, 성별, 키, 몸무게 정보를 입력해주시기 바랍니다!',
 		})
 		return;
 	}
 	else if($("#activityLevel").val() == ""){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'error',
 		  title: '일주일 운동량을 입력해주시기 바랍니다!',
 		})
 		return;
 	}
 	else if(!$("input[name='selectedRoutine']:checked").val()){
-		Swal.fire({
+		mySwal.fire({
 		  icon: 'info',
 		  title: "당신만을 위한 최적의 운동 루틴을 찾았습니다. 아래에서 한 개를 선택해주세요!",
 		})
@@ -290,7 +301,7 @@ function findAllRoutineBTN_click(){
 							"<td><input type='radio' name='selectedRoutine' id = 'selectedRoutine' value='"+routines[i]+"'></td>" +  
 						"</tr>") 
 				}  
-				Swal.fire({
+				mySwal.fire({
 		  			icon: 'info',
 		  			title: "모든 루틴을 조회하였습니다!",
 				})

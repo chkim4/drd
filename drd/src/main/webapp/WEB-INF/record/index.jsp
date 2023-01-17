@@ -13,14 +13,6 @@
     <title>다루다HOME</title> 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>  
-    
-    <!-- Calendar 관련 --> 
-	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.2/index.global.js"></script> 	
-	<script src="/resources/jquery/record/index-script.js"></script>  
-	<script> 
-	    document.addEventListener('DOMContentLoaded', onDOMContentLoaded);
-	</script>
-   <link rel="stylesheet" href="/resources/css/record/index.css"> 
    
    <!-- SB Admin 관련 --> 
    <link href="/sbadmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -33,7 +25,16 @@
     
     <!-- SweetAlert 관련 -->
     <script src="/sweetalert/sweetalert2.min.js"></script>
-	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css"> 
+	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">  
+	
+	<!-- Calendar 관련 --> 
+	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.2/index.global.js"></script> 	
+	<script src="/resources/jquery/record/index-script.js"></script>  
+	<script type="text/javascript"> 
+	    document.addEventListener('DOMContentLoaded', onDOMContentLoaded); 
+	</script>
+   <link rel="stylesheet" href="/resources/css/record/index.css"> 
+	
 </head>
 
   
@@ -45,12 +46,11 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+           <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member/index.do">
+                <div>
+                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%"></i>
                 </div>
-                <div class="sidebar-brand-text mx-3">다루다 <sup>DRD</sup></div>
             </a>
             
             <!-- Divider -->
