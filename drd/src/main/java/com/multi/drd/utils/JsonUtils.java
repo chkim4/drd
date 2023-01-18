@@ -1,8 +1,10 @@
 package com.multi.drd.utils;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.FitnessObj;
@@ -233,4 +235,15 @@ public class JsonUtils {
 		
 		obj.getFitnessList().remove(index);		
 	} 
+	// Aggregation의 AggregationResultDTO의 totalExerciseTimeofWeek 파싱
+		public static HashMap<String, Integer> parseTotalExerciseTimeofWeek(String aggrResultStr){
+			HashMap<String, Integer> result = null;
+			
+			try {
+				result = mapper.readValue(aggrResultStr, new TypeReference<HashMap<String, Integer>>() {});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			return result;
+		}
 }

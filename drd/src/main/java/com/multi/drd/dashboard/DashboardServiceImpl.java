@@ -39,9 +39,34 @@ public class DashboardServiceImpl implements DashboardService {
 	 */
 
 	@Override
-	public List<RecordDTO> ExcerciseHourByWeek(int memberSEQ) {
+	public List<AggregationResultDTO> excerciseHourByWeek(int memberSEQ) {
 		// TODO Auto-generated method stub
-		return dao.ExcerciseHourByWeek(memberSEQ);
+		return dao.excerciseHourByWeek(memberSEQ);
+	}
+
+
+
+	@Override
+	public List<RecordDTO> findByWeek(int memberSEQ) {
+		// TODO Auto-generated method stub
+		
+		return dao.findByWeek(memberSEQ);
+	}
+
+
+
+	@Override
+	public List<AggregationResultDTO> cardioMinByWeek(int memberSEQ) {
+		// TODO Auto-generated method stub
+		return dao.cardioMinByWeek(memberSEQ);
+	}
+
+
+
+	@Override
+	public List<AggregationResultDTO> fitnessMinByWeek(int memberSEQ) {
+		// TODO Auto-generated method stub
+		return dao.fitnessMinByWeek(memberSEQ);
 	}
 
 }

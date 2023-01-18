@@ -1,5 +1,7 @@
 package com.multi.drd.goal;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +30,17 @@ public class GoalServiceImpl implements GoalService {
 	public int updateCalory(GoalDTO goal) {
 		return dao.updateCalory(goal);
 	}
-	
-	
+
+	@Override
+	public int updateProtein(Map<String, Integer> amountAndSeq) {
+		// TODO Auto-generated method stub
+		return dao.updateProtein(amountAndSeq);
+	}
+//	@Override
+//	public int updateProtein(GoalDTO goal) {
+//		// TODO Auto-generated method stub
+//		return dao.updateProtein(goal);
+//	}
+
 	
 }
