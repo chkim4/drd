@@ -2,9 +2,11 @@ var cardioList = [];
 var fitnessList = [];
 var foodList = [];
 var result = "";
-var year = new Date().getFullYear(); 
-var month = new Date().getMonth(); 
-var date = new Date().getDate(); 
+var d = new Date();
+var year = d.getFullYear(); 
+var month = d.getMonth(); 
+var date = d.getDate(); 
+  
 
 //sweetalert 전역 설정
 var mySwal = Swal.mixin({ 
@@ -82,8 +84,8 @@ function onDOMContentLoaded() {
 					     onDOMContentLoaded();		     
 					   }
 				    }
-				  },
-	             
+				  }, 
+	            
 	             headerToolbar: {
 	                left: 'customPrev,customNext today',
 	                center: 'title',
@@ -98,7 +100,6 @@ function onDOMContentLoaded() {
 	                    arg.draggedEl.parentNode.removeChild(arg.draggedEl);
 	                }
 	            }, 
-	           
 	            events: fetchedEvent, 
 	            eventClick: function(info){
 	            	showEventInfo(info)

@@ -111,8 +111,8 @@ public class MemberServiceImpl implements MemberService {
 		double weight = memberBio.getWeight();	
 		double activityLevel = memberBio.getActivityLevel();
 		
-		// 일단 3분할 운동으로 가정함.
-		int goalExerciseTime = (cardioTime+fitnessTime)*3;
+		// 일단 5분할 운동으로 가정함.
+		int goalExerciseTime = (cardioTime+fitnessTime)*5;
 		
 		// 2015 한국인 영양소 섭취기준 활용 가이드북 22쪽 성인남녀 필요 칼로리에서 발췌
 		int goalCalory = 0;
@@ -130,8 +130,8 @@ public class MemberServiceImpl implements MemberService {
 		goalCalory = Integer.parseInt(String.format("%.0f", rawGoalCalory));
 		
 		
-		// 일일 권장 섭취 단백질량은 1kg에 1.0g 으로 가정
-		int goalProtein = Integer.parseInt(String.format("%.0f", weight)); 
+		// 일일 권장 섭취 단백질량은 1kg에 1.0g 으로 가정. 1주일 치 적용
+		int goalProtein = Integer.parseInt(String.format("%.0f", weight)) * 7; 
 		
 		goal.setMemberSEQ(member.getMemberSEQ());
 		goal.setGoalExerciseTime(goalExerciseTime);

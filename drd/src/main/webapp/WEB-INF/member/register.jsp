@@ -59,7 +59,15 @@
     <style type="text/css">
     	th, td {
 		  text-align: center;
+		} 
+		
+		#titles{
+			border: none; 
+			background: transparent; 
+			text-align: center; 
+			font-size: 100%;
 		}
+		
     </style>
     
 </head>
@@ -114,7 +122,7 @@
          								<div class="form-group"> 
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
-			                                        <input type="text" value = "생년월일" class="form-control form-control-user" readonly>
+			                                        <input type="text" value = "생년월일" class="form-control form-control-user" id="titles" readonly>
 			                                    </div>
 			                                    <div class="col-sm-8">
 			                                        <input type="date" class="form-control form-control-user"
@@ -127,7 +135,7 @@
                                         <div class="form-group"> 
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
-			                                        <input type="text" value = "성별" class="form-control form-control-user" readonly>
+			                                        <input type="text" value = "성별" class="form-control form-control-user" id="titles" readonly>
 			                                    </div> 
 			                               
 			                                    <div class="col-sm-8">
@@ -142,7 +150,7 @@
                                         <div class="form-group"> 
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
-			                                        <input type="text" value = "키" class="form-control form-control-user" readonly>
+			                                        <input type="text" value = "키" class="form-control form-control-user" id="titles" readonly>
 			                                    </div>
 			                                    <div class="col-sm-8">
 			                                    	<input type = "number" class="form-control" id="height" name="height" min="0">
@@ -152,7 +160,7 @@
                                         <div class="form-group"> 
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
-			                                        <input type="text" value = "몸무게" class="form-control form-control-user" readonly>
+			                                        <input type="text" value = "몸무게" class="form-control form-control-user" id="titles" readonly>
 			                                    </div>
 			                                    <div class="col-sm-8">
 			                                    	<input type = "number" class="form-control" id="weight" name="weight" min="0">
@@ -162,7 +170,7 @@
                                         <div class="form-group"> 
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
-			                                        <input type="text" value = "질병 유무" class="form-control form-control-user" readonly>
+			                                        <input type="text" value = "질병 유무" class="form-control form-control-user" id="titles" readonly>
 			                                     </div> 
 			                                     <div class="col-sm-8">
 				                                 	<select class="form-control" id="disease" name="disease">
@@ -178,7 +186,7 @@
 	                                        <div class="form-group"> 
 	                                        	<div class="form-group row">
 				                                    <div class="col-sm-4 mb-3 mb-sm-0">
-				                                        <input type="text" value = "일주일 운동 횟수" class="form-control form-control-user" readonly>
+				                                        <input type="text" value = "일주일 운동 횟수" class="form-control form-control-user" id="titles" readonly>
 				                                     </div> 
 				                                   <div class="col-sm-8">
 			                                   		<select class="form-control" id="activityLevel" name="activityLevel">
