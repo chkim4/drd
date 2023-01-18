@@ -1,7 +1,7 @@
 package com.multi.drd.goal;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,10 +47,9 @@ public class GoalServiceImpl implements GoalService {
 	public List<RecordDTO> findByWeek(int memberSEQ){
 		return dao.findByWeek(memberSEQ);
 	}
-
+	
 	@Override
 	public int updateProtein(Map<String, Integer> amountAndSeq) {
 		return dao.updateProtein(amountAndSeq);
 	}
-	
 }
