@@ -149,6 +149,21 @@ public class JsonUtils {
 		updateTotalTime(obj);		
 	} 
 	
+	// cardioObj 중 List<cardioList> 파싱 
+	public static List<CardioObj.CardioList> parseCardioObjElements(String cardioListStr) {
+		List<CardioObj.CardioList> cardioList = null; 
+		
+		try {
+			cardioList = mapper.readValue(cardioListStr, new TypeReference<List<CardioObj.CardioList>>(){});
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return cardioList; 
+	} 
+	
+	
 	// PersonalRoutineDTO 관련 - cardio 끝 
 	
 	// PersonalRoutineDTO 관련 - fitness 
@@ -247,5 +262,17 @@ public class JsonUtils {
 		}
 		return routine;
 	} 
+	
+	// Aggregation의 AggregationResultDTO의 totalExerciseTimeofWeek 파싱
+	public static HashMap<String, Integer> parseTotalExerciseTimeofWeek(String aggrResultStr){
+		HashMap<String, Integer> result = null;
+		
+		try {
+			result = mapper.readValue(aggrResultStr, new TypeReference<HashMap<String, Integer>>() {});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 	
 } 

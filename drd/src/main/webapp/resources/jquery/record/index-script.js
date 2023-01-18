@@ -137,7 +137,8 @@ function showEventInfo(info){
 			title = '유산소 운동 목록입니다.'; 
 			content["title"] = title; 
 			content["html"] = readCardioEvent(info, readOnly); 
-			//content["preConfirm"] = updateCardioEvent();		
+			content["preConfirm"] = () => {updateCardioEvent(info.event.extendedProps.date);}		
+			//content["preConfirm"] = updateCardioEvent(info.event.extendedProps.date);		
 			break;
 		
 		case 'fitness': 
@@ -159,7 +160,7 @@ function showEventInfo(info){
 			break;
 	}  
 	
-	mySwal.fire(content)
+	mySwal.fire(content);
 	
 } //showEventInfo 닫기
 
@@ -174,17 +175,19 @@ function readCardioEvent(info, readOnly){
 	                    	'<th>' + '운동 시간 (분)' + '</th>' + 
 	                    	'<th>' + '소모 칼로리' + '</th>' + 
 	                    	'<th>' + '운동 강도' + '</th>' + 
+	                    	'<th style="display: none">' + 'cardioObj' + '</th>' + 
 				    	'</tr></thead>' +
 	      				'<tbody>';  
 		      				 cardioList.map(function(cardio){								      	
 						      	result += '<tr>' +
 											'<td>' + cardio.name + '</td>' +  
 											'<td>' + 
-												'<input type="number" id="cardioTime" class= "inputs" value=' + cardio.time + ' ' + readOnly +'>' +  												 
+												'<input type="number" id="time" class= "inputs" value=' + cardio.time + ' ' + readOnly +'>' +  												 
 											'</td>' +  
 											'<td>' + cardio.calory + '</td>' +    
-											'<td>' + getIntensityComment(cardio.intensity) + '</td>' +    
-										  '</tr>';
+											'<td>' + getIntensityComment(cardio.intensity) + '</td>' + 
+											'<td id="cardioSEQ" style="display: none">"' + cardio.cardioSEQ + '"</td>' +     
+										   '</tr>';
 							 })
 	      				'</tbody>' + 
 	                  '</table>' +            
@@ -197,32 +200,38 @@ function getIntensityComment(intensity){
 	return intensity == 1 ? '고강도' : '저강도';
 }
 
-function updateCardioEvent(){
-	var cardio = 
+function updateCardioEvent(date){
+	var cardioObjList = [];
+	
+	// 화면에 띄운 모든 유산소 운동 목록을 [{cardioSEQ, time}] 형태로 가져오기
+	$('#cardioEventListTable tr').each(function() {
+    	var cardioObj = {};
+    	cardioObj["cardioSEQ"] = parseInt($(this).find("#cardioSEQ").html());
+    	cardioObj["time"] = parseInt($(this).find("#time").val());
+    	cardioObjList.push(cardioObj);
+	}) 
+	cardioObjList.shift(); // [0] 에 저장된 undefined 없애기
+	console.log("cardioObjList: " , cardioObjList)
 	$.ajax({
 		url: "/record/updateCardio.do", 
 		type: "POST",
-		data: {"cardio": nickName} ,
+		data: {"cardioObjList": convertString(cardioObjList), "date": date},
 		success: successRun,
 		error: errorRun 
 		}) 
-		function successRun(member){  
-			// DB에서 조회된 사용자(member)가 없을 때 사용자가 입력한 닉네임 사용 가능
-			isNickNameChecked = (member == "");   
+		function successRun(result){  
 			
-			if(isNickNameChecked){ 
+			if(result > 0){ 
 				mySwal.fire({
 				  icon: 'success',
-				  title: '축하합니다!',
-				  text: '입력하신 닉네임을 사용할 수 있습니다',
+				  title: '업데이트가 반영되었습니다!',
 				})
 				
 			}
 			else{
 				mySwal.fire({
 				  icon: 'error',
-				  title: '안타깝습니다...',
-				  text: '입력하신 닉네임을 사용할 수 없습니다',
+				  title: '업데이트 중 에러가 생겼습니다... 관리자에게 문의 바랍니다.',
 				})
 			}
 		}  
@@ -230,13 +239,8 @@ function updateCardioEvent(){
 			console.log(obj);
 			console.log(msg);
 			console.log(statusMsg);
-		} 		
+		} 	 			
 }
-
-
-
-
-  
 // 유산소 운동 관련 끝
 
 // 무산소 운동 관련 시작
@@ -366,6 +370,8 @@ function checkReadOnly(date){
 	return readOnly;
 }	
 
-
+function convertString(obj){
+	return JSON.stringify(obj);
+}
 
 

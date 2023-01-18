@@ -16,7 +16,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     
     <!-- Custom fonts for this template-->
-    <link href="/sbadmin/vendor/fontawesome-free/sbadmin/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="/sbadmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet"> 
@@ -29,16 +29,16 @@
     <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">  
     
     <script type="text/javascript">
-    $(document).ready(function() {     	
-    	if(${isLoginFailed}){	
-	    	Swal.fire({
-	  		  icon: 'error',
-	  		  title: '로그인 정보가 잘못되었습니다!',
-	  		  confirmButtonColor: '#4E73DF',		
-	  		  confirmButtonText: '확인'
-	  		})
-	    }   
-	 })//document.ready 닫기
+	    $(document).ready(function() {     	
+	    	if(${isLoginFailed}){	
+		    	Swal.fire({
+		  		  icon: 'error',
+		  		  title: '로그인 정보가 잘못되었습니다!',
+		  		  confirmButtonColor: '#4E73DF',		
+		  		  confirmButtonText: '확인'
+		  		})
+		    }   
+		 })//document.ready 닫기
     </script>
 </head>
 
