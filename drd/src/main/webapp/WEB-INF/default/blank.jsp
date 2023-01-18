@@ -35,7 +35,7 @@
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member/index.do">
                 <div>
-                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%"/>
+                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%;"/>
                 </div>
             </a>
             
@@ -43,7 +43,7 @@
             <hr class="sidebar-divider">
 
             <!-- Nav Item - Pages Collapse Menu --> 
-            <!-- 사이드 바 마이 페이지 관련. 추 후 작업 후 진행 예정 -->
+            <!-- 마이 페이지 관련. 추 후 작업 후 진행 예정 -->
 <!--             <li class="nav-item active"> -->
 <!--                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" -->
 <!--                     aria-controls="collapsePages"> -->
@@ -95,8 +95,7 @@
 <!--                     aria-controls="collapsetwo"> -->
 <!--                     <i class="fas fa-comments"></i> -->
 <!--                     <span>게시판</span> -->
-<!--                 </a>  -->
-                
+<!--                 </a> -->
 <!--                 <div id="collapsetwo" class="collapse" aria-labelledby="headingtwo" data-parent="#accordionSidebar"> -->
 <!--                     <div class="bg-white py-2 collapse-inner rounded"> -->
 <!--                         <a class="collapse-item" href="#">운동후기</a> -->
@@ -105,6 +104,7 @@
 <!--                 </div> -->
 <!--             </li> -->
             
+
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 
@@ -194,36 +194,23 @@
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
-                <div style="text-align: center;">  
-	                <button type="button" class="btn btn-primary btn" onclick="location.href='/record/index.do'" >기록</button>
-	                <button type="button" class="btn btn-primary btn" onclick="location.href='/personalroutine/setpage'" >루틴</button>
-	                <button type="button" class="btn btn-primary btn" onclick="location.href='/dashboard/read'" >대시보드</button>
-	                <button type="button" class="btn btn-primary btn" onclick="location.href='/goal/readAll'" >목표 설정</button>
-	                <button type="button" class="btn btn-primary btn" onclick="location.href='/member/logout.do'" >로그아웃</button>
-	           
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">#</h1>
+
                 </div>
                 <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
 
- <!-- Scroll to Top Button-->
+    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -254,4 +241,5 @@
     <script src="/sbadmin/js/sb-admin-2.min.js"></script>
 
 </body>
+
 </html>

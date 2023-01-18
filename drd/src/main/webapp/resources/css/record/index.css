@@ -9,4 +9,15 @@ body {
 
  #calendar {
     margin: 0 auto;
-  }
+  } 
+  
+ .event-read{
+ 	width: 50% !important;
+ }
+
+.inputs{
+	text-align: right;	
+	border: 0; 
+	width: 50%
+	
+}

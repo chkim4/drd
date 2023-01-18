@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,4 +22,5 @@ public interface GoalDAO {
 	public int updateBodyShape(MemberDTO member);
 	
 	public List<RecordDTO> findByWeek(int memberSEQ);   
+	public int updateProtein(Map<String, Integer> amountAndSeq);   
 }

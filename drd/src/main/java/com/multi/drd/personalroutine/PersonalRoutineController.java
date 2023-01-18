@@ -108,7 +108,7 @@ public class PersonalRoutineController {
 		
 		// Object -> String
 		String cardios = JsonUtils.convertToString(cardioObj); 
-		pRoutine.setCardioList(cardios);
+		pRoutine.setCardioObj(cardios);
 		
 	//  -------------------- Fitness 관련 -------------------- 
 		System.out.println("--------------------Fitness--------------------");
@@ -138,7 +138,7 @@ public class PersonalRoutineController {
 		
 		// Object -> String
 		String fitnesses = JsonUtils.convertToString(fitnessObj);
-		pRoutine.setFitnessList(fitnesses);
+		pRoutine.setFitnessObj(fitnesses);
 		
 		// DB 처리: 1이면 성공
 		System.out.println("result of update: " + service.updateOne(pRoutine));

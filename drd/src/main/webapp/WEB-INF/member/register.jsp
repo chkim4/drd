@@ -30,8 +30,8 @@
     
     <!-- jsp 내 태그와 register-script.js 내 함수들 연결 -->
     <script type="text/javascript"> 
-    	$(document).ready(function() {    
-    		
+    	$(document).ready(function() {     
+    	    		
    			$("#nickName").keyup(nickName_onKeyUp);
     		$("#checkNickNameBTN").click(checkNickNameBTN_onClick); 
     		
@@ -48,7 +48,7 @@
     		
     		$("#routineInfo").change(routineInfo_change); //나이, 성별, 키, 몸무게 변경 시 추천 루틴 변경 
     		
-    		$("#findAllRoutineBTN").click(findAllRoutineBTN_click); //루틴 전체 조회 기능
+    		//$("#findAllRoutineBTN").click(findAllRoutineBTN_click); //루틴 전체 조회 기능. 안 쓰지만 혹시 몰라 눠둠.
     		
     		$("#submitBTN").click(submitBTN_onClick);   
     		
@@ -79,9 +79,10 @@
                         <div class="row">
                             <div class="col-lg-8 mx-auto">
                                 <div class="p-5">
-                                    <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Welcome to DRD!</h1>
-                                    </div>
+                                   <div class="text-center">
+                                       <img src="../resources/static/logo/drd_blue.png" style="max-width: 50%;"/>
+                                    </div> 
+                                    <br/>
                                     <form class="user" action="/member/register.do" method = "post" id="registerForm">
                                    		<div class="form-group">
                                             <div class="input-group">  
@@ -162,21 +163,35 @@
          									<div class="form-group row">
 			                                    <div class="col-sm-4 mb-3 mb-sm-0">
 			                                        <input type="text" value = "질병 유무" class="form-control form-control-user" readonly>
-			                                    </div> 
-			                               
-			                                    <div class="col-sm-8">
-			                                    	<select class="form-control" id="disease" name="disease">
-												      <option value = "" selected>선택</option>
-												      <option value = "0">정상</option>
-												      <option value = "1">당뇨</option>
-												      <option value = "2">고혈압</option>
-												      <option value = "3">기타</option>
-												    </select>
+			                                     </div> 
+			                                     <div class="col-sm-8">
+				                                 	<select class="form-control" id="disease" name="disease">
+														<option value = "" selected>선택</option>
+													    <option value = "0">정상</option>
+													    <option value = "1">당뇨</option>
+													    <option value = "2">고혈압</option>
+													    <option value = "3">기타</option>
+													</select>
 			                                    </div>
-                                			</div>                                           
-                                        </div> 
-                                        </div>
-                                                                                        
+			                                 </div> 
+                                			</div>                                			                                                                            
+	                                        <div class="form-group"> 
+	                                        	<div class="form-group row">
+				                                    <div class="col-sm-4 mb-3 mb-sm-0">
+				                                        <input type="text" value = "일주일 운동 횟수" class="form-control form-control-user" readonly>
+				                                     </div> 
+				                                   <div class="col-sm-8">
+			                                   		<select class="form-control" id="activityLevel" name="activityLevel">
+												      <option value = "" selected>선택</option>
+												      <option value = "0">안 함</option>
+												      <option value = "1">1~2회</option>
+												      <option value = "2">3~5회</option>
+												      <option value = "3">5회 이상</option>
+												    </select>
+	 			                                 </div> 
+	 			                               </div> 
+	 			                             </div>    
+	 			                           </div>  <!-- 루틴 추천에 필요한 정보 모음 끝. 일주일 운동 횟수는 관련 없긴 한데 UI 적으로 좋음 -->                                           
                                         <div class="form-group" id="routineList"> 
                                         	<span> 
                                         		당신만을 위한 추천 루틴
@@ -193,7 +208,7 @@
 					                                    </thead>
 					                                    <tbody>
 					                      				</tbody>
-								                        </table> 
+								                      </table> 
 								                      </div>
 				                  					</div> 
 				                  				</div>

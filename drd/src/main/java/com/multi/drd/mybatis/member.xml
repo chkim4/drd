@@ -43,7 +43,27 @@
 		select * 
 		from routine
 		where #{disease} = disease
-	</select>  
+	</select>    
+	
+	<insert id="createPersonalRoutine" parameterType="personalRoutine">	 
+		<selectKey keyProperty="personalRoutineSEQ" resultType="int" order="BEFORE"> <!-- 생성된 personalRoutine의 기본키를 가져오기 위해 필요 -->
+ 	    	SELECT PERSONALROUTINE_SEQ.nextval FROM DUAL  
+ 		</selectKey>		 
+		insert into personalRoutine(personalRoutineSEQ, routineSEQ, cardioObj, fitnessObj, createdAt)
+		values (PERSONALROUTINE_SEQ.currval, #{routineSEQ},#{cardioObj},#{fitnessObj}, sysdate)  
+	</insert> 
+	
+	<update id="updatePersonalRoutineSEQ" parameterType="hashmap">
+		update member 
+		set personalRoutineSEQ = #{personalRoutineSEQ}
+		where memberSEQ = #{memberSEQ}
+	</update> 
+	
+	<insert id="createGoal" parameterType="goal">
+		insert into goal(goalSEQ, memberSEQ, goalExerciseTime, goalCalory, goalProtein)
+		values (goal_SEQ.nextval, #{memberSEQ}, #{goalExerciseTime}, #{goalCalory}, #{goalProtein})  
+	</insert>	
+	
 </mapper>
 
 

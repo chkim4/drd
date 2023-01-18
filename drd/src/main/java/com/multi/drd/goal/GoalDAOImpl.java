@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +77,11 @@ public class GoalDAOImpl implements GoalDAO {
         System.out.println("in dao findByWeek" + docs);
         return docs;
     }
+
+	@Override
+	public int updateProtein(Map<String, Integer> amountAndSeq) {
+		return sqlSession.update("com.multi.drd.goal.updateProtein", amountAndSeq);
+	}
 	
 	
 }

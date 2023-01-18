@@ -43,7 +43,7 @@ public class PersonalRoutineDTO {
 		return cardioObj;
 	}
 
-	public void setCardioList(String cardioObj) {
+	public void setCardioObj(String cardioObj) {
 		this.cardioObj = cardioObj;
 	}
 
@@ -51,7 +51,7 @@ public class PersonalRoutineDTO {
 		return fitnessObj;
 	}
 
-	public void setFitnessList(String fitnessObj) {
+	public void setFitnessObj(String fitnessObj) {
 		this.fitnessObj = fitnessObj;
 	}
 

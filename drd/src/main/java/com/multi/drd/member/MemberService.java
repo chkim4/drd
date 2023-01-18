@@ -3,12 +3,14 @@ package com.multi.drd.member;
 import java.util.HashMap;
 import java.util.List;
 
+import com.multi.drd.memberbio.MemberBioDTO;
+import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
 
 public interface MemberService {
 	
 	// 회원가입 
-	int register(MemberDTO registerMember);
+	int register(MemberDTO registerMember, MemberBioDTO registerMemberBio, PersonalRoutineDTO pRoutine) throws Exception;
 	
 	// 로그인 
 	MemberDTO login(MemberDTO loginMember);
@@ -21,4 +23,15 @@ public interface MemberService {
 	
 	//가입 전 추천 루틴 정보 조회. 인송님께 말하기
 	List<RoutineDTO> findRoutineByRegisterInfo(HashMap<String,Object> param);
+	
+	/* 가입 후 개인 루틴 생성. 
+	 * routine과 동일한 cardioObj, fintnessObj, routineSEQ 값을 지닌다. (createdAt은 null 값으로 지정) 인송님께 말하기
+	 */
+	int createPersonalRoutine(PersonalRoutineDTO pRoutine) throws Exception; 
+	
+	int updatePersonalRoutineSEQ(int memberSEQ, int pRoutineSEQ);
+
+	// 가입 후 신체 정보 기반 목표 생성. 예나님께 말하기
+	int createGoal(MemberDTO member, MemberBioDTO memberBio, PersonalRoutineDTO pRoutine);
+	
 }
