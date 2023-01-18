@@ -1,7 +1,9 @@
 package com.multi.drd.personalroutine;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,8 +12,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.multi.drd.cardio.CardioDTO;
 import com.multi.drd.cardio.CardioService;
+import com.multi.drd.fitness.FitnessDTO;
 import com.multi.drd.fitness.FitnessService;
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.CardioObj.CardioList;
@@ -142,10 +147,10 @@ public class PersonalRoutineController {
 	}  
 	//test http://localhost:8088/personalroutine/setpage
 		@RequestMapping(value = "/setpage", method = RequestMethod.GET)
-		public String setroutinepage(Model model, HttpSession session) {
+		public String setRoutinePage(Model model, HttpSession session) {
 			MemberDTO member = (MemberDTO)session.getAttribute("member");
 			int personalRoutineSEQ = member.getPersonalRoutineSEQ();
-			
+			model.addAttribute("member", member);
 			//자신 루틴
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
 			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine); 
@@ -190,6 +195,99 @@ public class PersonalRoutineController {
 //			
 //			pRoutine.getCreatedAt().getClass();
 			return "personalroutine/routineset";
+			
+		}
+		//루틴 누를 시 ajax로 지신의 personalroutine 표시(fitness)
+		@RequestMapping(value = "/ajax/setfitnesslist", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public List<FitnessList> SetfitnessList(int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			List<FitnessList> myFitnessList = myFitnessObj.getFitnessList();
+			return myFitnessList;
+			
+		}
+		//루틴 누를 시 ajax로 지신의 personalroutine 표시(cardio)
+		@RequestMapping(value = "/ajax/setcardiolist", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public List<CardioList> setCardioList(int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine); 
+			List<CardioList> myCardioList = myCardioObj.getCardioList();
+			return myCardioList;
+			
+		}
+		//루틴 수정 띄우기(fitness)
+		@RequestMapping(value = "/ajax/setfitness", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public FitnessDTO readFitness(int fitnessSEQ) {
+			return fitnessservice.findOne(fitnessSEQ);
+		}
+		//루틴 수정 띄우기(fitnessList)
+		@RequestMapping(value = "/ajax/setfitnesschange", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public FitnessList readFitnessList(int fitnessSEQ, int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			int index = JsonUtils.getIndexBySEQ(myFitnessObj, fitnessSEQ);
+			FitnessList myFitnessList = myFitnessObj.getFitnessList().get(index);
+			return myFitnessList;
+		}
+		//루틴 수정 띄우기(cardio)
+		@RequestMapping(value = "/ajax/setcardio", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public CardioDTO readCaldio(int cardioSEQ) {
+			return cardioservice.findOne(cardioSEQ);
+		}
+		//루틴 수정 띄우기(CardioList)
+		@RequestMapping(value = "/ajax/setcardiochange", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public CardioList readCardioList(int cardioSEQ, int personalRoutineSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
+			int index = JsonUtils.getIndexBySEQ(myCardioObj, cardioSEQ);
+			CardioList myCardiosList = myCardioObj.getCardioList().get(index);
+			return myCardiosList;
+		}
+		
+		//fitnessObj 업데이트
+		@RequestMapping(value = "/updatefitness")
+		public void updatefitness(HttpSession session, int fitnessSEQ, int set, int count, int weight) {
+			MemberDTO member = (MemberDTO)session.getAttribute("member");
+			int personalRoutineSEQ = member.getPersonalRoutineSEQ();
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			JsonUtils.updateBySEQ(myFitnessObj, fitnessSEQ, "set", set);
+			JsonUtils.updateBySEQ(myFitnessObj, fitnessSEQ, "count", count);
+			JsonUtils.updateBySEQ(myFitnessObj, fitnessSEQ, "weight", weight);
+			String fitnessObj = JsonUtils.convertToString(myFitnessObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("fitnessObj", fitnessObj);
+			service.updatefitness(map);
+			
+		}
+		
+		//cardioObj 업데이트 하며 전체 시간 변경
+		public void updatecardio(HttpSession session, int personalRoutineSEQ, int cardioSEQ, int time) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
+			JsonUtils.updateBySEQ(myCardioObj, cardioSEQ, "time", time);
+			int cardiototaltime = 0;
+			for (int i = 0; i < myCardioObj.getCardioList().size(); i++) {
+				cardiototaltime += myCardioObj.getCardioList().get(i).getTime();
+			}
+			myCardioObj.setTotalTime(cardiototaltime);
+			String cardioObj = JsonUtils.convertToString(myCardioObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("cardioObj", cardioObj);
+			service.updatecardio(map);
+		}
+		public void insertfitness() {
+			
+		}
+		public void insertcardio() {
 			
 		}
 }
