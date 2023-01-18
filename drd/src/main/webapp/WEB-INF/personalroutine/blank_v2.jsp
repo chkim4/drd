@@ -23,27 +23,60 @@
     <!-- Custom styles for this template-->
     <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    
-    <script src="/resources/jquery/personalroutine/routineset-script.js">
-    	var personalRoutineSEQ = parseInt("${member.personalRoutineSEQ}")
-    </script>
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$("#myroutine").append("${routine.name}<hr/>${routine.description}")
 			$("#routineperiodtxt").empty()
 			$("#routineperiodtxt").append("<h5>${routine.period}주 중 ${days}일 진행중<br/>(${progress}%)</h5><br/>")
 			$("#routineperiodpersent").attr({"aria-valuenow":"${progress}","style":"width: ${progress}%"})
-			setPersonalRoutineSEQ(${member.personalRoutineSEQ})
-			$(document).on("click", "#routinelist",selectPersonalRoutine_onclick)
-			$(document).on("click", ".fitness", selectFitness_onclick)
-			$(document).on("click", ".cardio", selectCardio_onclick)
+		
+			$("#routinelist").on("click",function(){
+				var personalRoutineSEQ = "${member.personalRoutineSEQ}"
+				$.ajax({
+				type:"post",
+				url:"/personalroutine/ajax/setfitnesslist",
+				data:{
+					"personalRoutineSEQ":personalRoutineSEQ
+				},
+				async : false,
+				success:function(data){
+					mydata = "<div class='w-100' style='float:left'><div style='float:left; width:70%'>name</div><div style='float:left; width:10%'>set</div><div style='float:left; width:10%'>count</div><div style='float:left; width:10%'>weight</div></div><br/>";
+					for (var i = 0; i < data.length; i++) {
+						mydata = mydata+
+						"<div class='fitness w-100' style='float:left'><div style='float:left; width:70%'>"+data[i].name+"</div><div style='float:left; width:10%'>"+data[i].set+"</div><div style='float:left; width:10%'>"+data[i].count+"</div><div style='float:left; width:10%'>"+data[i].weight+"kg</div></div><br/>"
+					}
+				$("#myroutine_fitnessList").empty();
+				$("#myroutine_fitnessList").append(mydata);			
+				},
+				error:function(a,b,c){
+					alert(c);
+				}
+				
+				})//end ajax1
+				$.ajax({
+					type:"post",
+					url:"/personalroutine/ajax/setcardiolist",
+					data:{
+						"personalRoutineSEQ":personalRoutineSEQ
+					},
+					async : false,
+					success:function(data){
+						mydata = "<div class='w-100' style='float:left'><div class='w-75' style='float:left'>name</div><div class='w-auto' style='float:left'>time</div></div><br/>";
+						for (var i = 0; i < data.length; i++) {
+							mydata = mydata+
+							"<div class='cardio w-100' style='float:left'><div class='w-75' style='float:left'>"+data[i].name+"</div><div class='w-auto' style='float:left'>"+data[i].time+"분</div></div><br/>"
+						}
+					$("#myroutine_cardioList").empty();
+					$("#myroutine_cardioList").append(mydata);			
+					},
+					error:function(a,b,c){
+						alert(c);
+					}
+					
+					})//end ajax2
+			})//end click
 		})//end ready
 	</script>
-	<style type="text/css">
-		#routinelist, .fitness, .cardio{
-			cursor : pointer;
-		}
-	</style>
 </head>
 
 <body id="page-top">
@@ -55,12 +88,12 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member/index.do">
-                <div>
-                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%"></i>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
                 </div>
+                <div class="sidebar-brand-text mx-3">다루다 <sup>DRD</sup></div>
             </a>
-
             
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -330,7 +363,6 @@
                                 <br/>	
                                 	<c:forEach var="data" items="${myroutine_fitnessList }">
 										<div class='fitness w-100' style='float:left'>
-											<div class='seq' style="display: none">${data.fitnessSEQ}</div>
 											<div style='float:left; width:70%'>${data.name}</div>
 											<div style='float:left; width:10%'>${data.set}</div>
 											<div style='float:left; width:10%'>${data.count}</div>
@@ -354,9 +386,7 @@
 	                                 </div>
 	                                 <br/>
 	                                	<c:forEach var="data" items="${myroutine_cardioList }">
-	                                			
 											<div class='cardio w-100' style='float:left'>
-												<div class='seq' style="display: none">${data.cardioSEQ}</div>
 												<div class='w-75' style='float:left'>${data.name}</div>
 												<div class='w-auto' style='float:left'>${data.time}분</div>
 											</div>
