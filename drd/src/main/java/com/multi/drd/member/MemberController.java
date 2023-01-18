@@ -55,7 +55,7 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "redirect: /personalroutine/setpage"; 
+			  viewName = "redirect: /dashboard/read"; //-------------------------------------------
 		  } 
 		  else {
 			  viewName = "member/login"; 

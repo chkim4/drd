@@ -19,6 +19,11 @@
 		set goalCalory = #{goalCalory}
 		where memberSEQ = #{memberSEQ}
 	</update>
+	<update id="updateProtein" parameterType="java.util.Map">
+		update goal
+		set goalProtein = #{goalProtein}
+		where memberSEQ = #{memberSEQ}
+	</update>
 
 </mapper>
 

@@ -1,33 +1,12 @@
-//import eachWeekOfInterval from 'date-fns/eachWeekOfInterval'
-    //import { format, formatDistance, formatRelative, subDays } from 'date-fns'
-
-    //format(new Date(), "'Today is a' eeee")
-    //=> "Today is a Wednesday"
-
-    //formatDistance(subDays(new Date(), 3), new Date(), { addSuffix: true })
-    //=> "3 days ago"
-
-    //formatRelative(subDays(new Date(), 3), new Date())
-    //=> "last Friday at 7:26 p.m."
-    /* const dateFns = require("date-fns"); */
-
-    var date1 = new Date("2021-10-20");
-    console.log(date1);
-
-    /* var date2 = add(date1, { days: 1 });
-    console.log(date2);  */
-    const labels = dateFns.eachDay(
-    				new Date(2021, 08, 25),
-    				new Date(2021, 08, 31)
-    );
-   	const dates = ['2021-08-25', '2021-08-26', '2021-08-27', '2021-08-28', '2021-08-29', '2021-08-30', '2021-08-31']
-   	const datapoints = [1,2,3,4,5,6,7]
+/*
+*	주간기록조회 막대그래프, 선그래프
+*/
     // setup 
-    const data = {
-      labels: labels,
+    const dataBar = {
+      labels: dateList,
       datasets: [{
         label: '무산소',
-        data: datapoints,
+        data: fitnessList,
         backgroundColor: [
           'rgba(255, 26, 104, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -52,7 +31,7 @@
       },
       {
           label: '유산소',
-          data: [18, 12, 6, 9, 12, 3, 9],
+          data: cardioList,
           backgroundColor: [
             'rgba(255, 26, 104, 0.2)',
             
@@ -64,50 +43,10 @@
           borderWidth: 1,
           order:2,
           stack:'Stack 0'
-        },/*
-        {
-            label: 'Weekly Sales',
-            data: datapoints,
-            backgroundColor: [
-              'rgba(255, 26, 104, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)',
-              'rgba(0, 0, 0, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255, 26, 104, 1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)',
-              'rgba(0, 0, 0, 1)'
-            ],
-            borderWidth: 1,
-            order:2,
-            stack:'Stack 1'
-          },
-          {
-              label: 'Weekly Sales',
-              data: [18, 12, 6, 9, 12, 3, 9],
-              backgroundColor: [
-                'rgba(255, 26, 104, 0.2)',
-                
-              ],
-              borderColor: [
-                'rgba(255, 26, 104, 1)',
-               
-              ],
-              borderWidth: 1,
-              order:2,
-              stack:'Stack 1'
-            },*/
+        },
         {
             label: '목표시간',
-            data: [16, 16, 16, 16, 16, 16, 16],
+            data: timeList,
             backgroundColor:'rgba(255, 26, 104, 0.2)',
             borderColor:'rgba(255, 26, 104, 1)',
             tension: 0.4,
@@ -115,11 +54,13 @@
             order:1
           }]
     };
-
+    
+   
+   
     // config 
-    const config = {
+    const configBar = {
       type: 'bar',
-      data,
+      data:dataBar,
       options: {
     	  plugins:{
     		  tooltip:{
@@ -130,14 +71,14 @@
          x:{
         		stacked:true,
         		offset:true,
-				type:'time',
+				/*type:'time',
 				time:{
-					unit:'day',//yyyy-mm-dd//yyyy-mm
-					/* displayFormats:{
-						month:'yyyy-MM'
-					} */
+					unit:'week',//yyyy-mm-dd//yyyy-mm
+					 displayFormats:{
+						//week:'yyyy-MM'
+					}
 				}
-				
+				*/
         },
           y: {
             beginAtZero: true,
@@ -148,23 +89,211 @@
     };
 
     // render init block
-    const myChart = new Chart(
-      document.getElementById('myChart'),
-      config
+    const myChartBar = new Chart(
+      document.getElementById('myChartBar'),
+      configBar
     );
-     function filterData(){
-    	const dates2 = [...dates];
-    	console.log(dates2);
-    	const startdate = document.getElementById('startdate');
-    	const enddate = document.getElementById('enddate');
-    	//get index number in array
-    	const indexstartdate = dates2.indexOf(startdate.value);
-    	const indexenddate = dates2.indexOf(enddate.value);
-    	console.log(indexstartdate);
-    	//slice the array showing selected section / slice
-    	const filterDate = dates2.slice(indexstartdate, indexenddate + 1);
-    	//replace the labels
-    	myChart.config.data.labels = filterDate;
-    	myChart.update();
-    }
+ /*
+ *	도넛그래프 안 프로틴, 칼로리 데이터
+ */  
+const stackedText = {
+	id:'stackedText',
+	afterDatasetsDraw(chart, args, options){
+		const{ctx, chartArea:{top, bottom, left, right, width, height}} = chart;
+		/*console.log(chart);
+		console.log(chart.data.datasets[0].data[1]);
+		console.log(chart.data.datasets[0].data[0]);*/
+		ctx.save();
+		const fontHeight = 50;
+		const halvefontHeight = fontHeight - 10;
+		ctx.font = `bolder ${fontHeight}px Arial`;
+		ctx.fillStyle = 'rgba(225,26,104,1)';
+		ctx.textAlign = 'center';
+		ctx.fillText(chart.data.datasets[0].data[0] + 'g', width / 2, height / 2 + top);
+		//console.log(chart.data.datasets[0].data[0]);
+		
+		ctx.restore();
+		ctx.fillStyle = `${fontHeight}px Arial`;
+		ctx.textAlign = 'center';
+		ctx.fillText(`이번주 목표량 ${goal[0]}g`, width/2,  height / 2 + top + 40);
+		ctx.restore();
+		
+		
+	}
+}
+const stackedText2 = {
+	id:'stackedText2',
+	afterDatasetsDraw(chart, args, options){
+		const{ctx, chartArea:{top, bottom, left, right, width, height}} = chart;
+		console.log(chart);
+		/*console.log(chart.data.datasets[0].data[1]);
+		console.log(chart.data.datasets[0].data[0]);*/
+		ctx.save();
+		const fontHeight = 50;
+		const halvefontHeight = fontHeight - 10;
+		ctx.font = `bolder ${fontHeight}px Arial`;
+		ctx.fillStyle = 'rgba(225,26,104,1)';
+		ctx.textAlign = 'center';
+		ctx.fillText(chart.data.datasets[0].data[0] + 'cal', width / 2, height / 2 + top);
+		/*console.log(chart.data.datasets[0].data[0]);*/
+		
+		ctx.restore();
+		ctx.fillStyle = `${fontHeight}px Arial`;
+		ctx.textAlign = 'center';
+		ctx.fillText(`이번주 목표량 ${goal[1]}cal`, width/2,  height / 2 + top + 40);
+		ctx.restore();
+		
+		
+	}
+}
+
+const configDoughnut = {
+            	      type: 'doughnut',
+            	      data: {
+            	    	  labels: [
+            	    		    'Red',
+            	    		    'Blue'
+            	    		 
+            	    		  ],
+            	    		  datasets: [{
+            	    		    label: 'My First Dataset',
+            	    		    data:  protein,
+            	    		    backgroundColor: [
+            	    		      'rgb(255, 99, 132)',
+            	    		      'transparent'
+            	    		      /*'rgb(54, 162, 235)'
+            	    		      'rgb(255, 205, 86)'*/
+            	    		    ],
+            	    		    hoverOffset: 4,
+            	    		    cutout:'90%',
+            	    		    borderRadius:20
+            	    		  }]
+            	    	},
+            	      options:{
+            	     	plugins:{
+            	     		legend:{
+            	      			display:false,
+            	      		}
+            	     	},
+            	      	tooltip:{
+            	      		enabled:false
+            	      	}
+            	      },
+            	      plugins:
+            	    	  [stackedText]
+   		 };
+   		 console.log(protein);
+ // render init block
+    const myChartDoughnut =  new Chart(
+            	      document.getElementById('myChartDoughnut'),/*{
+            	      type: 'doughnut',
+            	      data: {
+            	    	  labels: [
+            	    		    'Red',
+            	    		    'Blue'
+            	    		 
+            	    		  ],
+            	    		  datasets: [{
+            	    		    label: 'My First Dataset',
+            	    		    data:  protein,
+            	    		    backgroundColor: [
+            	    		      'rgb(255, 99, 132)',
+            	    		      'transparent'
+            	    		      /*'rgb(54, 162, 235)'
+            	    		      'rgb(255, 205, 86)'
+            	    		    ],
+            	    		    hoverOffset: 4,
+            	    		    cutout:'90%',
+            	    		    borderRadius:20
+            	    		  }]
+            	    	},
+            	      options:{
+            	     	plugins:{
+            	     		legend:{
+            	      			display:false,
+            	      		}
+            	     	},
+            	      	tooltip:{
+            	      		enabled:false
+            	      	}
+            	      },
+            	      plugins:
+            	    	  [stackedText]
+   		 }) ,*/
+      configDoughnut
+    );
+    
+  const configDoughnut2 =  {
+          	      type: 'doughnut',
+          	      data: {
+          	    	  labels: [
+          	    		    'Red',
+          	    		    'Blue'
+          	    		 
+          	    		  ],
+          	    		  datasets: [{
+          	    		    label: 'My First Dataset',
+          	    		    data:  calory,
+          	    		    backgroundColor: [
+          	    		      'rgb(255, 99, 132)',
+          	    		      'transparent'
+          	    		      /*'rgb(54, 162, 235)'
+          	    		      'rgb(255, 205, 86)'*/
+          	    		    ],
+          	    		    hoverOffset: 4,
+          	    		    cutout:'90%',
+          	    		    borderRadius:20
+          	    		  }]
+          	    	},
+          	      options:{
+          	     	plugins:{
+          	     		legend:{
+          	      			display:false,
+          	      		}
+          	     	},
+          	      	tooltip:{
+          	      		enabled:false
+          	      	}
+          	      },
+          	      plugins:
+          	    	  [stackedText2]
+ 		 };
+const myChartDoughnut2 = new Chart(
+          	      document.getElementById('myChartDoughnut2'),/*{
+          	      type: 'doughnut',
+          	      data: {
+          	    	  labels: [
+          	    		    'Red',
+          	    		    'Blue'
+          	    		 
+          	    		  ],
+          	    		  datasets: [{
+          	    		    label: 'My First Dataset',
+          	    		    data:  calory,
+          	    		    backgroundColor: [
+          	    		      'rgb(255, 99, 132)',
+          	    		      'transparent'
+          	    		      /*'rgb(54, 162, 235)'
+          	    		      'rgb(255, 205, 86)'
+          	    		    ],
+          	    		    hoverOffset: 4,
+          	    		    cutout:'90%',
+          	    		    borderRadius:20
+          	    		  }]
+          	    	},
+          	      options:{
+          	     	plugins:{
+          	     		legend:{
+          	      			display:false,
+          	      		}
+          	     	},
+          	      	tooltip:{
+          	      		enabled:false
+          	      	}
+          	      },
+          	      plugins:
+          	    	  [stackedText2]
+ 		 }*/
+ 		 configDoughnut2
+ 		 );
     
