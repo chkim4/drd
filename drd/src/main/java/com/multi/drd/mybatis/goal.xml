@@ -3,7 +3,6 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.drd.goal">
-
 	<select id="readGoal" resultType="goal" parameterType="goal">
 		select * 
 		from goal
@@ -14,7 +13,7 @@
 		set goalExerciseTime = #{goalExerciseTime}
 		where memberSEQ = #{memberSEQ}
 	</update>
-	<update id="updateCalory" parameterType="Integer">
+	<update id="updateCalory" parameterType="goal">
 		update goal
 		set goalCalory = #{goalCalory}
 		where memberSEQ = #{memberSEQ}
@@ -24,7 +23,16 @@
 		set goalProtein = #{goalProtein}
 		where memberSEQ = #{memberSEQ}
 	</update>
-
+	
+	
+	<select id="getBodyShapeList" resultType="member">
+		select desiredBodyShape from member
+	</select>
+	<update id="updateBodyShape" parameterType="member">
+		update member
+		set desiredWeight = #{desiredWeight}, desiredBodyShape = #{desiredBodyShape}
+		where memberSEQ = #{memberSEQ}
+	</update>
 </mapper>
 
 
