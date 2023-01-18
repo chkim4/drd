@@ -1,15 +1,24 @@
 package com.multi.drd.goal;
 
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+
+import com.multi.drd.member.MemberDTO;
+import com.multi.drd.record.RecordDTO;
+import com.multi.drd.utils.DateUtils;
 
 public interface GoalDAO {
 	GoalDTO readGoal(int memberSEQ);
 	int updateTime(GoalDTO goal);
 	int updateCalory(GoalDTO goal);
-	//int updateProtein(GoalDTO goal);
-	//기록횟수와 체중에 따른 권장 단백질 업데이트
-	//int updateProtein(Map<Integer, Integer> amountAndSeq);
-	//int updateProtein(int goalProtein, int memberSEQ);
-	int updateProtein(Map<String, Integer> amountAndSeq);
-
+	
+	public List<MemberDTO> getBodyShapeList();
+	public int updateBodyShape(MemberDTO member);
+	
+	public List<RecordDTO> findByWeek(int memberSEQ);   
 }
