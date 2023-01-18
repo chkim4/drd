@@ -11,5 +11,8 @@ public interface DashboardService {
 	 * MemberDTO getMemberInfo(int memberSEQ); MemberBioDTO getMemberBio(int
 	 * memberSEQ);
 	 */
-	List<RecordDTO> ExcerciseHourByWeek(int memberSEQ);
+	List<AggregationResultDTO> excerciseHourByWeek(int memberSEQ);
+	List<RecordDTO> findByWeek(int memberSEQ);
+	List<AggregationResultDTO> cardioMinByWeek(int memberSEQ);
+	List<AggregationResultDTO> fitnessMinByWeek(int memberSEQ);
 }

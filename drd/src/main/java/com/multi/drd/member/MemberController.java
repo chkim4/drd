@@ -45,17 +45,8 @@ public class MemberController {
 	}     
 	
 	@RequestMapping(value = "/login.do",method = RequestMethod.GET)
-	public String loginPage(HttpSession session) {
-		
-		String viewName = "member/login";
-		
-		// 로그인이 되어 있다면 index 페이지로 이동
-		if(session.getAttribute("member") != null) {
-			
-			viewName = "member/index";
-		} 
-	
-		return viewName;
+	public String loginPage() {
+		return "member/login";
 	} 
 
 	@RequestMapping(value = "/login.do",method = RequestMethod.POST)

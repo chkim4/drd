@@ -11,5 +11,9 @@ public interface DashboardDAO {
 	//public MemberBioDTO readbio(int memberSEQ);
 	
 	//RecordDAO
-	List<RecordDTO> ExcerciseHourByWeek(int memberSEQ);
+	List<AggregationResultDTO> excerciseHourByWeek(int memberSEQ);
+	List<AggregationResultDTO> cardioMinByWeek(int memberSEQ);
+	List<AggregationResultDTO> fitnessMinByWeek(int memberSEQ);
+	List<RecordDTO> findByWeek(int memberSEQ);
+
 }

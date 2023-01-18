@@ -1,5 +1,9 @@
 package com.multi.drd.goal;
 
+
+
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -33,8 +37,19 @@ public class GoalDAOImpl implements GoalDAO {
 	public int updateCalory(GoalDTO goal) {
 		return sqlSession.update("com.multi.drd.goal.updateCalory", goal);
 	}
-
-
 	
+	@Override
+	public int updateProtein(Map<String, Integer> amountAndSeq) {
+		// TODO Auto-generated method stub
 	
+		return sqlSession.update("com.multi.drd.goal.updateProtein",amountAndSeq);
+	}
+//	@Override
+//	public int updateProtein(GoalDTO goal) {
+//		// TODO Auto-generated method stub
+//		
+//		return sqlSession.update("com.multi.drd.goal.updateProtein",goal);
+//	}
+
+		
 }
