@@ -92,12 +92,12 @@ function selectFitness_onclick(){
 	})
 	function successRun1(data){
 		mydata = "<form id='updatefitness' action=''>"
-				+ "<input type='hidden' value='"data.fitnessSEQ"'>"
+				+ "<input type='hidden' value='"+data.fitnessSEQ+"'>"
 				+ "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.set+"' name='set'></div></div><br/>"
 				+ "<div class='w-100'>count : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.count+"' name='count'></div></div><br/>"
 				+ "<div class='w-100'>weight : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.weight+"' name='weight'></div></div><br/>"
 				+ "<div style='text-align: right; '>"
-		        + "<a href='#' onclick="return updateCardio_onclick()" class='btn btn-success btn-icon-split'>"
+		        + "<a href='#' onclick='return updateCardio_onclick()' class='btn btn-success btn-icon-split'>"
 					+ "<span class='icon text-white-50'>"
 					+ "<i class='fas fa-check'></i>"
 					+ "</span>"
@@ -155,7 +155,7 @@ function selectCardio_onclick(){
 		})//end ajax1cardiochange
 		function successRun1(data){
 			mydata = "<form id='updatecardio' action=''>"
-				+ "<input type='hidden' value='"data.cardioSEQ"'>"
+				+ "<input type='hidden' value='"+data.cardioSEQ+"'>"
 				+ "<div class='w-100'>time : <div style='float:right; text-align: right;'>"
 					+ "<input type='number' min='1' value='"+data.time+"' name='time'>"
 				+ "</div></div><br/>"
