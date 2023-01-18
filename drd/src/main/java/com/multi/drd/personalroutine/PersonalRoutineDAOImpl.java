@@ -1,5 +1,7 @@
 package com.multi.drd.personalroutine;
 
+import java.util.Map;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,6 +26,16 @@ public class PersonalRoutineDAOImpl implements PersonalRoutineDAO{
 	}
 	public int updateOne(PersonalRoutineDTO pr) {
 		return sqlSession.update("com.multi.drd.personalroutine.updateOne", pr);
+	}
+
+	@Override
+	public void updatefitness(Map<String, Object> map) {
+		sqlSession.update("com.multi.drd.personalroutine.updatefitness", map);
+	}
+
+	@Override
+	public void updatecardio(Map<String, Object> map) {
+		sqlSession.update("com.multi.drd.personalroutine.updatefitness", map);		
 	}
 	
 }
