@@ -1,26 +1,21 @@
-var isNickNameChecked = null; 
-var isEmailChecked = null;  
-var isPassChecked = null;
-var isRoutineChecked = null;
-var height = -1;
-var weight = -1; 
-var age = -1;   
-var disease = -1;
-var displayRoutineList = [];  
+var fitnessSEQ = -1;
+var cardioSEQ = -1;
+var personalRoutineSEQ = -1; 
+var fitnessarray= [];
 
-
-const ID_MIN_LENGTH = 5; 
-const NICKNAME_MIN_LENGTH = 5; 
-const EMAIL_REGEX = "^[a-zA-Z0-9+-\_.]+@[a-zA-Z0-9-]+\.[a-z]{2,3}$"; // . 없어도 통과되는 현상 확인 필요
-const PASS_MIN_LENGTH = 5;  
-
- 
+function setPersonalRoutineSEQ(key){
+	personalRoutineSEQ = key;
+}
+function setFitnessArray(array){
+	fitnessarray = array;
+}
 function selectPersonalRoutine_onclick(){
+	console.log(personalRoutineSEQ);
 	$.ajax({
 	type:"post",
 	url:"/personalroutine/ajax/setfitnesslist",
 	data:{
-		"personalRoutineSEQ":personalRoutineSEQ
+		"personalRoutineSEQ": personalRoutineSEQ
 	},
 	async : false,
 	success: successRun1,
@@ -28,7 +23,7 @@ function selectPersonalRoutine_onclick(){
 		alert(c);
 	}
 	})//end ajax1
-	function successRun1(){
+	function successRun1(data){
 			mydata = "<div class='w-100' style='float:left; width:100%'>"
 			+"<div style='float:left; width:70%'>name</div>"
 			+"<div style='float:left; width:10%'>set</div>"
@@ -61,7 +56,7 @@ function selectPersonalRoutine_onclick(){
 		}
 					
 	})//end ajax2
-	function successRun2(){
+	function successRun2(data){
 		mydata = "<div style='float:left; width:100%'>"
 		+"<div class='w-75' style='float:left'>name</div>"
 		+"<div class='w-auto' style='float:left'>time</div>"
@@ -81,7 +76,7 @@ function selectPersonalRoutine_onclick(){
 			
 			
 function selectFitness_onclick(){
-	var fitnessSEQ = $(this).children(".seq").text();
+	fitnessSEQ = $(this).children(".seq").text();
 	$.ajax({
 	type:"post",
 	url:"/personalroutine/ajax/setfitnesschange",
@@ -95,13 +90,14 @@ function selectFitness_onclick(){
 		alert(c);
 	}
 	})
-	fuction successRun1(data){
-		mydata = "<form action=''>"
-				 + "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.set+"' name='set'></div></div><br/>"
-				 + "<div class='w-100'>count : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.count+"' name='count'></div></div><br/>"
-				 + "<div class='w-100'>weight : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.weight+"' name='weight'></div></div><br/>"
-				 + "<div style='text-align: right; '>"
-		         + "<a href='#' class='btn btn-success btn-icon-split'>"
+	function successRun1(data){
+		mydata = "<form id='updatefitness' action=''>"
+				+ "<input type='hidden' value='"data.fitnessSEQ"'>"
+				+ "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.set+"' name='set'></div></div><br/>"
+				+ "<div class='w-100'>count : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.count+"' name='count'></div></div><br/>"
+				+ "<div class='w-100'>weight : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.weight+"' name='weight'></div></div><br/>"
+				+ "<div style='text-align: right; '>"
+		        + "<a href='#' onclick="return updateCardio_onclick()" class='btn btn-success btn-icon-split'>"
 					+ "<span class='icon text-white-50'>"
 					+ "<i class='fas fa-check'></i>"
 					+ "</span>"
@@ -113,6 +109,8 @@ function selectFitness_onclick(){
 					+ "</span>"
 					+ "<span class='text'>삭제하기</span>"
 				+ "</a>";
+		var array = [data.set, data.count, data.weight];
+		setFitnessArray(array);
 		$("#ajaxchangename").empty();
 		$("#ajaxchangename").append("운동 수정");					
 		$("#ajaxchangecontents").empty();
@@ -130,7 +128,7 @@ function selectFitness_onclick(){
 		alert(c);
 	}
 	})
-	fuction successRun2(data){
+	function successRun2(data){
 		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>"+data.muscleGroup+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>"+data.equipment+"</div>"
@@ -141,7 +139,7 @@ function selectFitness_onclick(){
 
 
 function selectCardio_onclick(){
-	var cardioSEQ = $(this).children(".seq").text();
+	cardioSEQ = $(this).children(".seq").text();
 	$.ajax({
 		type:"post",
 		url:"/personalroutine/ajax/setcardiochange",
@@ -156,7 +154,8 @@ function selectCardio_onclick(){
 		}
 		})//end ajax1cardiochange
 		function successRun1(data){
-			mydata = "<form action=''>"
+			mydata = "<form id='updatecardio' action=''>"
+				+ "<input type='hidden' value='"data.cardioSEQ"'>"
 				+ "<div class='w-100'>time : <div style='float:right; text-align: right;'>"
 					+ "<input type='number' min='1' value='"+data.time+"' name='time'>"
 				+ "</div></div><br/>"
@@ -204,4 +203,12 @@ function selectCardio_onclick(){
 			$("#check").empty();
 			$("#check").append(mydata);
 		}
+}
+function updateCardio_onclick(){
+	if(document.getElementById("set").value==fitnessarray[0] && document.getElementById("count").value==fitnessarray[1] && document.getElementById("weight").value==fitnessarray[2]){
+	alert("변화가 없습니다.");
+	return false;
+	}
+	document.getElementById("updatefitness").submit();
+	
 }

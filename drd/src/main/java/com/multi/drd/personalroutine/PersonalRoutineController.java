@@ -247,12 +247,14 @@ public class PersonalRoutineController {
 			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
 			int index = JsonUtils.getIndexBySEQ(myCardioObj, cardioSEQ);
 			CardioList myCardiosList = myCardioObj.getCardioList().get(index);
-			System.out.println(myCardiosList);
 			return myCardiosList;
 		}
 		
 		//fitnessObj 업데이트
-		public void updatefitness(int personalRoutineSEQ, int fitnessSEQ, int set, int count, int weight) {
+		@RequestMapping(value = "/updatefitness")
+		public void updatefitness(HttpSession session, int fitnessSEQ, int set, int count, int weight) {
+			MemberDTO member = (MemberDTO)session.getAttribute("member");
+			int personalRoutineSEQ = member.getPersonalRoutineSEQ();
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
 			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
 			JsonUtils.updateBySEQ(myFitnessObj, fitnessSEQ, "set", set);
@@ -267,7 +269,7 @@ public class PersonalRoutineController {
 		}
 		
 		//cardioObj 업데이트 하며 전체 시간 변경
-		public void updatecardio(int personalRoutineSEQ, int cardioSEQ, int time) {
+		public void updatecardio(HttpSession session, int personalRoutineSEQ, int cardioSEQ, int time) {
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
 			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
 			JsonUtils.updateBySEQ(myCardioObj, cardioSEQ, "time", time);

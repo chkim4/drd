@@ -24,7 +24,7 @@
 		set fitnessObj = #{fitnessObj} 
 		where personalRoutineSEQ = #{personalRoutineSEQ}
 	</update>
-	<update id="updatefitness" parameterType="Map" >
+	<update id="updatecardio" parameterType="Map" >
 		update personalRoutine 
 		set cardioObj = #{cardioObj} 
 		where personalRoutineSEQ = #{personalRoutineSEQ}
