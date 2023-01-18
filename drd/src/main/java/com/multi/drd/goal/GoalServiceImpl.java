@@ -1,11 +1,12 @@
 package com.multi.drd.goal;
 
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.multi.drd.member.MemberDTO;
+import com.multi.drd.record.RecordDTO;
 
 @Service
 public class GoalServiceImpl implements GoalService {
@@ -32,15 +33,17 @@ public class GoalServiceImpl implements GoalService {
 	}
 
 	@Override
-	public int updateProtein(Map<String, Integer> amountAndSeq) {
-		// TODO Auto-generated method stub
-		return dao.updateProtein(amountAndSeq);
+	public List<MemberDTO> getBodyShapeList() {
+		return dao.getBodyShapeList();
 	}
-//	@Override
-//	public int updateProtein(GoalDTO goal) {
-//		// TODO Auto-generated method stub
-//		return dao.updateProtein(goal);
-//	}
 
+	@Override
+	public int updateBodyShape(MemberDTO member) {
+		return dao.updateBodyShape(member);
+	}
+	
+	public List<RecordDTO> findByWeek(int memberSEQ){
+		return dao.findByWeek(memberSEQ);
+	}
 	
 }
