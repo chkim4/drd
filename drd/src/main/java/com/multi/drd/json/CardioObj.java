@@ -77,7 +77,12 @@ public class CardioObj{
 		public void setIntensity(int intensity) {
 			this.intensity = intensity;
 		}
-		
+
+		@Override
+		public String toString() {
+			return "CardioList [cardioSEQ=" + cardioSEQ + ", time=" + time + ", calory=" + calory + ", name=" + name
+					+ ", intensity=" + intensity + "]";
+		} 
 	}
 
 	@Override

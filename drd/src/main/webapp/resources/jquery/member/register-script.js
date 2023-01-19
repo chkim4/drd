@@ -163,10 +163,11 @@ function getRoutineListDisplayCondition(){
 	var weight = $("#weight").val();
 	var disease = $("#disease").val();
 	var activityLevel = $("#activityLevel").val();
+	var desiredBodyShape = $("#desiredBodyShape").val();
 	
 	return birth !=="" && gender !== ""  && 
 		   height !== "" && weight !== "" && disease !== "" 
-		   && activityLevel !== "";
+		   && activityLevel !== "" && desiredBodyShape !== "";
 }
  
 function routineInfo_change(){ 

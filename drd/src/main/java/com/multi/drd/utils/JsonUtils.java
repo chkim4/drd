@@ -150,7 +150,7 @@ public class JsonUtils {
 	} 
 	
 	// cardioObj 중 List<cardioList> 파싱 
-	public static List<CardioObj.CardioList> parseCardioObjElements(String cardioListStr) {
+	public static List<CardioObj.CardioList> parseCardioListElements(String cardioListStr) {
 		List<CardioObj.CardioList> cardioList = null; 
 		
 		try {
@@ -261,7 +261,22 @@ public class JsonUtils {
 			e.printStackTrace();
 		}
 		return routine;
+	}  
+	
+	// routineObj 중 List<routineList> 파싱 
+	public static List<FitnessObj.FitnessList> parseFitnessListElements(String fitnessListStr) {
+		List<FitnessObj.FitnessList> fitnessList = null; 
+		
+		try {
+			fitnessList = mapper.readValue(fitnessListStr, new TypeReference<List<FitnessObj.FitnessList>>(){});
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return fitnessList; 
 	} 
+	// PersonalRoutineDTO 관련 - fitness 끝 
 	
 	// Aggregation의 AggregationResultDTO의 totalExerciseTimeofWeek 파싱
 	public static HashMap<String, Integer> parseTotalExerciseTimeofWeek(String aggrResultStr){

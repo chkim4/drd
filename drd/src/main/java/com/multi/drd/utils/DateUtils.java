@@ -1,14 +1,15 @@
 package com.multi.drd.utils;
 
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public final class DateUtils {    
 
@@ -114,6 +115,13 @@ public final class DateUtils {
     	
     	dates = getMonthlyISODate(localDate.getYear(), localDate.getMonthValue()); // getMonthValue: 1~12 
     	return dates;
+    } 
+    
+    public static Date convertTimestampToDate(String timestamp) {
+    	Timestamp stamp = new Timestamp(System.currentTimeMillis());
+    	Date date = new Date(stamp.getTime());
+    	
+    	return date;
     }
 } 
 

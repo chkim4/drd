@@ -2,6 +2,7 @@ package com.multi.drd.record;
 
 import java.util.Date;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
 import com.multi.drd.utils.DateUtils;
@@ -21,7 +23,18 @@ public class RecordDAOImpl implements RecordDAO {
 	public RecordDAOImpl(MongoTemplate mongoTemplate) {
 		super();
 		this.mongoTemplate = mongoTemplate;
-	}  
+	}   
+	
+	public RecordDTO findDailyRecord(int memberSEQ, Date date) {
+		
+		Date[] dates = DateUtils.getDailyISODate(date);
+		
+		Query query = new Query(); 
+		query.addCriteria(Criteria.where("memberSEQ").is(memberSEQ));
+	    query.addCriteria(Criteria.where("date").gte(dates[0]).lte(dates[1]));
+		
+	    return mongoTemplate.findOne(query, RecordDTO.class, "record");
+	}
 	
 	@Override
 	public RecordDTO findLatestRecord(int memberSEQ) {
@@ -64,6 +77,24 @@ public class RecordDAOImpl implements RecordDAO {
 		Query query = new Query(criteria);  
 		
 		return mongoTemplate.find(query, RecordDTO.class, "record");
+	}
+
+	@Override
+	public int updateCardio(RecordDTO record) {
+		
+		Query query = new Query();
+		Update update = new Update();
+		 
+	    // where절 조건 
+		Date[] dates = DateUtils.getDailyISODate(record.getDate()); 
+		
+	    query.addCriteria(Criteria.where("memberSEQ").is(record.getMemberSEQ()));
+	    query.addCriteria(Criteria.where("date").gte(dates[0]).lte(dates[1]));
+
+	    update.set("cardioObj", record.getCardioObj()); 
+	    update.set("totalExerciseTime", record.getTotalExerciseTime()); 
+	   
+	    return mongoTemplate.updateFirst(query, update, "record").getN(); // 업데이트 수행에 영향을 받는 칼럼의 갯수 반환
 	}
 	
 }

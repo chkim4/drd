@@ -44,7 +44,8 @@ function onDOMContentLoaded() {
 	           			"start": date, 
 	           			"backgroundColor": "#2C9FAF",
 	           			"extendedProps": { "totalTime": record.fitnessObj.totalTime, 
-	           							   "fitnessList": record.fitnessObj.fitnessList}	
+	           							   "fitnessList": record.fitnessObj.fitnessList, 
+	       				 			   		"date": record.date}	
            		}); 
             	 	
         		fetchedEvent.push({
@@ -52,7 +53,8 @@ function onDOMContentLoaded() {
        				"title": "식사 기록 내역", 
            			"start": date, 
            			"backgroundColor": "#17A673",
-           			"extendedProps": {"foodObj": record.foodObj}	
+           			"extendedProps": {"foodObj": record.foodObj, 
+	       				 			   "date": record.date}	
            			});  
 
         		fetchedEvent.push({
@@ -60,7 +62,8 @@ function onDOMContentLoaded() {
        				"title": "상태 점수", 
            			"start": date, 
            			"backgroundColor": "#17A673",
-           			"extendedProps": {"status": record.status}	
+           			"extendedProps": {"status": record.status, 
+	       				 			   "date": record.date}	
            			});  
             }); // data map 닫기 
            		
@@ -122,14 +125,13 @@ function showEventInfo(info){
 	var content = {icon: 'info',  
 				   customClass: 'event-read',
 				  }; 
-	
 	// 편집 가능한 이벤트일 경우  
 	if(readOnly != "readonly"){
 		content["showDenyButton"] = true; 
 		content["denyButtonText"] = "취소"; 
 		content["confirmButtonText"] = "저장";  
 		content["showLoaderOnConfirm"] = true; 
-		content["reverseButtons"] = true;
+		content["reverseButtons"] = true; 
 	} 
 	
 	
@@ -138,14 +140,14 @@ function showEventInfo(info){
 			title = '유산소 운동 목록입니다.'; 
 			content["title"] = title; 
 			content["html"] = readCardioEvent(info, readOnly); 
-			content["preConfirm"] = () => {updateCardioEvent(info.event.extendedProps.date);}		
-			//content["preConfirm"] = updateCardioEvent(info.event.extendedProps.date);		
+			content["preConfirm"] = () => {updateCardioEvent(info.event.extendedProps.date);} 		
 			break;
 		
 		case 'fitness': 
 			title = '무산소 운동 목록입니다.'; 
 			content["title"] = title; 
-			content["html"] = readFitnessEvent(info); 	
+			content["html"] = readFitnessEvent(info, readOnly);  
+			content["preConfirm"] = () => {updateFitnessEvent(info.event.extendedProps.date, info.event.extendedProps.totalTime);}	
 			break;
 		
 		case 'food': 
@@ -159,7 +161,12 @@ function showEventInfo(info){
 			content["title"] = title; 
 			content["html"] = readStatusEvent(info); 	
 			break;
-	}  
+	}   
+	
+	// 편집 불가능한 이벤트일 경우 업데이트 이벤트 핸들러 제거
+	if(readOnly == "readonly"){
+		content["preConfirm"] = () => {}	
+	}
 	
 	mySwal.fire(content);
 	
@@ -176,7 +183,7 @@ function readCardioEvent(info, readOnly){
 	                    	'<th>' + '운동 시간 (분)' + '</th>' + 
 	                    	'<th>' + '소모 칼로리' + '</th>' + 
 	                    	'<th>' + '운동 강도' + '</th>' + 
-	                    	'<th style="display: none">' + 'cardioObj' + '</th>' + 
+	                    	'<th style="display: none">' + 'cardioSEQ' + '</th>' + 
 				    	'</tr></thead>' +
 	      				'<tbody>';  
 		      				 cardioList.map(function(cardio){								      	
@@ -187,12 +194,14 @@ function readCardioEvent(info, readOnly){
 											'</td>' +  
 											'<td>' + cardio.calory + '</td>' +    
 											'<td>' + getIntensityComment(cardio.intensity) + '</td>' + 
-											'<td id="cardioSEQ" style="display: none">"' + cardio.cardioSEQ + '"</td>' +     
+											'<td style="display: none">"' + 
+												'<input type="number" id="cardioSEQ" class= "inputs" value=' + cardio.cardioSEQ +'>' +  
+											'"</td>' +     
 										   '</tr>';
 							 })
-	      				'</tbody>' + 
-	                  '</table>' +            
-	   				'</div>' 
+	result += 			'</tbody>' + 
+	    			'</table>' +            
+				'</div>' 
 	
 	return result; 
 } 
@@ -201,22 +210,25 @@ function getIntensityComment(intensity){
 	return intensity == 1 ? '고강도' : '저강도';
 }
 
-function updateCardioEvent(date){
+function updateCardioEvent(date){ 
 	var cardioObjList = [];
 	
-	// 화면에 띄운 모든 유산소 운동 목록을 [{cardioSEQ, time}] 형태로 가져오기
+	// 화면에 띄운 모든 유산소 운동 목록을 [{"cardioSEQ", 숫자}, {"time", 숫자}] 형태로 가져오기
 	$('#cardioEventListTable tr').each(function() {
-    	var cardioObj = {};
-    	cardioObj["cardioSEQ"] = parseInt($(this).find("#cardioSEQ").html());
-    	cardioObj["time"] = parseInt($(this).find("#time").val());
+    	var cardioObj = {};    	
+    	var parsedCardioSEQ = parseInt($(this).find("td input[id=cardioSEQ]").val(), 10);
+    	var parsedTime = parseInt($(this).find("td input[id=time]").val(), 10);
+    	
+    	cardioObj["cardioSEQ"] = parsedCardioSEQ;
+    	cardioObj["time"] = parsedTime;
     	cardioObjList.push(cardioObj);
 	}) 
 	cardioObjList.shift(); // [0] 에 저장된 undefined 없애기
-	console.log("cardioObjList: " , cardioObjList)
+	
 	$.ajax({
 		url: "/record/updateCardio.do", 
 		type: "POST",
-		data: {"cardioObjList": convertString(cardioObjList), "date": date},
+		data: {"cardioList": convertString(cardioObjList), "date": date},
 		success: successRun,
 		error: errorRun 
 		}) 
@@ -245,8 +257,9 @@ function updateCardioEvent(date){
 // 유산소 운동 관련 끝
 
 // 무산소 운동 관련 시작
-function readFitnessEvent(info){ 
+function readFitnessEvent(info, readOnly){ 
 	fitnessList = info.event.extendedProps.fitnessList;
+	totalTime = info.event.extendedProps.totalTime;
 	
 	result = '<div class = "swal-text">' +     
 				      '<table class="table table-bordered" id="fitnessEventListTable" width="100%" cellspacing="0">' +  
@@ -256,25 +269,89 @@ function readFitnessEvent(info){
 	                    	'<th>' + '세트 당 횟수' + '</th>' + 
 	                    	'<th>' + '중량' + '</th>' + 
 	                    	'<th>' + '근육 부위' + '</th>' + 
-	                    	'<th>' + '기구' + '</th>' + 
+	                    	'<th>' + '기구' + '</th>' +  
+	                    	'<th style="display: none">' + 'fitnessSEQ' + '</th>' +
 				    	'</tr></thead>' +
 	      				'<tbody>';  
 		      				 fitnessList.map(function(fitness){								      	
-						      	result += '<tr>' +
+						      	result += '<tr>' + 
 											'<td>' + fitness.name + '</td>' +  
-											'<td>' + fitness.set + '</td>' +  
-											'<td>' + fitness.count + '</td>' +    
-											'<td>' + fitness.weight + '</td>' +     
+											'<td>' + 
+												'<input type="number" id="set" class= "inputs" value=' + fitness.set + ' ' + readOnly +'>' +  
+											'</td>' +  
+											'<td>' + 
+												'<input type="number" id="count" class= "inputs" value=' + fitness.count + ' ' + readOnly +'>' +  
+											'</td>' +  
+											'<td>' + 
+												'<input type="number" id="weight" class= "inputs" value=' + fitness.weight + ' ' + readOnly +'>' +  
+											'</td>' +    
 											'<td>' + fitness.muscleGroup + '</td>' +    
 											'<td>' + fitness.equipment + '</td>' +    
+											'<td style="display: none">"' + 
+												'<input type="number" id="fitnessSEQ" class= "inputs" value=' + fitness.fitnessSEQ +'>' +  
+											'"</td>' + 
 										  '</tr>';
 							 })
-	      				'</tbody>' + 
-	                  '</table>' +            
-	   				'</div>' 
+	result += 			'</tbody>' + 
+	    			'</table>' +      
+	    			'<span>총 운동 시간: ' +  
+	    				'<input type="number" id="totalTime" class= "inputs" style="width: 10%;" value=' + totalTime + ' ' + readOnly +'> 분' +  
+	    				
+	    			'</span>' +    
+				'</div>' 
 	
 	return result; 
-} 
+}  
+
+function updateFitnessEvent(date, totalTime){
+	var fitnessObjList = [];
+	
+	// 화면에 띄운 모든 무산소 운동 목록을 [{"totalTime": 숫자} {"fitnessSEQ", 숫자}, {"set", 숫자}, {"count", 숫자}, {"weight", 숫자}] 형태로 가져오기
+	$('#fitnessEventListTable tr').each(function() {
+    	var fitnessObj = {};    	
+    	var parsedFitnessSEQ = parseInt($(this).find("td input[id=fitnessSEQ]").val(), 10);
+    	var parsedSet = parseInt($(this).find("td input[id=set]").val(), 10);
+    	var parsedCount = parseInt($(this).find("td input[id=count]").val(), 10);
+    	var parsedWeight = parseInt($(this).find("td input[id=weight]").val(), 10);
+    	
+    	fitnessObj["fitnessSEQ"] = parsedFitnessSEQ;
+    	fitnessObj["set"] = parsedSet;
+    	fitnessObj["count"] = parsedCount;
+    	fitnessObj["weight"] = parsedWeight;
+    	fitnessObjList.push(fitnessObj);
+	}) 
+	fitnessObjList.shift(); // [0] 에 저장된 undefined 없애기
+	
+	$.ajax({
+		url: "/record/updateFitness.do", 
+		type: "POST",
+		data: {"fitnessList": convertString(fitnessObjList), "date": date, "totalTime": totalTime},
+		success: successRun,
+		error: errorRun 
+		}) 
+		function successRun(result){  
+			
+			if(result > 0){ 
+				mySwal.fire({
+				  icon: 'success',
+				  title: '업데이트가 반영되었습니다!',
+				})
+				
+			}
+			else{
+				mySwal.fire({
+				  icon: 'error',
+				  title: '업데이트 중 에러가 생겼습니다... 관리자에게 문의 바랍니다.',
+				})
+			}
+		}  
+		function errorRun(obj, msg,statusMsg){  
+			console.log(obj);
+			console.log(msg);
+			console.log(statusMsg);
+		} 	 			
+}
+
 // 무산소 운동 관련 끝
 
 // 음식 관련 시작
@@ -302,9 +379,9 @@ function readFoodEvent(info){
 											'<td>' + food.cholesterol + '</td>' +    
 										  '</tr>';
 							 })
-	      				'</tbody>' + 
-	                  '</table>' +            
-	   				'</div>' 
+	result+=  			'</tbody>' + 
+	               '</table>' +            
+	   			'</div>' 
 	
 	return result; 
 } 
