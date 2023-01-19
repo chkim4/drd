@@ -25,6 +25,12 @@
 	</update>
 	
 	
+	<!-- member -->
+	<select id="findByMemberSeq" resultType="member" parameterType="String">
+		select * 
+		from member 
+		where memberseq = #{memberseq}
+	</select>    
 	<select id="getBodyShapeList" resultType="member">
 		select desiredBodyShape from member
 	</select>

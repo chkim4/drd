@@ -9,7 +9,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" 
+<meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -48,12 +48,9 @@
 			$("#modWeight").val($('#desiredWeight').val()); 
 			$("#modBodyShape").val($('#desiredBodyShape').val()); 
  		})
- 		 $('[data-toggle="popover"]').popover();
-		
+ 		$('[data-toggle="popover"]').popover();
 	 		
  	 	$('#modalmodBTN').click(function() {
- 	  		var weight = $("#myModal #modWeight").val();
- 	 		var bodyshape = $("#myModal #modBodyShape").val();
  	 		$.ajax({
  				url : "/goal/updateBodyShape",
  				type : "POST",
@@ -63,14 +60,10 @@
 					$("#desiredWeight").val(data.desiredWeight);
 					$("#desiredBodyShape").val(data.desiredBodyShape);
 					$("#myModal").modal('hide');
- 	  				sessionStorage.setItem('desiredWeight',$('#desiredWeight').val());
- 	 				sessionStorage.setItem('desiredBodyShape',$('#desiredBodyShape').val());
+					location.reload();
 				}
  			})
  		})
- 			$('#desiredWeight').val(sessionStorage.getItem('desiredWeight'));
-			$('#desiredBodyShape').val(sessionStorage.getItem('desiredBodyShape'));
-		//$("#updateCaloryBTN").click(updateCaloryBTN_onClick); 
 	});
 </script>
 
@@ -252,7 +245,10 @@
 					<!-- Page Heading -->
 					<h1 class="h1 mb-2 text-gray-800" style="font-weight: 800;">내
 						목표</h1>
-					<p class="mb-3">습관을 계획하고 맞춤목표에 도전하세요</p>
+					<p class="mb-2">습관을 계획하고 맞춤목표에 도전하세요</p>
+						<c:if test="${weeklyExerciseTime == 0 || weeklyCalory == 0 || weeklyProtein ==0 }">
+							<span class="font-weight-bold text-primary">주간 기록이 없습니다</span><span class="ml-3 font-weight-bold" style="font-size: 12px">기록하기 <a href="/record/index.do"><img src="/sbadmin/img/record.png" class="mb-2" width=25px;></a></span> 
+						</c:if>
 
 					<!-- Content Row -->
 					<div class="row mt-3">
@@ -261,16 +257,13 @@
 							<div class="card shadow mb-4">
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">주간 운동</h6>
+									<h6 class="m-0 font-weight-bold text-primary">주간 운동 목표</h6>
 								</div>
 								<!-- Card Body -->
 								<div class="card-body">
 									<div style="width: 100%;">
 										<canvas id="timeChart"></canvas>
-
 									</div>
-									<%-- 		<div>cardioTotalTime : ${cardioTotalTime}
-										fitnessTotalTime : ${fitnessTotalTime}</div> --%>
 								</div>
 							</div>
 
@@ -278,7 +271,7 @@
 							<div class="card shadow mb-4">
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">주간 운동 목표</h6>
+									<h6 class="m-0 font-weight-bold text-primary">나의 운동</h6>
 								</div>
 								<!-- Card Body -->
 								<div class="card-body">
@@ -324,8 +317,6 @@
 														pattern="0%" />
 												</c:when>
 											</c:choose>
-
-
 										</div>
 										<div class="progress mb-4">
 											<div class="progress-bar" role="progressbar"
@@ -350,25 +341,30 @@
 									<div class="mb-4 small">
 										목표 체중
 										<div>
-											<input type="text" class="form-control" id="desiredWeight"
+											<c:choose>
+												<c:when test="${desiredWeight == 0 }">
+													<input type="text" class="form-control" id="desiredWeight"
+												name="desiredWeight" value="목표체중을 입력하세요"
+												size="10px" readonly="readonly" style="text-align: center;">
+												</c:when>
+												<c:when test="${desiredWeight != 0 }">
+													<input type="text" class="form-control" id="desiredWeight"
 												name="desiredWeight" value="${member.desiredWeight}"
 												size="10px" readonly="readonly" style="text-align: center;">
+												</c:when>
+											
+											</c:choose>
+										
+										
+										
+											
 										</div>
-
-										<%-- <span class="px-5 py-2 ml-2 mt-1" id="desiredWeight"
-													style="border: 1px solid #9e9e9e">${member.desiredWeight}
-													</span>kg --%>
 									</div>
 									<div class="mb-2 small">
 										목표 유형 <input type="text" class="form-control"
 											id="desiredBodyShape" name="desiredBodyShape"
 											value="${member.desiredBodyShape}" size="10px"
 											readonly="readonly" style="text-align: center;">
-
-
-										<%-- 		<span class="px-5 py-2 ml-2" id="desiredBodyShape"
-													style="border: 1px solid #9e9e9e">${member.desiredBodyShape}
-													</span> --%>
 									</div>
 									<button type="button" class="btn btn-sm btn-primary"
 										data-toggle="modal" data-target="#myModal"
@@ -396,9 +392,8 @@
 														<div>
 															<label>목표 유형</label> <select class="form-control"
 																id="modBodyShape" name="desiredBodyShape">
-																<option value="desiredBodyShape_1">desiredBodyShape_1</option>
-																<option value="desiredBodyShape_2">desiredBodyShape_2</option>
-																<option value="desiredBodyShape_3">desiredBodyShape_3</option>
+																<option value="다이어트">다이어트</option>
+																<option value="벌크업">벌크업</option>
 															</select>
 														</div>
 													</div>
@@ -442,9 +437,9 @@
 													style="text-align: center; color: #9e9e9e; font-size: 15; font-weight: bold;">유산소 운동</div>
 												<thead style="background-color: #f4f5f8;">
 													<tr>
-														<th>name</th>
-														<th>time</th>
-														<th>intensity</th>
+														<th>이름</th>
+														<th>시간</th>
+														<th>강도</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -467,10 +462,10 @@
 													style="text-align: center; color: #9e9e9e; font-size: 15; font-weight: bold;">무산소 운동</div>
 												<thead style="background-color: #f4f5f8;">
 													<tr>
-														<th>name</th>
-														<th>set</th>
-														<th>count</th>
-														<th>weight</th>
+														<th>이름</th>
+														<th>세트</th>
+														<th>횟수</th>
+														<th>무게</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -522,16 +517,16 @@
 													name="memberSEQ" />
 											</form>
 											<div class="mt-3" id="caloryInfo" style="color: #ff4d4d; font-size: 12px">
-												<%-- <c:choose>
+												<c:choose>
 													<c:when
-														test="${member.desiredBodyShape eq 'desiredBodyShape_1'}">
-												 		권장 칼로리보다 많이 섭취해야 합니다
+														test="${member.desiredBodyShape eq '다이어트'}">
+												 		권장 칼로리보다 적게 섭취해야 합니다
 													</c:when>
 													<c:when
-														test="${member.desiredBodyShape eq 'desiredBodyShape_2'}">
-												 		권장 칼로리보다 적게 섭취해야 합니다
+														test="${member.desiredBodyShape eq '벌크업'}">
+												 		권장 칼로리보다 많이 섭취해야 합니다
 												</c:when>
-												</c:choose> --%>
+												</c:choose>
 											</div>
 										</div>
 									</div>
@@ -682,7 +677,7 @@
 		 		    		        },
 			                    ticks: {
 			                    	min: 0,
-			        				max: 300,
+			        				max: 500,
 			        				stepSize : 50,
 			        		        maxTicksLimit: 10,
 			        	          	padding: 10,
@@ -750,8 +745,8 @@
 			 		    		        },
 				                    ticks: {
 				                    	min: 0,
-				        				max: 200,
-				        				stepSize : 50,
+				        				max: 1000,
+				        				stepSize : 100,
 				        		        maxTicksLimit: 10,
 				        	          	padding: 10,
 				                        beginAtZero: true
@@ -780,7 +775,7 @@
 			 		          		responsive:true,
 			 		          	    title: {
 			 		          	      display: true,
-			 		          	      text: "칼로리 주간목표달성",
+			 		          	      text: "칼로리 목표달성",
 			 		          	      fontSize : 15,
 			 		          	      fontColor : '#9e9e9e'
 			 		          	    },
@@ -811,8 +806,8 @@
 						 		    		        },
 							                    ticks: {
 							                    	min: 0,
-							        				max: 10000,
-							        				stepSize : 2000,
+							        				max: 3000,
+							        				stepSize : 1000,
 							        		        maxTicksLimit: 10,
 							        	          	padding: 10,
 							                        beginAtZero: true
