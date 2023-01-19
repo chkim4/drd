@@ -28,18 +28,18 @@ import com.mongodb.DBObject;
 import com.multi.drd.record.RecordDTO;
 import com.multi.drd.utils.DateUtils;
 @Repository
-public class DashboarDAOImpl implements DashboardDAO {
+public class DashboardDAOImpl implements DashboardDAO {
 	SqlSession sqlSession;
 	MongoTemplate mongoTemplate;
 	
 	@Autowired
-	public DashboarDAOImpl(SqlSession sqlSession, MongoTemplate mongoTemplate) {
+	public DashboardDAOImpl(SqlSession sqlSession, MongoTemplate mongoTemplate) {
 		super();
 		this.sqlSession = sqlSession;
 		this.mongoTemplate = mongoTemplate;
 	}
 	
-	public DashboarDAOImpl() {
+	public DashboardDAOImpl() {
 		super();
 	}
 

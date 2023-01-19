@@ -35,7 +35,8 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "member/login";
+		//return "member/login";
+		return "dashboard/gymInfo";
 	}
 	
 }
