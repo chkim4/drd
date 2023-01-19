@@ -42,36 +42,51 @@ public class GoalController {
 	@RequestMapping(value = "/readAll",method = RequestMethod.GET)
 	public String goalpage(HttpSession session, Model model) {
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		int memberSEQ = member.getMemberSEQ();
+		
+		// 세션의 memberseq로 member정보 다시 select
+		member = service.findByMemberSeq(String.valueOf(memberSEQ));
+		
 		List<MemberDTO> bodyShapeList = service.getBodyShapeList();
+		
+		double desiredWeight = 0;
+		if(desiredWeight == 0) {
+			desiredWeight = member.getDesiredWeight();
+		}
 		
 		//주간 기록
 		List<RecordDTO> weeklyRecord = service.findByWeek(member.getMemberSEQ()); 
-		
+		 
 		// 현재 사용자의 목표 
-		GoalDTO goal = service.readGoal(member.getMemberSEQ());
+		GoalDTO goal = service.readGoal(((MemberDTO)session.getAttribute("member")).getMemberSEQ());
 		
 		// 현재 사용자의 루틴
 		PersonalRoutineDTO pRoutine = prservice.findOne1(member.getPersonalRoutineSEQ());
-
+		
+		// => 주간 기록 정보 저장: 총 운동 시간, 총 섭취 칼로리 및 단백질
 		int weeklyExerciseTime = 0; 
 		int weeklyCalory = 0;
 		int weeklyProtein = 0; 
-
-		int goalExerciseTime = goal.getGoalExerciseTime(); // goal 테이블의 goalExerciseTime은 주간 기준임.
-		int goalCalory = goal.getGoalCalory()*7; 
-		int goalProtein = goal.getGoalProtein()*7; // goal 테이블의 goalProtein과 goalCalory는 하루 기준임.
 		
-		// => 주간 기록 정보 저장: 총 운동 시간, 총 섭취 칼로리 및 단백질
-		if(weeklyRecord != null) { 
+		if(weeklyRecord == null) {
+			weeklyExerciseTime = 0; 
+			weeklyCalory = 0;
+			weeklyProtein = 0; 
+		}else {
 			for (RecordDTO record : weeklyRecord) { 
 				weeklyExerciseTime+= record.getTotalExerciseTime();
 				weeklyCalory += record.getTotalCalory();
 				
-	        	for (FoodObj food : record.getFoodObj()) {
-	        		weeklyProtein += food.getProtein();
-	        	}
-	        }
-		} 
+				for (FoodObj food : record.getFoodObj()) {
+					weeklyProtein += food.getProtein();
+				}
+			}
+		}
+		
+		
+		int goalExerciseTime = goal.getGoalExerciseTime(); // goal 테이블의 goalExerciseTime은 주간 기준임.
+		int goalCalory = goal.getGoalCalory(); 
+		int goalProtein = goal.getGoalProtein()*7; // goal 테이블의 goalProtein과 goalCalory는 하루 기준임.
 		
 		pRoutine.getCardioObj();
 		pRoutine.getFitnessObj();
@@ -89,10 +104,12 @@ public class GoalController {
 		model.addAttribute("member", member);
 		// model.addAttribute("goal", goal);
 		model.addAttribute("bodyShapeList",bodyShapeList);
+		model.addAttribute("desiredWeight", desiredWeight);
 		// model.addAttribute("cardioTotalTime", cardioTotalTime);
 		// model.addAttribute("fitnessTotalTime", fitnessTotalTime);
 				
-		// 추가사항 
+		// 추가사항
+		
 		
 		// 기록 관련
 		model.addAttribute("weeklyExerciseTime", weeklyExerciseTime);
