@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.multi.drd.json.CardioObj;
+import com.multi.drd.json.FitnessObj;
 import com.multi.drd.member.MemberDTO;
+import com.multi.drd.utils.DateUtils;
 import com.multi.drd.utils.JsonUtils;
 
 @Controller
@@ -73,20 +75,63 @@ public class RecordController {
 	@RequestMapping(value = "/updateCardio.do",method = RequestMethod.POST) 
 	@ResponseBody
 	public int updateCardio(HttpSession session, HttpServletRequest request){ 
-		
+		// 클라이언트로부터 받은 데이터
 		MemberDTO member = (MemberDTO)session.getAttribute("member");
-		String date = request.getParameter("date"); 
+		String dateStr = request.getParameter("date"); 		
+		String cardioListStr = request.getParameter("cardioList");
 		
-		String cardioObjListStr = request.getParameter("cardioObjList");
-		List<CardioObj.CardioList> cardioObjList = JsonUtils.parseCardioObjElements(cardioObjListStr);
-		
+		// 데이터 가공
 		int memberSEQ = member.getMemberSEQ(); 
-		System.out.println("memberSEQ: " + memberSEQ);
-		System.out.println("date: " + date);
-		System.out.println("cardioObjList: " + cardioObjList);
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<CardioObj.CardioList> cardioList = JsonUtils.parseCardioListElements(cardioListStr);
+		int totalTime = 0; 
+		
+		for(CardioObj.CardioList cardio: cardioList) {
+			
+			totalTime+=cardio.getTime();
+		}
+		
+		CardioObj cardioObj = new CardioObj();
+		cardioObj.setTotalTime(totalTime);
+		cardioObj.setCardioList(cardioList);
 		
 		
-		return 1;
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setCardioObj(cardioObj);
+		
+		return recordService.updateCardio(record);
+	}	
+
+	@RequestMapping(value = "/updateFitness.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int updateFitness(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String fitnessListStr = request.getParameter("fitnessList"); 
+		int totalTime = Integer.parseInt(request.getParameter("totalTime"));
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<FitnessObj.FitnessList> fitnessList = JsonUtils.parseFitnessListElements(fitnessListStr);
+		FitnessObj fitnessObj = new FitnessObj();
+		fitnessObj.setFitnessList(fitnessList);
+		fitnessObj.setTotalTime(totalTime);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setFitnessObj(fitnessObj);
+		
+		return recordService.updateFitness(record);
 	}	
 
 }
