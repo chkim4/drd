@@ -8,12 +8,21 @@ import com.multi.drd.record.RecordDTO;
 
 public interface GoalDAO {
 	GoalDTO readGoal(int memberSEQ);
+	
 	int updateTime(GoalDTO goal);
+	
 	int updateCalory(GoalDTO goal);
 	
-	public List<MemberDTO> getBodyShapeList();
-	public int updateBodyShape(MemberDTO member);
+	int updateProtein(Map<String, Integer> amountAndSeq);
 	
-	public List<RecordDTO> findByWeek(int memberSEQ);   
-	public int updateProtein(Map<String, Integer> amountAndSeq);
+	List<RecordDTO> findByWeek(int memberSEQ);   
+
+	
+	List<MemberDTO> getBodyShapeList();
+	
+	int updateBodyShape(MemberDTO member);
+	
+	MemberDTO findByMemberSeq(String memberSEQ); 
+
+	
 }
