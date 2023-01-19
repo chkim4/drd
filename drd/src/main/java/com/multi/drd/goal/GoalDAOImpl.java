@@ -84,6 +84,13 @@ public class GoalDAOImpl implements GoalDAO {
 	public int updateProtein(Map<String, Integer> amountAndSeq) {
 		return sqlSession.update("com.multi.drd.goal.updateProtein", amountAndSeq);
 	}
+
+	@Override
+	public MemberDTO findByMemberSeq(String memberSEQ) {
+		return sqlSession.selectOne("com.multi.drd.goal.findByMemberSeq", memberSEQ);
+		
+	
+	}
 	
 	
 }

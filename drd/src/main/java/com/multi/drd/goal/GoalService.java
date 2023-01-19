@@ -7,13 +7,16 @@ import com.multi.drd.member.MemberDTO;
 import com.multi.drd.record.RecordDTO;
 
 public interface GoalService {
-	public GoalDTO readGoal(int memberSEQ);
-	public int updateTime(GoalDTO goal);
-	public int updateCalory(GoalDTO goal);
+	GoalDTO readGoal(int memberSEQ);
+	int updateTime(GoalDTO goal);
+	int updateCalory(GoalDTO goal);
 	
-	public List<MemberDTO> getBodyShapeList();
-	public int updateBodyShape(MemberDTO member);
+	List<MemberDTO> getBodyShapeList();
+	int updateBodyShape(MemberDTO member);
 	
-	public List<RecordDTO> findByWeek(int memberSEQ);
-	public int updateProtein(Map<String, Integer> amountAndSeq);
+	List<RecordDTO> findByWeek(int memberSEQ);
+	int updateProtein(Map<String, Integer> amountAndSeq);
+	
+	MemberDTO findByMemberSeq(String memberSEQ);
+
 }
