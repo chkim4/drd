@@ -52,7 +52,6 @@ public class MemberDAOImpl implements MemberDAO{
 	// 일단 질병 정보에 따른 루틴 추천으로 구현. 추 후 확장을 위해 리스트로 반환
 	@Override
 	public List<RoutineDTO> findRoutineByRegisterInfo(HashMap<String, Object> param) {
-		System.out.println(param.get("disease"));
 		return sqlSession.selectList("com.multi.drd.member.findRoutineByRegisterInfo", param);
 	}
 

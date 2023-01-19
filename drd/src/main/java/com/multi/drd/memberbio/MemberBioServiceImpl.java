@@ -40,9 +40,8 @@ public class MemberBioServiceImpl implements MemberBioService {
 				break;
 		
 		} 
-		
 		return dao.register(registerMemberBio); 
-		// 트랜잭션 테스트용: throw new RuntimeException();
+		// throw new RuntimeException(); // 트랜잭션 테스트용
 	} 
 	
 	@Override

@@ -11,5 +11,11 @@ public interface RecordService {
 	public RecordDTO findTodayRecord(int memberSEQ); 
 	
 	// 한 달 기록 조회. month: 1~12
-	public List<RecordDTO> findMonthlyRecord(int memberSEQ, int year, int month);
+	public List<RecordDTO> findMonthlyRecord(int memberSEQ, int year, int month); 
+	
+	// 입력 받은 CardioList 업데이트
+	public int updateCardio(RecordDTO record);
+
+	// 입력 받은 FitnessList 업데이트
+	public int updateFitness(RecordDTO record);
 }

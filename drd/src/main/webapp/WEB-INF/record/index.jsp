@@ -1,16 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset='utf-8' /> 
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
-    <meta name="author" content=""> 
-    
-    <title>다루다HOME</title> 
+    <meta name="author" content="">
+
+   <title>다루다HOME</title> 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>  
    
@@ -19,7 +19,10 @@
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
+    
+    <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
+    
+    
     <!-- Custom styles for this template-->
     <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet"> 
     
@@ -32,12 +35,12 @@
 	<script src="/resources/jquery/record/index-script.js"></script>  
 	<script type="text/javascript"> 
 	    document.addEventListener('DOMContentLoaded', onDOMContentLoaded); 
-	</script>
+	</script> 
+		
    <link rel="stylesheet" href="/resources/css/record/index.css"> 
 	
 </head>
 
-  
 <body id="page-top">
 
     <!-- Page Wrapper -->
@@ -46,10 +49,10 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-           <!-- Sidebar - Brand -->
+            <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member/index.do">
                 <div>
-                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%"></i>
+                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%;"/>
                 </div>
             </a>
             
@@ -128,8 +131,8 @@
             </div>
 
         </ul>
-        <!-- End of Sidebar --> 
-        
+        <!-- End of Sidebar -->
+
         <!-- Content Wrapper -->
         <div id="content-wrapper" class="d-flex flex-column">
 
@@ -206,36 +209,24 @@
 
                 </nav>
                 <!-- End of Topbar -->
-        
-         <!-- Begin Page Content --> 
-         
-         
-         <!-- Calendar 시작 -->
-         <div class="container-fluid">
-           <div id="calendar"></div>
-         </div>
-         <!-- /.container-fluid -->
 
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+				    
+					<div id="calendar"></div> 
+					
+                	
+                <!-- /.container-fluid -->
+				
             </div>
             <!-- End of Main Content -->
-
-            <!-- Footer -->
-            <footer class="sticky-footer bg-white">
-                <div class="container my-auto">
-                    <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2020</span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
         </div>
         <!-- End of Content Wrapper -->
 
     </div>
     <!-- End of Page Wrapper -->
 
-        <!-- Scroll to Top Button-->
+    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
