@@ -69,7 +69,6 @@ function onDOMContentLoaded() {
            		
 			 var calendarEl = document.getElementById('calendar');
 	         var calendar = new FullCalendar.Calendar(calendarEl, {
-	             //initialDate: new Date(),
 	             initialDate:  getInitialDate(),
 	             initialView: 'dayGridMonth',
 	             customButtons: {
@@ -147,7 +146,7 @@ function showEventInfo(info){
 			title = '무산소 운동 목록입니다.'; 
 			content["title"] = title; 
 			content["html"] = readFitnessEvent(info, readOnly);  
-			content["preConfirm"] = () => {updateFitnessEvent(info.event.extendedProps.date, info.event.extendedProps.totalTime);}	
+			content["preConfirm"] = () => {updateFitnessEvent(info.event.extendedProps.date);}	
 			break;
 		
 		case 'food': 
@@ -303,8 +302,9 @@ function readFitnessEvent(info, readOnly){
 	return result; 
 }  
 
-function updateFitnessEvent(date, totalTime){
+function updateFitnessEvent(date){
 	var fitnessObjList = [];
+	var totalTime =  parseInt($("input[id='totalTime']").val()); 
 	
 	// 화면에 띄운 모든 무산소 운동 목록을 [{"totalTime": 숫자} {"fitnessSEQ", 숫자}, {"set", 숫자}, {"count", 숫자}, {"weight", 숫자}] 형태로 가져오기
 	$('#fitnessEventListTable tr').each(function() {

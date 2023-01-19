@@ -15,4 +15,7 @@ public interface RecordService {
 	
 	// 입력 받은 CardioList 업데이트
 	public int updateCardio(RecordDTO record);
+
+	// 입력 받은 FitnessList 업데이트
+	public int updateFitness(RecordDTO record);
 }

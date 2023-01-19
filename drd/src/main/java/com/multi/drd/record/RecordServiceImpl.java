@@ -44,4 +44,19 @@ public class RecordServiceImpl implements RecordService {
 		
 		return dao.updateCardio(record);
 	}
+
+	@Override
+	public int updateFitness(RecordDTO record) {
+		
+		RecordDTO originalRecord =  dao.findDailyRecord(record.getMemberSEQ(), record.getDate());
+		
+		// 총 운동 시간: (원래 총 운동 시간 - 원래 무산소 운동 시간) + 업데이트 된 무산소 운동 시간 
+		int exerciseTotalTime = originalRecord.getTotalExerciseTime() 
+				- originalRecord.getFitnessObj().getTotalTime() + record.getFitnessObj().getTotalTime(); 
+		
+		
+		record.setTotalExerciseTime(exerciseTotalTime);
+		
+		return dao.updateFitness(record);
+	}
 }

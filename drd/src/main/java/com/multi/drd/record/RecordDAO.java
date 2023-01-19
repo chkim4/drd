@@ -11,7 +11,11 @@ public interface RecordDAO {
 	
 	public List<RecordDTO> findMonthlyRecord(int memberSEQ, int year, int month);
 	
-	public int updateCardio(RecordDTO record); 
+	public RecordDTO findDailyRecord(int memberSEQ, Date date); 
 	
-	public RecordDTO findDailyRecord(int memberSEQ, Date date);
+	public int updateCardio(RecordDTO record); 
+
+	public int updateFitness(RecordDTO record); 
+	
+
 }
