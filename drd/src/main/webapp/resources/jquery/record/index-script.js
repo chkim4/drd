@@ -368,17 +368,23 @@ function readFoodEvent(info){
 	                    	'<th>' + '총 칼로리' + '</th>' + 
 	                    	'<th>' + '단백질량' + '</th>' + 
 	                    	'<th>' + '지방량' + '</th>' + 
-	                    	'<th>' + '콜레스트롤' + '</th>' + 
+	                    	'<th>' + '콜레스트롤' + '</th>' +  
+	                    	'<th style="display: none">' + 'foodSEQ' + '</th>' +
 				    	'</tr></thead>' +
 	      				'<tbody>';  
 		      				 foodObj.map(function(food){								      	
 						      	result += '<tr>' +
 											'<td>' + food.name + '</td>' +  
-											'<td>' + food.amount + '</td>' +  
+											'<td>' + 
+												'<input type="number" id="amount" class= "inputs" value=' + food.amount + ' ' + readOnly +'min="1">' + 
+											'</td>' +  
 											'<td>' + food.calory + '</td>' +    
 											'<td>' + food.protein + '</td>' +    
 											'<td>' + food.fat + '</td>' +    
-											'<td>' + food.cholesterol + '</td>' +    
+											'<td>' + food.cholesterol + '</td>' +     
+											'<td style="display: none">"' + 
+												'<input type="number" id="foodSEQ" class= "inputs" value=' + food.foodSEQ +'>' +  
+											'"</td>' +
 										  '</tr>';
 							 })
 	result+=  			'</tbody>' + 
@@ -387,26 +393,26 @@ function readFoodEvent(info){
 	
 	return result; 
 }  
-/*
+
 function updateFoodEvent(date){ 
 	var foodObjList = [];
 	
-	// 화면에 띄운 모든 유산소 운동 목록을 [{"cardioSEQ", 숫자}, {"time", 숫자}] 형태로 가져오기
-	$('#cardioEventListTable tr').each(function() {
-    	var cardioObj = {};    	
-    	var parsedCardioSEQ = parseInt($(this).find("td input[id=cardioSEQ]").val(), 10);
-    	var parsedTime = parseInt($(this).find("td input[id=time]").val(), 10);
+	// 화면에 띄운 모든 음식 목록을 [{"foodSEQ": 숫자}, {"amount": 숫자}] 형태로 가져오기
+	$('#foodEventListTable tr').each(function() {
+    	var foodObj = {};    	
+    	var parsedFoodSEQ = parseInt($(this).find("td input[id=foodSEQ]").val(), 10);
+    	var parsedAmount = parseInt($(this).find("td input[id=amount]").val(), 10);
     	
-    	cardioObj["cardioSEQ"] = parsedCardioSEQ;
-    	cardioObj["time"] = parsedTime;
-    	cardioObjList.push(cardioObj);
+    	foodObj["foodSEQ"] = parsedFoodSEQ;
+    	foodObj["amount"] = parsedAmount;
+    	foodObjList.push(foodObj);
 	}) 
-	cardioObjList.shift(); // [0] 에 저장된 undefined 없애기
+	foodObjList.shift(); // [0] 에 저장된 undefined 없애기
 	
 	$.ajax({
-		url: "/record/updateCardio.do", 
+		url: "/record/updateFood.do", 
 		type: "POST",
-		data: {"cardioList": convertString(cardioObjList), "date": date},
+		data: {"foodList": convertString(foodObjList), "date": date},
 		success: successRun,
 		error: errorRun 
 		}) 
@@ -432,7 +438,7 @@ function updateFoodEvent(date){
 			console.log(statusMsg);
 		} 	 			
 } 
-*/
+
 // 음식 관련 끝
 
 // status 관련 시작

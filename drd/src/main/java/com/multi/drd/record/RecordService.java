@@ -18,4 +18,7 @@ public interface RecordService {
 
 	// 입력 받은 FitnessList 업데이트
 	public int updateFitness(RecordDTO record);
+
+	// 입력 받은 FoodList 업데이트
+	public int updateFood(RecordDTO record);
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.multi.drd.json.FoodObj;
+
 @Service
 public class RecordServiceImpl implements RecordService {
 	RecordDAO dao; 
@@ -58,5 +60,21 @@ public class RecordServiceImpl implements RecordService {
 		record.setTotalExerciseTime(exerciseTotalTime);
 		
 		return dao.updateFitness(record);
+	}
+
+	@Override
+	public int updateFood(RecordDTO record) {
+		
+		int totalCalory = 0; 
+		
+		List<FoodObj> foodObjList = record.getFoodObj(); 
+		
+		for(FoodObj food : foodObjList) {
+			totalCalory += food.getCalory();
+		} 
+		
+		record.setTotalCalory(totalCalory);
+		
+		return dao.updateFood(record);
 	}
 }

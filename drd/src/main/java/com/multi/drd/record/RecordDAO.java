@@ -15,7 +15,9 @@ public interface RecordDAO {
 	
 	public int updateCardio(RecordDTO record); 
 
-	public int updateFitness(RecordDTO record); 
+	public int updateFitness(RecordDTO record);  
+	
+	public int updateFood(RecordDTO record);
 	
 
 }

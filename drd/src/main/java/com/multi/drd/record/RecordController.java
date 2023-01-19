@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.FitnessObj;
+import com.multi.drd.json.FoodObj;
 import com.multi.drd.member.MemberDTO;
 import com.multi.drd.utils.DateUtils;
 import com.multi.drd.utils.JsonUtils;
@@ -132,6 +133,30 @@ public class RecordController {
 		record.setFitnessObj(fitnessObj);
 		
 		return recordService.updateFitness(record);
+	}	
+
+	@RequestMapping(value = "/updateFood.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int updateFood(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String foodListStr = request.getParameter("foodList"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<FoodObj> foodObjList = JsonUtils.parseFoodObjList(foodListStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setFoodObj(foodObjList);
+		
+		return recordService.updateFood(record);
 	}	
 
 }
