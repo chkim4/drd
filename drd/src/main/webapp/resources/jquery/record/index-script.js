@@ -152,13 +152,15 @@ function showEventInfo(info){
 		case 'food': 
 			title = '식사 목록입니다.';
 			content["title"] = title; 
-			content["html"] = readFoodEvent(info); 	
+			content["html"] = readFoodEvent(info);
+			content["preConfirm"] = () => {updateFoodEvent(info.event.extendedProps.date);} 	
 			break;
 
 		case 'status': 
 			title = '상태 점수 입니다.';
 			content["title"] = title; 
 			content["html"] = readStatusEvent(info); 	
+			content["preConfirm"] = () => {updateStatusEvent(info.event.extendedProps.date);}
 			break;
 	}   
 	
@@ -189,7 +191,7 @@ function readCardioEvent(info, readOnly){
 						      	result += '<tr>' +
 											'<td>' + cardio.name + '</td>' +  
 											'<td>' + 
-												'<input type="number" id="time" class= "inputs" value=' + cardio.time + ' ' + readOnly +'>' +  												 
+												'<input type="number" id="time" class= "inputs" value=' + cardio.time + ' ' + readOnly +'min="1">' +  												 
 											'</td>' +  
 											'<td>' + cardio.calory + '</td>' +    
 											'<td>' + getIntensityComment(cardio.intensity) + '</td>' + 
@@ -276,13 +278,13 @@ function readFitnessEvent(info, readOnly){
 						      	result += '<tr>' + 
 											'<td>' + fitness.name + '</td>' +  
 											'<td>' + 
-												'<input type="number" id="set" class= "inputs" value=' + fitness.set + ' ' + readOnly +'>' +  
+												'<input type="number" id="set" class= "inputs" value=' + fitness.set + ' ' + readOnly + 'min="1">' +  
 											'</td>' +  
 											'<td>' + 
-												'<input type="number" id="count" class= "inputs" value=' + fitness.count + ' ' + readOnly +'>' +  
+												'<input type="number" id="count" class= "inputs" value=' + fitness.count + ' ' + readOnly +'min="1">' +  
 											'</td>' +  
 											'<td>' + 
-												'<input type="number" id="weight" class= "inputs" value=' + fitness.weight + ' ' + readOnly +'>' +  
+												'<input type="number" id="weight" class= "inputs" value=' + fitness.weight + ' ' + readOnly +'min="1">' +  
 											'</td>' +    
 											'<td>' + fitness.muscleGroup + '</td>' +    
 											'<td>' + fitness.equipment + '</td>' +    
@@ -294,7 +296,7 @@ function readFitnessEvent(info, readOnly){
 	result += 			'</tbody>' + 
 	    			'</table>' +      
 	    			'<span>총 운동 시간: ' +  
-	    				'<input type="number" id="totalTime" class= "inputs" style="width: 10%;" value=' + totalTime + ' ' + readOnly +'> 분' +  
+	    				'<input type="number" id="totalTime" class= "inputs" style="width: 10%;" value=' + totalTime + ' ' + readOnly +'min="1"> 분' +  
 	    				
 	    			'</span>' +    
 				'</div>' 
@@ -384,7 +386,53 @@ function readFoodEvent(info){
 	   			'</div>' 
 	
 	return result; 
+}  
+/*
+function updateFoodEvent(date){ 
+	var foodObjList = [];
+	
+	// 화면에 띄운 모든 유산소 운동 목록을 [{"cardioSEQ", 숫자}, {"time", 숫자}] 형태로 가져오기
+	$('#cardioEventListTable tr').each(function() {
+    	var cardioObj = {};    	
+    	var parsedCardioSEQ = parseInt($(this).find("td input[id=cardioSEQ]").val(), 10);
+    	var parsedTime = parseInt($(this).find("td input[id=time]").val(), 10);
+    	
+    	cardioObj["cardioSEQ"] = parsedCardioSEQ;
+    	cardioObj["time"] = parsedTime;
+    	cardioObjList.push(cardioObj);
+	}) 
+	cardioObjList.shift(); // [0] 에 저장된 undefined 없애기
+	
+	$.ajax({
+		url: "/record/updateCardio.do", 
+		type: "POST",
+		data: {"cardioList": convertString(cardioObjList), "date": date},
+		success: successRun,
+		error: errorRun 
+		}) 
+		function successRun(result){  
+			
+			if(result > 0){ 
+				mySwal.fire({
+				  icon: 'success',
+				  title: '업데이트가 반영되었습니다!',
+				})
+				
+			}
+			else{
+				mySwal.fire({
+				  icon: 'error',
+				  title: '업데이트 중 에러가 생겼습니다... 관리자에게 문의 바랍니다.',
+				})
+			}
+		}  
+		function errorRun(obj, msg,statusMsg){  
+			console.log(obj);
+			console.log(msg);
+			console.log(statusMsg);
+		} 	 			
 } 
+*/
 // 음식 관련 끝
 
 // status 관련 시작
