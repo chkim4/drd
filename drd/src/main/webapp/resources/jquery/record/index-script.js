@@ -87,11 +87,11 @@ function onDOMContentLoaded() {
 					   }
 				    }
 				  }, 
-	            
+	             titleFormat: { month: '2-digit', year: 'numeric' },
 	             headerToolbar: {
-	                left: 'customPrev,customNext today',
-	                center: 'title',
-	                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+	                left: 'customPrev',
+	                center: 'title', 
+	                right: 'customNext'
 	             },
 	             editable: true,
 	             droppable: true, // this allows things to be dropped onto the calendar
@@ -105,7 +105,8 @@ function onDOMContentLoaded() {
 	            events: fetchedEvent, 
 	            eventClick: function(info){
 	            	showEventInfo(info)
-				}
+				}, 
+				displayEventTime: false
 	          }); //calendar 선언 닫기
 	              
 	           calendar.render();

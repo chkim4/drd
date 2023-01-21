@@ -117,7 +117,6 @@ public class RecordServiceImpl implements RecordService {
 		return dao.updateFood(record);
 	}
 
-
 	@Override
 	public int updateStatus(RecordDTO record) {
 		return dao.updateStatus(record);
