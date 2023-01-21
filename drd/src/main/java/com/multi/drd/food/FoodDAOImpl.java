@@ -22,7 +22,8 @@ public class FoodDAOImpl implements FoodDAO {
 	} 
 	
 	@Override
-	public List<FoodDTO> findFoodListByPK(List<Integer> foodSEQList){
+	public List<FoodDTO> findFoodListByPK(List<String> foodSEQList){ 
+		System.out.println("foodSEQList in FoodDAOImpl: " + foodSEQList);
 		return sqlSession.selectList("com.multi.drd.food.findFoodListByPK", foodSEQList);
 	}
 }

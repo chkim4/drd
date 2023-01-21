@@ -159,4 +159,27 @@ public class RecordController {
 		return recordService.updateFood(record);
 	}	
 
+	@RequestMapping(value = "/updateStatus.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int updateStatus(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String statusStr = request.getParameter("status"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		int status = Integer.parseInt(statusStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setStatus(status);
+		
+		return recordService.updateStatus(record);
+	}	
+
 }

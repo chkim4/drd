@@ -14,4 +14,10 @@
 	border: 0; 
 	width: 50%
 	
+} 
+
+select {
+    text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center;
 }

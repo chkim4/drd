@@ -21,4 +21,7 @@ public interface RecordService {
 
 	// 입력 받은 FoodList 업데이트
 	public int updateFood(RecordDTO record);
+
+	// 입력 받은 status 업데이트
+	public int updateStatus(RecordDTO record);
 }

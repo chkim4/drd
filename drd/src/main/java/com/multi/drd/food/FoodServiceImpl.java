@@ -20,7 +20,7 @@ public class FoodServiceImpl implements FoodService {
 		this.dao = dao;
 	}
 
-	public List<FoodDTO> findFoodListByPK(List<Integer> foodSEQList){
+	public List<FoodDTO> findFoodListByPK(List<String> foodSEQList){
 		return dao.findFoodListByPK(foodSEQList);
 	}
 }

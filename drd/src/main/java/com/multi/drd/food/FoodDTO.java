@@ -4,7 +4,7 @@ public class FoodDTO {
 	
 	private int foodSEQ; 
 	private String name;
-	private int quanity; // 1회 섭취량 (g)
+	private int quantity; // 1회 섭취량 (g)
 	private double calory; // 1회 섭취량 기준 칼로리 
 	private double carb; // 1회 섭취량 기준 탄수화물
 	private double protein; // 1회 섭취량 기준 단백질 
@@ -15,12 +15,12 @@ public class FoodDTO {
 		super();
 	} 
 	
-	public FoodDTO(int foodSEQ, String name, int quanity, double calory, double carb, double protein, double fat,
+	public FoodDTO(int foodSEQ, String name, int quantity, double calory, double carb, double protein, double fat,
 			double cholesterol) {
 		super();
 		this.foodSEQ = foodSEQ;
 		this.name = name;
-		this.quanity = quanity;
+		this.quantity = quantity;
 		this.calory = calory;
 		this.carb = carb;
 		this.protein = protein;
@@ -40,11 +40,11 @@ public class FoodDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getQuanity() {
-		return quanity;
+	public int getQuantity() {
+		return quantity;
 	}
 	public void setQuanity(int quanity) {
-		this.quanity = quanity;
+		this.quantity = quanity;
 	}
 	public double getCalory() {
 		return calory;
@@ -79,7 +79,7 @@ public class FoodDTO {
 	
 	@Override
 	public String toString() {
-		return "FoodDTO [foodSEQ=" + foodSEQ + ", name=" + name + ", quanity=" + quanity + ", calory=" + calory
+		return "FoodDTO [foodSEQ=" + foodSEQ + ", name=" + name + ", quantity=" + quantity + ", calory=" + calory
 				+ ", carb=" + carb + ", protein=" + protein + ", fat=" + fat + ", cholesterol=" + cholesterol + "]";
 	}
 }

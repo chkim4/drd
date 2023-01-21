@@ -152,14 +152,14 @@ function showEventInfo(info){
 		case 'food': 
 			title = '식사 목록입니다.';
 			content["title"] = title; 
-			content["html"] = readFoodEvent(info);
+			content["html"] = readFoodEvent(info, readOnly);
 			content["preConfirm"] = () => {updateFoodEvent(info.event.extendedProps.date);} 	
 			break;
 
 		case 'status': 
 			title = '상태 점수 입니다.';
 			content["title"] = title; 
-			content["html"] = readStatusEvent(info); 	
+			content["html"] = readStatusEvent(info, readOnly); 	
 			content["preConfirm"] = () => {updateStatusEvent(info.event.extendedProps.date);}
 			break;
 	}   
@@ -176,6 +176,7 @@ function showEventInfo(info){
 // 유산소 운동 관련 시작
 function readCardioEvent(info, readOnly){ 
 	cardioList = info.event.extendedProps.cardioList;
+	console.log("readOnly in carsioEvent: ", readOnly);
 	
 	result = '<div class = "swal-text">' +     
 				      '<table class="table table-bordered" id="cardioEventListTable" width="100%" cellspacing="0">' +  
@@ -191,7 +192,7 @@ function readCardioEvent(info, readOnly){
 						      	result += '<tr>' +
 											'<td>' + cardio.name + '</td>' +  
 											'<td>' + 
-												'<input type="number" id="time" class= "inputs" value=' + cardio.time + ' ' + readOnly +'min="1">' +  												 
+												'<input type="number" id="time" class= "inputs" ' + readOnly + ' value=' + cardio.time + ' min="1">' +  												 
 											'</td>' +  
 											'<td>' + cardio.calory + '</td>' +    
 											'<td>' + getIntensityComment(cardio.intensity) + '</td>' + 
@@ -203,7 +204,8 @@ function readCardioEvent(info, readOnly){
 	result += 			'</tbody>' + 
 	    			'</table>' +            
 				'</div>' 
-	
+
+	$('#time').attr('readonly', readOnly)
 	return result; 
 } 
 
@@ -278,25 +280,25 @@ function readFitnessEvent(info, readOnly){
 						      	result += '<tr>' + 
 											'<td>' + fitness.name + '</td>' +  
 											'<td>' + 
-												'<input type="number" id="set" class= "inputs" value=' + fitness.set + ' ' + readOnly + 'min="1">' +  
+												'<input type="number" id="set" class= "inputs" ' + readOnly + ' value=' + fitness.set + ' min="1">' +  
 											'</td>' +  
 											'<td>' + 
-												'<input type="number" id="count" class= "inputs" value=' + fitness.count + ' ' + readOnly +'min="1">' +  
+												'<input type="number" id="count" class= "inputs" ' + readOnly + ' value=' + fitness.count + ' ' + readOnly +'min="1">' +  
 											'</td>' +  
 											'<td>' + 
-												'<input type="number" id="weight" class= "inputs" value=' + fitness.weight + ' ' + readOnly +'min="1">' +  
+												'<input type="number" id="weight" class= "inputs" ' + readOnly + ' value=' + fitness.weight + ' ' + readOnly +'min="1">' +  
 											'</td>' +    
 											'<td>' + fitness.muscleGroup + '</td>' +    
 											'<td>' + fitness.equipment + '</td>' +    
 											'<td style="display: none">"' + 
-												'<input type="number" id="fitnessSEQ" class= "inputs" value=' + fitness.fitnessSEQ +'>' +  
+												'<input type="number" id="fitnessSEQ" class= "inputs" ' + readOnly + ' value=' + fitness.fitnessSEQ +'>' +  
 											'"</td>' + 
 										  '</tr>';
 							 })
 	result += 			'</tbody>' + 
 	    			'</table>' +      
 	    			'<span>총 운동 시간: ' +  
-	    				'<input type="number" id="totalTime" class= "inputs" style="width: 10%;" value=' + totalTime + ' ' + readOnly +'min="1"> 분' +  
+	    				'<input type="number" id="totalTime" class= "inputs" style="width: 10%;" ' + readOnly + ' value=' + totalTime + ' ' + readOnly +'min="1"> 분' +  
 	    				
 	    			'</span>' +    
 				'</div>' 
@@ -357,7 +359,7 @@ function updateFitnessEvent(date){
 // 무산소 운동 관련 끝
 
 // 음식 관련 시작
-function readFoodEvent(info){ 
+function readFoodEvent(info, readOnly){ 
 	foodObj = info.event.extendedProps.foodObj;
 	
 	result = '<div class = "swal-text">' +     
@@ -376,7 +378,7 @@ function readFoodEvent(info){
 						      	result += '<tr>' +
 											'<td>' + food.name + '</td>' +  
 											'<td>' + 
-												'<input type="number" id="amount" class= "inputs" value=' + food.amount + ' ' + readOnly +'min="1">' + 
+												'<input type="number" id="quantity" class= "inputs" ' + readOnly + ' value=' + food.quantity + ' ' + readOnly +'min="1">' + 
 											'</td>' +  
 											'<td>' + food.calory + '</td>' +    
 											'<td>' + food.protein + '</td>' +    
@@ -397,14 +399,14 @@ function readFoodEvent(info){
 function updateFoodEvent(date){ 
 	var foodObjList = [];
 	
-	// 화면에 띄운 모든 음식 목록을 [{"foodSEQ": 숫자}, {"amount": 숫자}] 형태로 가져오기
+	// 화면에 띄운 모든 음식 목록을 [{"foodSEQ": 숫자}, {"quantity": 숫자}] 형태로 가져오기
 	$('#foodEventListTable tr').each(function() {
     	var foodObj = {};    	
     	var parsedFoodSEQ = parseInt($(this).find("td input[id=foodSEQ]").val(), 10);
-    	var parsedAmount = parseInt($(this).find("td input[id=amount]").val(), 10);
+    	var parsedQuantity = parseInt($(this).find("td input[id=quantity]").val(), 10);
     	
     	foodObj["foodSEQ"] = parsedFoodSEQ;
-    	foodObj["amount"] = parsedAmount;
+    	foodObj["quantity"] = parsedQuantity;
     	foodObjList.push(foodObj);
 	}) 
 	foodObjList.shift(); // [0] 에 저장된 undefined 없애기
@@ -442,15 +444,70 @@ function updateFoodEvent(date){
 // 음식 관련 끝
 
 // status 관련 시작
-function readStatusEvent(info){ 
-	var status = info.event.extendedProps.status;
+function readStatusEvent(info, readOnly){ 
+	var userStatus = info.event.extendedProps.status;  
+	console.log("userStatus: ", userStatus);
+	//select tag에는 readonly 속성이 없어서 변환이 필요함.
+	var disabled = readOnly == "readonly" ? "disabled": ""; 
 	
-	result = '<div class = "swal-text">' +     
-				'<div> 상태점수: ' + status + '</div>' + 	                  
-	   		 '</div>' 
-	
+	result = '<div class = "swal-text" style="font-size: 250%">' +     
+				'<div> 상태점수: ' + 
+					'<select id="status" ' + disabled + '>' +   
+						'<option value="0">선택</option>';
+						
+						for(var i=1; i<=5; i++){
+							var selected = i == userStatus ? "selected":" "; 
+							result+= '<option value=' + i +' ' + selected +' >' + i + '</option>'; 
+						}   
+	result += 		'</select>' + 
+				'</div>' + 	                  
+		   	'</div>' 
+
 	return result; 
+}  
+
+function updateStatusEvent(date){ 
+	
+	var status = $('#status').val(); 
+	
+	if(status < 1) {
+		mySwal.fire({
+		  icon: 'error',
+		  title: '상태 점수를 골라주세요!',
+		}) 
+		return;
+	}
+	
+	$.ajax({
+		url: "/record/updateStatus.do", 
+		type: "POST",
+		data: {"status": status, "date": date},
+		success: successRun,
+		error: errorRun 
+		}) 
+		function successRun(result){  
+			
+			if(result > 0){ 
+				mySwal.fire({
+				  icon: 'success',
+				  title: '업데이트가 반영되었습니다!',
+				})
+				
+			}
+			else{
+				mySwal.fire({
+				  icon: 'error',
+				  title: '업데이트 중 에러가 생겼습니다... 관리자에게 문의 바랍니다.',
+				})
+			}
+		}  
+		function errorRun(obj, msg,statusMsg){  
+			console.log(obj);
+			console.log(msg);
+			console.log(statusMsg);
+		} 	 			
 } 
+
 // status 관련 끝
 
 // 처음 보여지는 화면의 날짜 

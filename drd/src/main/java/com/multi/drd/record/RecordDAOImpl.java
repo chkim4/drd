@@ -74,8 +74,7 @@ public class RecordDAOImpl implements RecordDAO {
 				Criteria.where("date").lte(dates[1]) 
 		); 
 		
-		Query query = new Query(criteria);  
-		
+		Query query = new Query(criteria);   
 		return mongoTemplate.find(query, RecordDTO.class, "record");
 	}
 
@@ -129,6 +128,22 @@ public class RecordDAOImpl implements RecordDAO {
 		update.set("totalCalory", record.getTotalCalory()); 
 		
 		return mongoTemplate.updateFirst(query, update, "record").getN(); // 업데이트 수행에 영향을 받는 칼럼의 갯수 반환
+	}
+
+	@Override
+	public int updateStatus(RecordDTO record) {
+		Query query = new Query();
+		Update update = new Update();
+		
+		// where절 조건 
+		Date[] dates = DateUtils.getDailyISODate(record.getDate()); 
+		
+		query.addCriteria(Criteria.where("memberSEQ").is(record.getMemberSEQ()));
+		query.addCriteria(Criteria.where("date").gte(dates[0]).lte(dates[1]));
+		
+		update.set("status", record.getStatus()); 
+			
+		return mongoTemplate.updateFirst(query, update, "record").getN();
 	}
 	
 }
