@@ -2,12 +2,12 @@
 
 #calendar {
     margin: 0 auto;
-  } 
+} 
   
- .event-read{
+.event-read{
  	width: 80% !important;
  	height: 120% !important;
- }
+}
 
 .inputs{
 	text-align: right;	
@@ -20,4 +20,8 @@ select {
     text-align: center;
     text-align-last: center;
     -moz-text-align-last: center;
-}
+} 
+
+.swal-deny-button { order: 1; }
+.swal-cancel-button { order: 2; }
+.swal-confirm-button { order: 3; }

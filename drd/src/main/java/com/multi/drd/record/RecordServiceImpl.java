@@ -50,9 +50,19 @@ public class RecordServiceImpl implements RecordService {
 									- originalRecord.getCardioObj().getTotalTime() + record.getCardioObj().getTotalTime(); 
 		
 		
-		record.setTotalExerciseTime(exerciseTotalTime);
+		record.setTotalExerciseTime(exerciseTotalTime); 
 		
-		return dao.updateCardio(record);
+		int result = 0; 
+		
+		// 사용자가 모달창에서 모든 목록을 삭제했을 경우 필드 삭제
+		if(record.getCardioObj().getTotalTime() == 0) {
+			result = dao.deleteField(record, "cardioObj");
+		}
+		else {
+			result = dao.updateCardio(record);
+		} 
+		
+		return result; 
 	}
 
 	@Override
@@ -72,7 +82,6 @@ public class RecordServiceImpl implements RecordService {
 
 	@Override
 	public int updateFood(RecordDTO record) {
-		System.out.println("In updateFood Service Impl"); 
 		
 		// Record 객체에서 FoodObj 발췌 및 Food 테이블 참조를 위해 SEQ만 모은 리스트(foodSEQList) 생성
 		List<FoodObj> recordFoodObjList = record.getFoodObj(); 
@@ -120,5 +129,11 @@ public class RecordServiceImpl implements RecordService {
 	@Override
 	public int updateStatus(RecordDTO record) {
 		return dao.updateStatus(record);
+	}
+
+
+	@Override
+	public int deleteField(RecordDTO record, String field) {
+		return dao.deleteField(record, field);
 	}
 }

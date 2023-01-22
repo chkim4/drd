@@ -20,6 +20,8 @@ public interface RecordDAO {
 	public int updateFood(RecordDTO record); 
 	
 	public int updateStatus(RecordDTO record);
+
+	public int deleteField(RecordDTO record, String field);
 	
 
 }

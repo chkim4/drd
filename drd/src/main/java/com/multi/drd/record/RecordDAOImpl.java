@@ -89,11 +89,11 @@ public class RecordDAOImpl implements RecordDAO {
 		
 	    query.addCriteria(Criteria.where("memberSEQ").is(record.getMemberSEQ()));
 	    query.addCriteria(Criteria.where("date").gte(dates[0]).lte(dates[1]));
-
+	    
 	    update.set("cardioObj", record.getCardioObj()); 
-	    update.set("totalExerciseTime", record.getTotalExerciseTime()); 
-	   
-	    return mongoTemplate.updateFirst(query, update, "record").getN(); // 업데이트 수행에 영향을 받는 칼럼의 갯수 반환
+	 	update.set("totalExerciseTime", record.getTotalExerciseTime()); 
+	    
+	   return mongoTemplate.updateFirst(query, update, "record").getN(); // 업데이트 수행에 영향을 받는 칼럼의 갯수 반환
 	}
 
 	@Override
@@ -144,6 +144,22 @@ public class RecordDAOImpl implements RecordDAO {
 		update.set("status", record.getStatus()); 
 			
 		return mongoTemplate.updateFirst(query, update, "record").getN();
+	}
+
+	@Override
+	public int deleteField(RecordDTO record, String field) {
+		Query query = new Query();
+		Update update = new Update();
+		 
+	    // where절 조건 
+		Date[] dates = DateUtils.getDailyISODate(record.getDate()); 
+		
+	    query.addCriteria(Criteria.where("memberSEQ").is(record.getMemberSEQ()));
+	    query.addCriteria(Criteria.where("date").gte(dates[0]).lte(dates[1]));  
+	    
+	    update.unset(field);
+	    
+	    return mongoTemplate.updateFirst(query, update, "record").getN();
 	}
 	
 }

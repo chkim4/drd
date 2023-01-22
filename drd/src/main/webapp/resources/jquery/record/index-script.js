@@ -6,7 +6,8 @@ var d = new Date();
 var year = d.getFullYear(); 
 var month = d.getMonth(); 
 var date = d.getDate(); 
-  
+var deleteTag = []; 
+
 
 //sweetalert 전역 설정
 var mySwal = Swal.mixin({ 
@@ -28,44 +29,57 @@ function onDOMContentLoaded() {
             data.map(function(record, recordIndex, recordArray){
             	var date = record.date; 
             	
-            	fetchedEvent.push({ 
-	    			"groupId": "cardio",
-	   				"title": "유산소 운동 기록 내역", 
-	       			"start": date, 
-	       			"backgroundColor": "#2E59D9",
-	       			"extendedProps": { "totalTime": record.cardioObj.totalTime, 
-	       				 			   "cardioList": record.cardioObj.cardioList, 
-	       				 			   "date": record.date}	
-	   			}); 
+            	// 유산소 운동 기록이 있을 때만 화면에 출력
+            	if(record.cardioObj){
+	            	fetchedEvent.push({ 
+		    			"groupId": "cardio",
+		   				"title": "유산소 운동 기록 내역", 
+		       			"start": date, 
+		       			"backgroundColor": "#2E59D9",
+		       			"extendedProps": { "totalTime": record.cardioObj.totalTime, 
+		       				 			   "cardioList": record.cardioObj.cardioList, 
+		       				 			   "date": record.date, 
+		       				 			   "order": 1}	
+		   			}); 
+		   		} 
             	
-            	fetchedEvent.push({ 
-            			"groupId": "fitness",
-           				"title": "무산소 운동 기록 내역", 
+            	if(record.fitnessObj){
+	            	fetchedEvent.push({ 
+	            			"groupId": "fitness",
+	           				"title": "무산소 운동 기록 내역", 
+		           			"start": date, 
+		           			"backgroundColor": "#2C9FAF",
+		           			"extendedProps": { "totalTime": record.fitnessObj.totalTime, 
+		           							   "fitnessList": record.fitnessObj.fitnessList, 
+		       				 			   		"date": record.date,
+		       				 			   		"order": 2}	
+	           		});  
+	           	}
+            	
+            	if(record.foodObj){
+	        		fetchedEvent.push({
+	       				"groupId": "food",
+	       				"title": "식사 기록 내역", 
 	           			"start": date, 
-	           			"backgroundColor": "#2C9FAF",
-	           			"extendedProps": { "totalTime": record.fitnessObj.totalTime, 
-	           							   "fitnessList": record.fitnessObj.fitnessList, 
-	       				 			   		"date": record.date}	
-           		}); 
-            	 	
-        		fetchedEvent.push({
-       				"groupId": "food",
-       				"title": "식사 기록 내역", 
-           			"start": date, 
-           			"backgroundColor": "#17A673",
-           			"extendedProps": {"foodObj": record.foodObj, 
-	       				 			   "date": record.date}	
-           			});  
-
-        		fetchedEvent.push({
-       				"groupId": "status",
-       				"title": "상태 점수", 
-           			"start": date, 
-           			"backgroundColor": "#17A673",
-           			"extendedProps": {"status": record.status, 
-	       				 			   "date": record.date}	
-           			});  
-            }); // data map 닫기 
+	           			"backgroundColor": "#17A673",
+	           			"extendedProps": {"foodObj": record.foodObj, 
+		       				 			   "date": record.date, 
+		       				 			   "order": 3}	
+	           		});   
+	           	}
+				
+				if(record.status){
+	        		fetchedEvent.push({
+	       				"groupId": "status",
+	       				"title": "상태 점수", 
+	           			"start": date, 
+	           			"backgroundColor": "#17A673",
+	           			"extendedProps": {"status": record.status, 
+		       				 			   "date": record.date, 
+		       				 			   "order": 4}	
+	           		});   
+	           	}
+            }); // data map 닫기  
            		
 			 var calendarEl = document.getElementById('calendar');
 	         var calendar = new FullCalendar.Calendar(calendarEl, {
@@ -105,7 +119,9 @@ function onDOMContentLoaded() {
 	            events: fetchedEvent, 
 	            eventClick: function(info){
 	            	showEventInfo(info)
-				}, 
+				},  
+				eventOrder: 'order', 
+				eventOrderStrict: true,
 				displayEventTime: false
 	          }); //calendar 선언 닫기
 	              
@@ -128,11 +144,17 @@ function showEventInfo(info){
 	// 편집 가능한 이벤트일 경우  
 	if(readOnly != "readonly"){
 		content["showDenyButton"] = true; 
-		content["denyButtonText"] = "취소"; 
+		content["showCancelButton"] = true;
+		content["denyButtonText"] = "전체 삭제";
+		content["cancelButtonText"] = "취소";
 		content["confirmButtonText"] = "저장";  
 		content["showLoaderOnConfirm"] = true; 
-		content["reverseButtons"] = true; 
-	} 
+		content["reverseButtons"] = true;  
+		
+	}
+	// 편집 가능한 이벤트일 경우 삭제 기능 추가 
+	createDeleteTag(readOnly)
+	 
 	
 	
 	switch(info.event.groupId){
@@ -140,28 +162,33 @@ function showEventInfo(info){
 			title = '유산소 운동 목록입니다.'; 
 			content["title"] = title; 
 			content["html"] = readCardioEvent(info, readOnly); 
-			content["preConfirm"] = () => {updateCardioEvent(info.event.extendedProps.date);} 		
+			content["preConfirm"] = () => {updateCardioEvent(info.event.extendedProps.date);}  // 저장 버튼 핸들러
+			content["preDeny"] = () => {deleteEvent(info.event.extendedProps.date, 'cardioObj');}	// 전체 삭제 버튼 핸들러	
 			break;
 		
 		case 'fitness': 
 			title = '무산소 운동 목록입니다.'; 
 			content["title"] = title; 
 			content["html"] = readFitnessEvent(info, readOnly);  
-			content["preConfirm"] = () => {updateFitnessEvent(info.event.extendedProps.date);}	
+			content["preConfirm"] = () => {updateFitnessEvent(info.event.extendedProps.date);} 
+			content["preDeny"] = () => {deleteEvent(info.event.extendedProps.date, 'fitnessObj');}	
 			break;
 		
 		case 'food': 
 			title = '식사 목록입니다.';
 			content["title"] = title; 
 			content["html"] = readFoodEvent(info, readOnly);
-			content["preConfirm"] = () => {updateFoodEvent(info.event.extendedProps.date);} 	
+			content["preConfirm"] = () => {updateFoodEvent(info.event.extendedProps.date);} 
+			content["preDeny"] = () => {deleteEvent(info.event.extendedProps.date, 'foodObj');}		
 			break;
 
 		case 'status': 
 			title = '상태 점수 입니다.';
 			content["title"] = title; 
 			content["html"] = readStatusEvent(info, readOnly); 	
-			content["preConfirm"] = () => {updateStatusEvent(info.event.extendedProps.date);}
+			content["preConfirm"] = () => {updateStatusEvent(info.event.extendedProps.date);} 
+			content["preDeny"] = () => {deleteEvent(info.event.extendedProps.date, 'status');}	
+			content["denyButtonText"] = "삭제";
 			break;
 	}   
 	
@@ -177,7 +204,6 @@ function showEventInfo(info){
 // 유산소 운동 관련 시작
 function readCardioEvent(info, readOnly){ 
 	cardioList = info.event.extendedProps.cardioList;
-	console.log("readOnly in carsioEvent: ", readOnly);
 	
 	result = '<div class = "swal-text">' +     
 				      '<table class="table table-bordered" id="cardioEventListTable" width="100%" cellspacing="0">' +  
@@ -186,6 +212,7 @@ function readCardioEvent(info, readOnly){
 	                    	'<th>' + '운동 시간 (분)' + '</th>' + 
 	                    	'<th>' + '소모 칼로리' + '</th>' + 
 	                    	'<th>' + '운동 강도' + '</th>' + 
+	                    	deleteTag[0] + 
 	                    	'<th style="display: none">' + 'cardioSEQ' + '</th>' + 
 				    	'</tr></thead>' +
 	      				'<tbody>';  
@@ -196,7 +223,8 @@ function readCardioEvent(info, readOnly){
 												'<input type="number" id="time" class= "inputs" ' + readOnly + ' value=' + cardio.time + ' min="1">' +  												 
 											'</td>' +  
 											'<td>' + cardio.calory + '</td>' +    
-											'<td>' + getIntensityComment(cardio.intensity) + '</td>' + 
+											'<td>' + getIntensityComment(cardio.intensity) + '</td>' +  
+											deleteTag[1] + 
 											'<td style="display: none">"' + 
 												'<input type="number" id="cardioSEQ" class= "inputs" value=' + cardio.cardioSEQ +'>' +  
 											'"</td>' +     
@@ -206,7 +234,7 @@ function readCardioEvent(info, readOnly){
 	    			'</table>' +            
 				'</div>' 
 
-	$('#time').attr('readonly', readOnly)
+	
 	return result; 
 } 
 
@@ -273,7 +301,8 @@ function readFitnessEvent(info, readOnly){
 	                    	'<th>' + '세트 당 횟수' + '</th>' + 
 	                    	'<th>' + '중량' + '</th>' + 
 	                    	'<th>' + '근육 부위' + '</th>' + 
-	                    	'<th>' + '기구' + '</th>' +  
+	                    	'<th>' + '기구' + '</th>' +   
+	                    	deleteTag[0] + 
 	                    	'<th style="display: none">' + 'fitnessSEQ' + '</th>' +
 				    	'</tr></thead>' +
 	      				'<tbody>';  
@@ -290,7 +319,8 @@ function readFitnessEvent(info, readOnly){
 												'<input type="number" id="weight" class= "inputs" ' + readOnly + ' value=' + fitness.weight + ' ' + readOnly +'min="1">' +  
 											'</td>' +    
 											'<td>' + fitness.muscleGroup + '</td>' +    
-											'<td>' + fitness.equipment + '</td>' +    
+											'<td>' + fitness.equipment + '</td>' +   
+											deleteTag[1] +   
 											'<td style="display: none">"' + 
 												'<input type="number" id="fitnessSEQ" class= "inputs" ' + readOnly + ' value=' + fitness.fitnessSEQ +'>' +  
 											'"</td>' + 
@@ -371,7 +401,8 @@ function readFoodEvent(info, readOnly){
 	                    	'<th>' + '총 칼로리' + '</th>' + 
 	                    	'<th>' + '단백질량' + '</th>' + 
 	                    	'<th>' + '지방량' + '</th>' + 
-	                    	'<th>' + '콜레스트롤' + '</th>' +  
+	                    	'<th>' + '콜레스트롤' + '</th>' +   
+	                    	deleteTag[0] + 
 	                    	'<th style="display: none">' + 'foodSEQ' + '</th>' +
 				    	'</tr></thead>' +
 	      				'<tbody>';  
@@ -384,7 +415,8 @@ function readFoodEvent(info, readOnly){
 											'<td>' + food.calory + '</td>' +    
 											'<td>' + food.protein + '</td>' +    
 											'<td>' + food.fat + '</td>' +    
-											'<td>' + food.cholesterol + '</td>' +     
+											'<td>' + food.cholesterol + '</td>' +  
+											deleteTag[1] +     
 											'<td style="display: none">"' + 
 												'<input type="number" id="foodSEQ" class= "inputs" value=' + food.foodSEQ +'>' +  
 											'"</td>' +
@@ -562,6 +594,72 @@ function checkReadOnly(date){
 
 function convertString(obj){
 	return JSON.stringify(obj);
+} 
+
+// 오늘 이벤트일 경우 삭제 아이콘 추가
+function createDeleteTag(readOnly){
+	var isTodayEvent = readOnly != "readonly";
+	
+	if(isTodayEvent){
+		deleteTag[0] = '<th>삭제</th>';
+		deleteTag[1] = '<td>' + 
+					   		'<button type="button" id="deleteOneBTN" class="btn btn-danger" style="text-align: center;" onclick="deleteCurrentRow(this)">삭제</button>' + 
+						'</td>';
+	} 
+	else{
+		deleteTag[0] = '';
+		deleteTag[1] = '';
+	}
 }
+
+function deleteCurrentRow(thisObj){  
+	$(thisObj).closest('tr').remove();	
+}
+
+// 하나의 이벤트 (유산소, 무산소, 식단, 상태 중 1) 삭제. Controller의 deleteField에 대응.
+function deleteEvent(date, field){
+	mySwal.fire({
+		icon: 'warning',
+		title: '삭제한 기록은 복구할 수 없습니다. 정말 전체 삭제하겠습니까?',
+		showCancelButton: true,
+		cancelButtonText: "취소",
+		confirmButtonText: "삭제",  
+		showLoaderOnConfirm: true, 
+		reverseButtons: true 
+		
+	}).then(function(result){
+		if(result.isConfirmed){
+			$.ajax({
+				url: "/record/deleteField.do", 
+				type: "POST",
+				data: {"field": field, "date": date},
+				success: successRun,
+				error: errorRun 
+				}) //ajax 닫기 
+				
+				function successRun(result){  
+					
+					if(result > 0){ 
+						mySwal.fire({
+						  icon: 'success',
+						  title: '성공적으로 삭제 되었습니다!',
+						})	
+					}
+					else{
+						mySwal.fire({
+						  icon: 'error',
+						  title: '업데이트 중 에러가 생겼습니다... 관리자에게 문의 바랍니다.',
+						})
+					}
+				}  
+				function errorRun(obj, msg,statusMsg){  
+					console.log(obj);
+					console.log(msg);
+					console.log(statusMsg);
+				} 	 
+		} //if(isConfirmed == "true") 닫기 
+	}) //then 닫기 
+} // deleteEvent 함수 닫기
+
 
 

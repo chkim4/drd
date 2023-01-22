@@ -181,5 +181,27 @@ public class RecordController {
 		
 		return recordService.updateStatus(record);
 	}	
+	
+	// 하나의 이벤트 (유산소, 무산소, 식단, 상태 중 1) 삭제. index-script.js의 deleteEvent에 대응.
+	@RequestMapping(value = "/deleteField.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int deleteField(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String field = request.getParameter("field"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		
+		return recordService.deleteField(record, field);
+	}	
 
 }
