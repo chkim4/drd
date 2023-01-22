@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.multi.drd.cardio.CardioDTO;
+import com.multi.drd.fitness.FitnessDTO;
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.FitnessObj;
 import com.multi.drd.json.FoodObj;
@@ -51,7 +53,6 @@ public class RecordController {
 	@ResponseBody
 	public RecordDTO findTodayRecord(HttpSession session){  
 		RecordDTO result = recordService.findTodayRecord(1); //memberSEQ가 들어가야 하지만, 테스트 상 1로 함.
-		System.out.println("result: " + result);
 		return result;
 	}	
 
@@ -73,6 +74,92 @@ public class RecordController {
 		return "record/index";
 	}	
 
+	@RequestMapping(value = "/createCardio.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int createCardio(HttpSession session, HttpServletRequest request){ 
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String cardioListStr = request.getParameter("cardioList");
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<CardioObj.CardioList> cardioList = JsonUtils.parseCardioListElements(cardioListStr);
+		int totalTime = 0; 
+		
+		for(CardioObj.CardioList cardio: cardioList) {
+			
+			totalTime+=cardio.getTime();
+		}
+		
+		CardioObj cardioObj = new CardioObj();
+		cardioObj.setTotalTime(totalTime);
+		cardioObj.setCardioList(cardioList);
+		
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setCardioObj(cardioObj);
+		
+		return recordService.createCardio(record);
+	}	
+
+	@RequestMapping(value = "/createFitness.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int createFitness(HttpSession session, HttpServletRequest request){ 
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String fitnessListStr = request.getParameter("fitnessList"); 
+		int totalTime = Integer.parseInt(request.getParameter("totalTime"));
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<FitnessObj.FitnessList> fitnessList = JsonUtils.parseFitnessListElements(fitnessListStr);
+		
+				
+		FitnessObj fitnessObj = new FitnessObj();
+		fitnessObj.setTotalTime(totalTime);
+		fitnessObj.setFitnessList(fitnessList);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setFitnessObj(fitnessObj);
+		
+		return recordService.createFitness(record);
+	}	
+
+	@RequestMapping(value = "/createFood.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int createFood(HttpSession session, HttpServletRequest request){ 
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String foodListStr = request.getParameter("foodList"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<FoodObj> foodObj = JsonUtils.parseFoodObjList(foodListStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setFoodObj(foodObj);
+		
+		return recordService.createFood(record);
+	}	
+	
 	@RequestMapping(value = "/updateCardio.do",method = RequestMethod.POST) 
 	@ResponseBody
 	public int updateCardio(HttpSession session, HttpServletRequest request){ 
@@ -202,6 +289,22 @@ public class RecordController {
 		record.setDate(date);
 		
 		return recordService.deleteField(record, field);
+	}	
+
+	// 모든 유산소 운동(cardio) 조회
+	@RequestMapping(value = "/findAllCardio.do",method = RequestMethod.GET) 
+	@ResponseBody
+	public List<CardioDTO> findAllCardio(){ 
+		
+		return recordService.findAllCardio();
+	}	
+
+	// 모든 무산소 운동(fitness) 조회
+	@RequestMapping(value = "/findAllFitness.do",method = RequestMethod.GET) 
+	@ResponseBody
+	public List<FitnessDTO> findAllFitness(){ 
+		
+		return recordService.findAllFitness();
 	}	
 
 }

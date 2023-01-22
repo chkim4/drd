@@ -19,8 +19,15 @@ public class FoodServiceImpl implements FoodService {
 		super();
 		this.dao = dao;
 	}
-
+	
+	@Override
+	public List<FoodDTO> findAll() {
+		return dao.findAll();
+	}
+	
 	public List<FoodDTO> findFoodListByPK(List<String> foodSEQList){
 		return dao.findFoodListByPK(foodSEQList);
 	}
+
+	
 }

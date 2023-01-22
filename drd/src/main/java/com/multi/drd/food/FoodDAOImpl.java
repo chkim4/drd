@@ -13,16 +13,23 @@ public class FoodDAOImpl implements FoodDAO {
 
 	public FoodDAOImpl() {
 		super();
-	}
+	} 
 
 	@Autowired
 	public FoodDAOImpl(SqlSession sqlSession) {
 		super();
 		this.sqlSession = sqlSession;
-	} 
+	}  
+	
+	@Override
+	public List<FoodDTO> findAll() {
+		return sqlSession.selectList("com.multi.drd.food.findAll");
+	}
 	
 	@Override
 	public List<FoodDTO> findFoodListByPK(List<String> foodSEQList){ 
 		return sqlSession.selectList("com.multi.drd.food.findFoodListByPK", foodSEQList);
 	}
+
+	
 }

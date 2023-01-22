@@ -3,6 +3,7 @@ package com.multi.drd.record;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
@@ -13,17 +14,21 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import com.multi.drd.cardio.CardioDTO;
+import com.multi.drd.fitness.FitnessDTO;
 import com.multi.drd.utils.DateUtils;
 
 @Repository
 public class RecordDAOImpl implements RecordDAO {
 	MongoTemplate mongoTemplate;
+	SqlSession sqlSession;
 	
 	@Autowired
-	public RecordDAOImpl(MongoTemplate mongoTemplate) {
+	public RecordDAOImpl(MongoTemplate mongoTemplate, SqlSession sqlSession) {
 		super();
 		this.mongoTemplate = mongoTemplate;
-	}   
+		this.sqlSession = sqlSession;
+	}
 	
 	public RecordDTO findDailyRecord(int memberSEQ, Date date) {
 		
@@ -36,6 +41,7 @@ public class RecordDAOImpl implements RecordDAO {
 	    return mongoTemplate.findOne(query, RecordDTO.class, "record");
 	}
 	
+
 	@Override
 	public RecordDTO findLatestRecord(int memberSEQ) {
 		
@@ -76,7 +82,17 @@ public class RecordDAOImpl implements RecordDAO {
 		
 		Query query = new Query(criteria);   
 		return mongoTemplate.find(query, RecordDTO.class, "record");
-	}
+	} 
+	
+	@Override
+	public int createOne(RecordDTO record) {
+		mongoTemplate.insert(record, "record"); 
+		
+		// 성공 여부 확인 위함.
+		int result = findDailyRecord(record.getMemberSEQ(), record.getDate()) != null ? 1:0;
+		
+		return result;
+	} 
 
 	@Override
 	public int updateCardio(RecordDTO record) {
@@ -159,7 +175,28 @@ public class RecordDAOImpl implements RecordDAO {
 	    
 	    update.unset(field);
 	    
+	    // 유산소 혹은 무산소 운동 삭제 시에는 totalExerciseTime에도 반영. record의 totalExerciseTime은 service에서 계산함.
+	    if(field.equals("cardioObj")  || field.equals("fitnessObj")) {
+	    	update.set("totalExerciseTime", record.getTotalExerciseTime());
+	    } 
+	    // 식단 삭제 시에는 totalCalory를 0으로 함.
+	    else if(field.equals("foodObj")) {
+	    	update.set("totalCalory",0);
+	    }
+	    
 	    return mongoTemplate.updateFirst(query, update, "record").getN();
 	}
+
+	@Override
+	public List<CardioDTO> findAllCardio() {
+		return sqlSession.selectList("com.multi.drd.record.findAllCardio");
+	}
+
+	@Override
+	public List<FitnessDTO> findAllFitness() {
+		return sqlSession.selectList("com.multi.drd.record.findAllFitness");
+	}
+
+	
 	
 }

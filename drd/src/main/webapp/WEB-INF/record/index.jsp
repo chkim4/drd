@@ -34,7 +34,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.2/index.global.js"></script> 	
 	<script src="/resources/jquery/record/index-script.js"></script>  
 	<script type="text/javascript"> 
-	    document.addEventListener('DOMContentLoaded', onDOMContentLoaded); 
+	   document.addEventListener('DOMContentLoaded', onDOMContentLoaded); 
+	   // $(document).ready(function(){ onDOMContentLoaded()}); 
 	</script> 
 		
    <link rel="stylesheet" href="/resources/css/record/index.css"> 
