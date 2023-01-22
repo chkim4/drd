@@ -317,7 +317,7 @@ function searchEvent(field){
 				   customClass: 'event-read', 
 				   showCancelButton: true, 
 				   cancelButtonText: '취소', 
-				   confimButtonText: '저장',
+				   confirmButtonText: '저장',
 				   reverseButtons: true,
 				   html: ''
 				  };  
@@ -340,9 +340,18 @@ function searchEvent(field){
 			content["preConfirm"] = () => {createFoodEvent();}
 			requestURL = "/food/findAll.do";
 			break;
+
 	}//switch 닫기	
 	
-	
+	// 상태 점수 생성 시에는 ajax 불필요)
+	if(field == "status"){
+		content["title"] = "상태 점수를 입력해주세요."; 
+		content["preConfirm"] = () => {createStatusEvent();}
+		content["html"] = getAllStatusHTML();
+		mySwal.fire(content); 
+		return;
+	}
+			
 	$.ajax({
 		url: requestURL, 
 		type: "GET",
@@ -999,9 +1008,71 @@ function updateFoodEvent(date){
 // 음식 관련 끝
 
 // status 관련 시작
+
+// 상태점수 생성 시 띄어질 HTML (searchEvent 참고)
+function getAllStatusHTML(){ 
+		
+	result = '<div class = "swal-text" style="font-size: 250%">' +     
+				'<div> 상태점수: ' + 
+					'<select id="status">' +   
+						'<option value="0">선택</option>';
+						
+						for(var i=1; i<=5; i++){
+							result+= '<option value=' + i +'>' + i + '</option>'; 
+						}   
+	result += 		'</select>' + 
+				'</div>' + 	                  
+		   	'</div>' 
+
+	return result; 
+}   
+
+// 상태 점수 생성 
+function createStatusEvent(date){ 
+	
+	var status = $('#status').val(); 
+	
+	if(status < 1) {
+		mySwal.fire({
+		  icon: 'error',
+		  title: '상태 점수를 골라주세요!',
+		}) 
+		return;
+	}
+	
+	$.ajax({
+		url: "/record/createStatus.do", 
+		type: "POST",
+		data: {"status": status, "date": date},
+		success: successRun,
+		error: errorRun 
+		}) 
+		function successRun(result){  
+			
+			if(result > 0){ 
+				mySwal.fire({
+				  icon: 'success',
+				  title: '업데이트가 반영되었습니다!',
+				})
+				
+			}
+			else{
+				mySwal.fire({
+				  icon: 'error',
+				  title: '업데이트 중 에러가 생겼습니다... 관리자에게 문의 바랍니다.',
+				})
+			}
+		}  
+		function errorRun(obj, msg,statusMsg){  
+			console.log(obj);
+			console.log(msg);
+			console.log(statusMsg);
+		} 	 			
+}
+
+// status 생성 후 읽기
 function readStatusEvent(info, readOnly){ 
 	var userStatus = info.event.extendedProps.status;  
-	console.log("userStatus: ", userStatus);
 	//select tag에는 readonly 속성이 없어서 변환이 필요함.
 	var disabled = readOnly == "readonly" ? "disabled": ""; 
 	

@@ -223,6 +223,23 @@ public class RecordServiceImpl implements RecordService {
 	
 	//-----------------------------------------상태 점수(status) 관련-----------------------------------------
 	@Override
+	public int createStatus(RecordDTO record) {
+		RecordDTO originalRecord =  dao.findDailyRecord(record.getMemberSEQ(), record.getDate());
+		
+		int result = 0; 
+		
+		// 기록이 없다면 새 기록 생성
+		if(originalRecord == null) {
+			result = dao.createOne(record);
+		}
+		else {
+			result = dao.updateStatus(record);
+		}
+		
+		return result;
+	}
+	
+	@Override
 	public int updateStatus(RecordDTO record) {
 		return dao.updateStatus(record);
 	}
@@ -245,8 +262,6 @@ public class RecordServiceImpl implements RecordService {
 		}// if cardioObj || fitnessObj	
 			
 		return dao.deleteField(record, field);
-	}
-
-	
+	}	
 
 }

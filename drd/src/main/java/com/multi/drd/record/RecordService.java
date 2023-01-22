@@ -25,6 +25,9 @@ public interface RecordService {
 	// 입력 받은 Food 생성
 	public int createFood(RecordDTO record);
 
+	// 입력 받은 status 생성
+	public int createStatus(RecordDTO record);
+
 	// 입력 받은 CardioList 업데이트
 	public int updateCardio(RecordDTO record);
 
