@@ -45,8 +45,14 @@ public class MemberController {
 	}     
 	
 	@RequestMapping(value = "/login.do",method = RequestMethod.GET)
-	public String loginPage() {
-		return "member/login";
+	public String loginPage(HttpSession session) { 
+		String viewName = "member/login";
+		
+		// 로그인이 되어 있다면 index 페이지로 이동
+		if(session.getAttribute("member") != null) {
+			viewName = "dashboard/dashboard";
+		}
+		return viewName;
 	} 
 
 	@RequestMapping(value = "/login.do",method = RequestMethod.POST)
@@ -58,7 +64,7 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "member/index";  
+			  viewName = "dashboard/dashboard";  
 			   
 		  } 
 		  else { 
@@ -75,7 +81,7 @@ public class MemberController {
 		
 		// 로그인이 되어 있다면 index 페이지로 이동
 		if(session.getAttribute("member") != null) {
-			viewName = "member/index";
+			viewName = "dashboard/dashboard";
 		}
 		return viewName;
 	} 
@@ -97,9 +103,8 @@ public class MemberController {
 		
 		 // 회원 가입 성공 시 
 		 if(isRegistered) {   
-			 System.out.println("registerMember in memberDAO: " + member);
 			  model.addAttribute("member", member); 
-			  viewName = "member/index"; 
+			  viewName = "dashboard/dashboard"; 
 		  } 
 		  else {
 			  viewName = "member/register"; 
@@ -156,7 +161,7 @@ public class MemberController {
 	 @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
 	 public String logout(SessionStatus status) {
 		 status.setComplete(); // 세션에 있는 memeber 객체를 제거 
-		 return "redirect: /member/login.do";
+		 return "main/main";
 	 } 
 	 
 	 // ---- 테스트용 메소드 ----
@@ -166,7 +171,6 @@ public class MemberController {
 	 */
 	@RequestMapping(value = "/sessiontest.do", method = RequestMethod.GET)
 	public String sessionTest(HttpSession session) {
-		System.out.println("session: " + session.getAttribute("member"));
 		
 		return "member/index";
 	} 
