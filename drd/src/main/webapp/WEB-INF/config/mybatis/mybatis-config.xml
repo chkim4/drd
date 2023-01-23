@@ -28,6 +28,7 @@
 		<mapper resource="com/multi/drd/mybatis/food.xml"/>
 		<mapper resource="com/multi/drd/mybatis/record.xml"/> <!-- Record는 mongoDB이지만, cardio, fitness 등 다른 사람과 겹치는 부분이 있어서 따로 구현함. -->
 		<mapper resource="com/multi/drd/mybatis/gym.xml"/>
+		<mapper resource="com/multi/drd/mybatis/mypage.xml"/>
 	</mappers> 	 
 	
 	
