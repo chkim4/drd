@@ -35,7 +35,7 @@ public class PersonalRoutineDAOImpl implements PersonalRoutineDAO{
 
 	@Override
 	public void updatecardio(Map<String, Object> map) {
-		sqlSession.update("com.multi.drd.personalroutine.updatefitness", map);		
+		sqlSession.update("com.multi.drd.personalroutine.updatecardio", map);		
 	}
 	
 }
