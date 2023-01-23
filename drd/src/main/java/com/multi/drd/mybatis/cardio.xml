@@ -8,5 +8,21 @@
 		from cardio
 		where cardioSEQ = #{cardioSEQ}
 	</select>
+	<select id="findByIntensity" parameterType="int" resultType="cardio">
+		select *
+		from cardio
+		where intensity = #{intensity}
+	</select>
+	<select id="findByIntensitywithSEQ" parameterType="Map" resultType="cardio">
+		select *
+		from cardio
+		where intensity = #{intensity}
+		and cardioSEQ != #{cardioSEQ}
+	</select>
+	<select id="findbyname" parameterType="String" resultType="cardio">
+		select *
+		from cardio
+		where name like '%' || #{name} || '%'
+	</select>
 </mapper>
   

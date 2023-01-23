@@ -8,5 +8,21 @@
 		from fitness
 		where fitnessSEQ = #{fitnessSEQ}
 	</select>
+	<select id="findbymusclegroup" parameterType="String" resultType="fitness">
+		select *
+		from fitness
+		where musclegroup = like '%' || #{musclegroup} || '%'
+	</select>
+	<select id="findbymusclegroupwithSEQ" parameterType="Map" resultType="fitness">
+		select *
+		from fitness
+		where musclegroup like '%' || #{musclegroup} || '%'
+		and fitnessSEQ != #{fitnessSEQ}
+	</select>
+	<select id="findbyname" parameterType="String" resultType="fitness">
+		select *
+		from fitness
+		where name like '%' || #{name} || '%'
+	</select>
 </mapper>
   

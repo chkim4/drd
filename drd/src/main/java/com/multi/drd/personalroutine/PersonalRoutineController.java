@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -251,10 +252,8 @@ public class PersonalRoutineController {
 		}
 		
 		//fitnessObj 업데이트
-		@RequestMapping(value = "/updatefitness")
-		public void updatefitness(HttpSession session, int fitnessSEQ, int set, int count, int weight) {
-			MemberDTO member = (MemberDTO)session.getAttribute("member");
-			int personalRoutineSEQ = member.getPersonalRoutineSEQ();
+		@RequestMapping(value = "/updatefitness", method = RequestMethod.POST)
+		public String updatefitness(int personalRoutineSEQ, int fitnessSEQ, int set, int count, int weight) {
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
 			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
 			JsonUtils.updateBySEQ(myFitnessObj, fitnessSEQ, "set", set);
@@ -265,11 +264,12 @@ public class PersonalRoutineController {
 			map.put("personalRoutineSEQ", personalRoutineSEQ);
 			map.put("fitnessObj", fitnessObj);
 			service.updatefitness(map);
-			
+			return "redirect:/personalroutine/setpage";
 		}
 		
 		//cardioObj 업데이트 하며 전체 시간 변경
-		public void updatecardio(HttpSession session, int personalRoutineSEQ, int cardioSEQ, int time) {
+		@RequestMapping(value = "/updatecardio", method = RequestMethod.POST)
+		public String updatecardio(int personalRoutineSEQ, int cardioSEQ, int time) {
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
 			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
 			JsonUtils.updateBySEQ(myCardioObj, cardioSEQ, "time", time);
@@ -279,15 +279,161 @@ public class PersonalRoutineController {
 			}
 			myCardioObj.setTotalTime(cardiototaltime);
 			String cardioObj = JsonUtils.convertToString(myCardioObj);
+			System.out.println(cardioObj);
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("personalRoutineSEQ", personalRoutineSEQ);
 			map.put("cardioObj", cardioObj);
 			service.updatecardio(map);
+			return "redirect:/personalroutine/setpage";
 		}
-		public void insertfitness() {
+		
+		//ck additional fitness
+		public boolean checkaddtionalfitness(int personalRoutineSEQ, int fitnessSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			RoutineDTO routine = routineservice.findBySEQ(pRoutine.getRoutineSEQ());
+			FitnessObj fitobj = JsonUtils.parseFitnessList(routine);
+			int fitlistsize = fitobj.getFitnessList().size();
+			int fitindex = JsonUtils.getIndexBySEQ(fitobj, fitnessSEQ);
+			return fitlistsize > fitindex;
+		}
+		//ck additional cardio
+		public boolean checkaddtionalcardio(int personalRoutineSEQ, int cardioSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			RoutineDTO routine = routineservice.findBySEQ(pRoutine.getRoutineSEQ());
+			CardioObj carobj = JsonUtils.parseCardioList(routine);
+			int carlistsize = carobj.getCardioList().size();
+			int carindex = JsonUtils.getIndexBySEQ(carobj, cardioSEQ);
+			return carlistsize > carindex;
+		}
+		
+		//tof fitness
+		@RequestMapping(value = "/findfitnessbymusclegroup", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public List<FitnessDTO> findFDTOByMG(int personalRoutineSEQ, String muscleGroup, int fitnessSEQ) {
+			List<FitnessDTO> result = null;
+			if(checkaddtionalfitness(personalRoutineSEQ, fitnessSEQ)) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("musclegroup", muscleGroup);
+				map.put("fitnessSEQ", fitnessSEQ);
+				result = fitnessservice.findbymusclegroupwithseq(map);
+				System.out.println(result);
+				if(result.size()==0) {
+					FitnessDTO check = new FitnessDTO(fitnessSEQ, "0", "0", "0");
+					result.add(check);
+				}
+			}else {
+				FitnessDTO check = new FitnessDTO(0, "0", "0", "0");
+				result.add(check);
+			}
+			return result;
+		}
+		
+		//tof cardio
+		@RequestMapping(value = "/findcardiobyintensity", produces = "application/json;charset=utf-8")
+		@ResponseBody
+		public List<CardioDTO> findCDTOByI(int personalRoutineSEQ , int intensity, int cardioSEQ) {
+			List<CardioDTO> result = null;
+			if(checkaddtionalcardio(personalRoutineSEQ, cardioSEQ)) {
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put("intensity", intensity);
+				map.put("cardioSEQ", cardioSEQ);
+				result = cardioservice.findByIntensitywithseq(map);
+				if(result.size()==0) {
+					CardioDTO check = new CardioDTO(cardioSEQ, "0", 0, 0);
+					result.add(check);
+				}else {
+					CardioDTO check = new CardioDTO(0, "0", 0, 0);
+					result.add(check);					
+				}
+			}
+			return result;
+		}
+		//delete
+		
+		public void deletefitness(int personalRoutineSEQ, int fitnessSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			JsonUtils.deleteBySEQ(myFitnessObj, fitnessSEQ);
+			String fitnessObj = JsonUtils.convertToString(myFitnessObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("fitnessObj", fitnessObj);
+			service.updatefitness(map);
+		}
+		public void deleteacardio(int personalRoutineSEQ, int cardioSEQ) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
+			JsonUtils.deleteBySEQ(myCardioObj, cardioSEQ);
+			String cardioObj = JsonUtils.convertToString(myCardioObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("cardioObj", cardioObj);
+			service.updatefitness(map);
+		}
+		
+		//delete and update
+		
+		public void deleteandupdatefitness(int personalRoutineSEQ, int beforefitnessSEQ, int afterfitnessSEQ, int set, int count, int weight) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			int index = JsonUtils.getIndexBySEQ(myFitnessObj, beforefitnessSEQ);
+			FitnessObj.FitnessList afterFitnessObj = new FitnessList(afterfitnessSEQ, set, count, weight);
+			List<FitnessObj.FitnessList> myFitnessList = myFitnessObj.getFitnessList();
+			myFitnessList.add(index, afterFitnessObj);
+			myFitnessList.remove(index+1);
+			myFitnessObj.setFitnessList(myFitnessList);
+			String fitnessObj = JsonUtils.convertToString(myFitnessObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("fitnessObj", fitnessObj);
+			service.updatefitness(map);
 			
 		}
-		public void insertcardio() {
-			
+		public void deleteandupdatecardio(int personalRoutineSEQ, int beforecardioSEQ, int aftercardioSEQ, int time, int calory) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
+			int index = JsonUtils.getIndexBySEQ(myCardioObj, beforecardioSEQ);
+			CardioObj.CardioList afterCardioObj = new CardioList(aftercardioSEQ, time, calory);
+			List<CardioObj.CardioList> myCardioList = myCardioObj.getCardioList();
+			myCardioList.add(index, afterCardioObj);
+			myCardioList.remove(index+1);
+			myCardioObj.setCardioList(myCardioList);
+			String cardioObj = JsonUtils.convertToString(myCardioObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("cardioObj", cardioObj);
+			service.updatefitness(map);
+		}
+		
+		public List<FitnessDTO> findFitnessbyName(String name) {
+			return fitnessservice.findbyname(name);
+		}
+		
+		public List<CardioDTO> findCardiobyName(String name) {
+			return cardioservice.findbyname(name);
+		}
+		
+		public void insertfitness(int personalRoutineSEQ, int fitnessSEQ, int set, int count, int weight) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
+			FitnessObj.FitnessList FitnessList = new FitnessList(fitnessSEQ, set, count, weight);
+			JsonUtils.insertFitness(myFitnessObj, FitnessList);
+			String fitnessObj = JsonUtils.convertToString(myFitnessObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("fitnessObj", fitnessObj);
+			service.updatefitness(map);
+		}
+		
+		public void insertcardio(int personalRoutineSEQ, int cardioSEQ, int time, int calory) {
+			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
+			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
+			CardioObj.CardioList CardioList = new CardioList(cardioSEQ, time, calory);
+			JsonUtils.insertCardio(myCardioObj, CardioList);
+			String cardioObj = JsonUtils.convertToString(myCardioObj);
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("personalRoutineSEQ", personalRoutineSEQ);
+			map.put("cardioObj", cardioObj);
+			service.updatefitness(map);
 		}
 }
