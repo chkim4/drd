@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multi.drd.record"> 
+	
+	<select id="findAllCardio" resultType="cardio">
+		select * 
+		from cardio
+	</select>
+
+	<select id="findAllFitness" resultType="fitness">
+		select * 
+		from fitness
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

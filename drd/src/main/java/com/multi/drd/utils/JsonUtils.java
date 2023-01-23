@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.FitnessObj;
+import com.multi.drd.json.FoodObj;
 import com.multi.drd.personalroutine.PersonalRoutineDTO;
 import com.multi.drd.routine.RoutineDTO;
 
@@ -276,7 +277,22 @@ public class JsonUtils {
 		
 		return fitnessList; 
 	} 
-	// PersonalRoutineDTO 관련 - fitness 끝 
+	// PersonalRoutineDTO 관련 - fitness 끝
+	
+	// Record 중 Food 관련 
+	public static List<FoodObj> parseFoodObjList(String foodListStr){
+		List<FoodObj> foodList = null; 
+		
+		try {
+			foodList = mapper.readValue(foodListStr, new TypeReference<List<FoodObj>>(){});
+					
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return foodList; 	
+	}
+	
 	
 	// Aggregation의 AggregationResultDTO의 totalExerciseTimeofWeek 파싱
 	public static HashMap<String, Integer> parseTotalExerciseTimeofWeek(String aggrResultStr){

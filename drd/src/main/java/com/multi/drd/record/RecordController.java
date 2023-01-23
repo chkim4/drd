@@ -12,8 +12,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.multi.drd.cardio.CardioDTO;
+import com.multi.drd.fitness.FitnessDTO;
 import com.multi.drd.json.CardioObj;
 import com.multi.drd.json.FitnessObj;
+import com.multi.drd.json.FoodObj;
 import com.multi.drd.member.MemberDTO;
 import com.multi.drd.utils.DateUtils;
 import com.multi.drd.utils.JsonUtils;
@@ -50,7 +53,6 @@ public class RecordController {
 	@ResponseBody
 	public RecordDTO findTodayRecord(HttpSession session){  
 		RecordDTO result = recordService.findTodayRecord(1); //memberSEQ가 들어가야 하지만, 테스트 상 1로 함.
-		System.out.println("result: " + result);
 		return result;
 	}	
 
@@ -72,6 +74,114 @@ public class RecordController {
 		return "record/index";
 	}	
 
+	@RequestMapping(value = "/createCardio.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int createCardio(HttpSession session, HttpServletRequest request){ 
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String cardioListStr = request.getParameter("cardioList");
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<CardioObj.CardioList> cardioList = JsonUtils.parseCardioListElements(cardioListStr);
+		int totalTime = 0; 
+		
+		for(CardioObj.CardioList cardio: cardioList) {
+			
+			totalTime+=cardio.getTime();
+		}
+		
+		CardioObj cardioObj = new CardioObj();
+		cardioObj.setTotalTime(totalTime);
+		cardioObj.setCardioList(cardioList);
+		
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setCardioObj(cardioObj);
+		
+		return recordService.createCardio(record);
+	}	
+
+	@RequestMapping(value = "/createFitness.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int createFitness(HttpSession session, HttpServletRequest request){ 
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String fitnessListStr = request.getParameter("fitnessList"); 
+		int totalTime = Integer.parseInt(request.getParameter("totalTime"));
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<FitnessObj.FitnessList> fitnessList = JsonUtils.parseFitnessListElements(fitnessListStr);
+		
+				
+		FitnessObj fitnessObj = new FitnessObj();
+		fitnessObj.setTotalTime(totalTime);
+		fitnessObj.setFitnessList(fitnessList);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setFitnessObj(fitnessObj);
+		
+		return recordService.createFitness(record);
+	}	
+
+	@RequestMapping(value = "/createFood.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int createFood(HttpSession session, HttpServletRequest request){ 
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String foodListStr = request.getParameter("foodList"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<FoodObj> foodObj = JsonUtils.parseFoodObjList(foodListStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setFoodObj(foodObj);
+		
+		return recordService.createFood(record);
+	}	
+
+	@RequestMapping(value = "/createStatus.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int createStatus(HttpSession session, HttpServletRequest request){ 
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String statusStr = request.getParameter("status"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		int status = Integer.parseInt(statusStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setStatus(status);
+		
+		return recordService.createStatus(record);
+	}	
+	
 	@RequestMapping(value = "/updateCardio.do",method = RequestMethod.POST) 
 	@ResponseBody
 	public int updateCardio(HttpSession session, HttpServletRequest request){ 
@@ -132,6 +242,91 @@ public class RecordController {
 		record.setFitnessObj(fitnessObj);
 		
 		return recordService.updateFitness(record);
+	}	
+
+	@RequestMapping(value = "/updateFood.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int updateFood(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String foodListStr = request.getParameter("foodList"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		List<FoodObj> foodObjList = JsonUtils.parseFoodObjList(foodListStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setFoodObj(foodObjList);
+		
+		return recordService.updateFood(record);
+	}	
+
+	@RequestMapping(value = "/updateStatus.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int updateStatus(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String statusStr = request.getParameter("status"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		int status = Integer.parseInt(statusStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		record.setStatus(status);
+		
+		return recordService.updateStatus(record);
+	}	
+	
+	// 하나의 이벤트 (유산소, 무산소, 식단, 상태 중 1) 삭제. index-script.js의 deleteEvent에 대응.
+	@RequestMapping(value = "/deleteField.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int deleteField(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		String field = request.getParameter("field"); 
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		
+		return recordService.deleteField(record, field);
+	}	
+
+	// 모든 유산소 운동(cardio) 조회
+	@RequestMapping(value = "/findAllCardio.do",method = RequestMethod.GET) 
+	@ResponseBody
+	public List<CardioDTO> findAllCardio(){ 
+		
+		return recordService.findAllCardio();
+	}	
+
+	// 모든 무산소 운동(fitness) 조회
+	@RequestMapping(value = "/findAllFitness.do",method = RequestMethod.GET) 
+	@ResponseBody
+	public List<FitnessDTO> findAllFitness(){ 
+		
+		return recordService.findAllFitness();
 	}	
 
 }
