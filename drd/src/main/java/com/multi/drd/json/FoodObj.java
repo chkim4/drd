@@ -3,22 +3,15 @@ package com.multi.drd.json;
 public class FoodObj {
 	private int foodSEQ; 
 	private String name;
-	private int amount;
+	private int quantity;
 	private int calory;
+	private int carb;
 	private int protein;
 	private int fat;
 	private int cholesterol;
 	
 	public FoodObj() {
 		super();
-	}
-
-	public FoodObj(int foodSEQ, int amount, int calory, int protein) {
-		super();
-		this.foodSEQ = foodSEQ;
-		this.amount = amount;
-		this.calory = calory;
-		this.protein = protein;
 	}
 
 	public int getFoodSEQ() {
@@ -29,13 +22,13 @@ public class FoodObj {
 		this.foodSEQ = foodSEQ;
 	}
 
-	public int getAmount() {
-		return amount;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setAmount(int amount) {
-		this.amount = amount;
-	}
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	} 
 
 	public int getCalory() {
 		return calory;
@@ -43,6 +36,14 @@ public class FoodObj {
 
 	public void setCalory(int calory) {
 		this.calory = calory;
+	} 
+	
+	public int getCarb() {
+		return carb;
+	}
+	
+	public void setCarb(int carb) {
+		this.carb = carb;
 	}
 
 	public int getProtein() {
@@ -79,7 +80,7 @@ public class FoodObj {
 
 	@Override
 	public String toString() {
-		return "FoodObj [foodSEQ=" + foodSEQ + ", name=" + name + ", amount=" + amount + ", calory=" + calory
-				+ ", protein=" + protein + ", fat=" + fat + ", cholesterol=" + cholesterol + "]";
+		return "FoodObj [foodSEQ=" + foodSEQ + ", name=" + name + ", quantity=" + quantity + ", calory=" + calory
+				+ ", carb=" + carb + ", protein=" + protein + ", fat=" + fat + ", cholesterol=" + cholesterol + "]";
 	}
 }

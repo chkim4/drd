@@ -2,15 +2,35 @@
 
 #calendar {
     margin: 0 auto;
-  } 
+} 
   
- .event-read{
- 	width: 50% !important;
- }
+.event-read{
+ 	width: 80% !important;
+ 	height: 120% !important;
+}
 
 .inputs{
 	text-align: right;	
 	border: 0; 
 	width: 50%
 	
+} 
+
+select {
+    text-align: center;
+    text-align-last: center;
+    -moz-text-align-last: center;
+} 
+
+#addEventInput{
+		border: none; 
+		background: transparent; 
+		text-align: center; 
+		font-size: 100%;
 }
+
+
+
+.swal-deny-button { order: 1; }
+.swal-cancel-button { order: 2; }
+.swal-confirm-button { order: 3; }
