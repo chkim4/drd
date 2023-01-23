@@ -12,6 +12,7 @@
 		<typeAlias type="com.multi.drd.cardio.CardioDTO" alias="cardio"/>
 		<typeAlias type="com.multi.drd.fitness.FitnessDTO" alias="fitness"/>
 		<typeAlias type="com.multi.drd.goal.GoalDTO" alias="goal"/>
+		<typeAlias type="com.multi.drd.gym.GymDTO" alias="gym"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/multi/drd/mybatis/member.xml"/>
@@ -23,6 +24,7 @@
 		<mapper resource="com/multi/drd/mybatis/cardio.xml"/>
 		<mapper resource="com/multi/drd/mybatis/fitness.xml"/>
 		<mapper resource="com/multi/drd/mybatis/goal.xml"/>
+		<mapper resource="com/multi/drd/mybatis/gym.xml"/>
 	</mappers> 	 
 	
 	

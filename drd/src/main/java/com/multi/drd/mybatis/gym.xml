@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.multi.drd.gym">
+	
+	<select id="readGym" resultType="gym" parameterType="Integer">
+		select * 
+		from gym
+		where memberseq = #{memberSEQ}
+	</select> 
+	
+	<update id="updateGym" parameterType="gym">
+		update gym
+		set name = #{name}
+		set address = #{address}
+		set telephoneNumber = #{telephoneNumber}
+		where memberSEQ = #{memberSEQ}
+		and gymSEQ = gym_SEQ.currval
+	</update>
+	
+	<insert id="registerGym" parameterType="gym">
+		
+ 		insert into gym(gymSEQ, name, address, telephoneNumber, memberSEQ)
+		values (gym_SEQ.nextval, #{name}, #{address}, #{telephoneNumber}, #{memberSEQ})
+		
+	</insert>
+	
+	<delete id="deleteGym" parameterType="Integer">
+		delete from goal where memberSEQ = #{memberSEQ}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
