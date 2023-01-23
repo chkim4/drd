@@ -22,23 +22,23 @@ import com.multi.drd.memberbio.MemberBioDTO;
 @SessionAttributes("member")
 public class MypageController {
 	MypageService service;
-	GoalService gservice;
+	GoalService goalservice;
 	
 	
 	public MypageController() {}
 	
 	@Autowired
-	public MypageController(MypageService service, GoalService goalservice, MemberService mbservice) {
+	public MypageController(MypageService service, GoalService goalservice) {
 		super();
 		this.service = service;
-		this.gservice = gservice;
+		this.goalservice = goalservice;
 	}
 
 	@RequestMapping("/readAll")
 	public String mypage(Model model, HttpSession session) {
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		int memberSEQ = member.getMemberSEQ();
-		member = gservice.findByMemberSeq(String.valueOf(memberSEQ));
+		member = goalservice.findByMemberSeq(String.valueOf(memberSEQ));
 		MemberBioDTO memberbio = service.getMemberBio(memberSEQ);
 		model.addAttribute("member", member);
 		model.addAttribute("memberbio",memberbio);
