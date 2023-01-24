@@ -17,7 +17,8 @@ public interface MemberDAO {
 	
 	MemberDTO findByEmail(String email);  	
 	
-	//가입 전 추천 루틴 정보 조회. 인송님께 말하기
+	MemberDTO findByPK(int memberSEQ);  	
+		
 	List<RoutineDTO> findRoutineByRegisterInfo(HashMap<String,Object> param); 
 	
 	int createPersonalRoutine(PersonalRoutineDTO pRoutine); 

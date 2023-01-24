@@ -16,12 +16,19 @@ import org.springframework.stereotype.Repository;
 
 import com.multi.drd.cardio.CardioDTO;
 import com.multi.drd.fitness.FitnessDTO;
+import com.multi.drd.goal.GoalDTO;
+import com.multi.drd.member.MemberDAO;
+import com.multi.drd.member.MemberDTO;
+import com.multi.drd.memberbio.MemberBioDAO;
+import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.utils.DateUtils;
 
 @Repository
 public class RecordDAOImpl implements RecordDAO {
 	MongoTemplate mongoTemplate;
-	SqlSession sqlSession;
+	SqlSession sqlSession; 
+	MemberDAO memberDAO;
+	MemberBioDAO memberBioDAO;
 	
 	@Autowired
 	public RecordDAOImpl(MongoTemplate mongoTemplate, SqlSession sqlSession) {
@@ -67,8 +74,24 @@ public class RecordDAOImpl implements RecordDAO {
 		Query query = new Query(criteria); 
 				
 		return mongoTemplate.findOne(query, RecordDTO.class, "record");
+	}  
+	
+	@Override
+	public List<RecordDTO> findWeeklyRecord(int memberSEQ) {
+		Date today = new Date(); 
+		Date[] dates = DateUtils.getWeeklyISODate(today); 
+		
+		Criteria criteria = new Criteria().andOperator(
+				Criteria.where("memberSEQ").is(memberSEQ), 
+				Criteria.where("date").gte(dates[0]), 
+				Criteria.where("date").lte(dates[1]) 
+		); 
+		
+		Query query = new Query(criteria);   
+		
+		return mongoTemplate.find(query, RecordDTO.class, "record");
 	}
-
+	
 	@Override
 	public List<RecordDTO> findMonthlyRecord(int memberSEQ, int year, int month) {
 		
@@ -160,6 +183,19 @@ public class RecordDAOImpl implements RecordDAO {
 		update.set("status", record.getStatus()); 
 			
 		return mongoTemplate.updateFirst(query, update, "record").getN();
+	} 
+	
+	@Override
+	public int deleteDailyRecord(RecordDTO record) {
+		Query query = new Query();
+		 
+	    // where절 조건 
+		Date[] dates = DateUtils.getDailyISODate(record.getDate()); 
+		
+	    query.addCriteria(Criteria.where("memberSEQ").is(record.getMemberSEQ()));
+	    query.addCriteria(Criteria.where("date").gte(dates[0]).lte(dates[1]));  
+	    
+		return mongoTemplate.remove(query, "record").getN();
 	}
 
 	@Override
@@ -197,6 +233,32 @@ public class RecordDAOImpl implements RecordDAO {
 		return sqlSession.selectList("com.multi.drd.record.findAllFitness");
 	}
 
+	@Override
+	public List<RecordDTO> findWeeklyExerciseRecord(int memberSEQ) {
+		
+		Date today = new Date(); 
+		Date[] dates = DateUtils.getWeeklyISODate(today); 
+		
+		Criteria criteria = new Criteria().andOperator(
+				Criteria.where("memberSEQ").is(memberSEQ), 
+				Criteria.where("date").gte(dates[0]), 
+				Criteria.where("date").lte(dates[1]), 
+				Criteria.where("totalExerciseTime").gt(0) 
+		);  
+		
+		Query query = new Query(criteria);   
+		
+		return mongoTemplate.find(query, RecordDTO.class, "record");
+	}
 	
-	
+	@Override
+	public int updateMemberBioByRecord(MemberBioDTO memberBio) {
+		return sqlSession.update("com.multi.drd.memberBio.updateByRecord", memberBio);
+	}
+
+	@Override
+	public int updateGoalByRecord(GoalDTO goal) {
+		return sqlSession.update("com.multi.drd.record.updateGoalByRecord", goal);
+	}
+		
 }

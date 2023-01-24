@@ -105,7 +105,7 @@ public class RecordController {
 		record.setDate(date);
 		record.setCardioObj(cardioObj);
 		
-		return recordService.createCardio(record);
+		return recordService.createCardio(record, member);
 	}	
 
 	@RequestMapping(value = "/createFitness.do",method = RequestMethod.POST) 
@@ -134,7 +134,7 @@ public class RecordController {
 		record.setDate(date);
 		record.setFitnessObj(fitnessObj);
 		
-		return recordService.createFitness(record);
+		return recordService.createFitness(record, member);
 	}	
 
 	@RequestMapping(value = "/createFood.do",method = RequestMethod.POST) 
@@ -213,7 +213,7 @@ public class RecordController {
 		record.setDate(date);
 		record.setCardioObj(cardioObj);
 		
-		return recordService.updateCardio(record);
+		return recordService.updateCardio(record, member);
 	}	
 
 	@RequestMapping(value = "/updateFitness.do",method = RequestMethod.POST) 
@@ -241,7 +241,7 @@ public class RecordController {
 		record.setDate(date);
 		record.setFitnessObj(fitnessObj);
 		
-		return recordService.updateFitness(record);
+		return recordService.updateFitness(record, member);
 	}	
 
 	@RequestMapping(value = "/updateFood.do",method = RequestMethod.POST) 
@@ -289,8 +289,31 @@ public class RecordController {
 		record.setStatus(status);
 		
 		return recordService.updateStatus(record);
-	}	
+	}
 	
+	
+	
+	// 하나의 기록 (유산소, 무산소, 식단, 상태 모두) 삭제. index-script.js의 deleteAllEvent에 대응.
+	@RequestMapping(value = "/deleteDailyRecord.do",method = RequestMethod.POST) 
+	@ResponseBody
+	public int deleteDailyRecord(HttpSession session, HttpServletRequest request){ 
+		
+		// 클라이언트로부터 받은 데이터
+		MemberDTO member = (MemberDTO)session.getAttribute("member");
+		String dateStr = request.getParameter("date"); 		
+		
+		// 데이터 가공
+		int memberSEQ = member.getMemberSEQ(); 
+		Date date = DateUtils.convertTimestampToDate(dateStr);
+		
+		// 서비스에 전달할 DTO 생성 
+		RecordDTO record = new RecordDTO();
+		record.setMemberSEQ(memberSEQ);
+		record.setDate(date);
+		
+		return recordService.deleteDailyRecord(record, member);
+	}	
+
 	// 하나의 이벤트 (유산소, 무산소, 식단, 상태 중 1) 삭제. index-script.js의 deleteEvent에 대응.
 	@RequestMapping(value = "/deleteField.do",method = RequestMethod.POST) 
 	@ResponseBody
@@ -310,7 +333,7 @@ public class RecordController {
 		record.setMemberSEQ(memberSEQ);
 		record.setDate(date);
 		
-		return recordService.deleteField(record, field);
+		return recordService.deleteField(record, field, member);
 	}	
 
 	// 모든 유산소 운동(cardio) 조회

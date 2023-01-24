@@ -54,9 +54,7 @@ public final class DateUtils {
     	String dateStr = formatter.format(date);
     	String stringStartDate = dateStr + " 00:00:00";
     	String stringEndDate = dateStr + " 23:59:59"; 
-    	
-    	
-    	
+    	 	
     	Date startDate;
     	Date endDate;
 		try {
@@ -71,7 +69,38 @@ public final class DateUtils {
     	Date[] dates = {startDate, endDate};
     	
     	return dates;	
-    }  
+    }   
+    
+    /* 최근 7일 기록 조회.
+     * 반환 값 
+     *  - Date[0]: parameter 값의 7일전 날짜 +00:00:00 (ISO 형식)
+     *  - Date[1]: parameter 값의 endDate: (파라미터의 날짜)+23:59:59 (ISO 형식)
+     */
+    public static Date[] getWeeklyISODate(Date today) {
+    	
+    	 LocalDate localStartDate = today.toInstant()   // Date -> Instant
+					                .atZone(ZoneId.of("Asia/Seoul"))  // Instant -> ZonedDateTime
+					                .toLocalDate()
+    	 							.plusDays(-7);
+    	
+    	
+    	LocalDateTime localStartDateTime = LocalDateTime.of(localStartDate, LocalTime.MIDNIGHT);
+    	String stringStartDate = localStartDateTime.format(isoFormatter);
+	    
+	    Date startDate; 
+	    Date endDate = getDailyISODate(today)[1];
+		
+	    try {
+			startDate = new SimpleDateFormat(DB_FORMAT_DATE).parse(stringStartDate); 
+		} catch (ParseException e) {
+			e.printStackTrace(); 
+			return null;
+		} 
+	      
+	    Date[] dates = {startDate, endDate};
+    	
+    	return dates;	
+    }    
     
     /* 
      * input 값으로 들어온 날짜에 해당하는 월의 시작일과 마지막 일을 ISO 형태의 date로 리턴 

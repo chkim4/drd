@@ -130,8 +130,8 @@ public class MemberServiceImpl implements MemberService {
 		goalCalory = Integer.parseInt(String.format("%.0f", rawGoalCalory));
 		
 		
-		// 일일 권장 섭취 단백질량은 1kg에 1.0g 으로 가정. 1주일 치 적용
-		int goalProtein = Integer.parseInt(String.format("%.0f", weight)) * 7; 
+		// 일일 권장 섭취 단백질량은 1kg에 0.8g 으로 가정. 1주일 치 적용
+		int goalProtein = Integer.parseInt(String.format("%.0f", weight*0.8)) * 7; 
 		
 		goal.setMemberSEQ(member.getMemberSEQ());
 		goal.setGoalExerciseTime(goalExerciseTime);

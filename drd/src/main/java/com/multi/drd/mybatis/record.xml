@@ -12,7 +12,14 @@
 	<select id="findAllFitness" resultType="fitness">
 		select * 
 		from fitness
-	</select>
+	</select> 
+	
+	<update id="updateGoalByRecord" parameterType="goal" >
+		update goal
+		set goalCalory = #{goalCalory},   
+			goalProtein = #{goalProtein}
+		where memberSEQ = #{memberSEQ}
+	</update>
 	
 </mapper>
 
