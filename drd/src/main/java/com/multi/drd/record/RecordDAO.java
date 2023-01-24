@@ -48,5 +48,8 @@ public interface RecordDAO {
 	// 기록 생성/갱신/삭제 시 그 내용을 기반으로 일일 권장 섭취 칼로리와 주간 권장 섭취 단백질 변경
 	public int updateGoalByRecord(GoalDTO goal);
 	
+	// service의 getNoTodayRecordMemberSEQ에서 호출. 오늘 기록이 있는 사용자의 RecordDTO 반환.
+	public List<RecordDTO> findDailyExerciseRecordCron();
+	
 
 }

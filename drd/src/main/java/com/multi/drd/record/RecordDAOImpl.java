@@ -18,7 +18,6 @@ import com.multi.drd.cardio.CardioDTO;
 import com.multi.drd.fitness.FitnessDTO;
 import com.multi.drd.goal.GoalDTO;
 import com.multi.drd.member.MemberDAO;
-import com.multi.drd.member.MemberDTO;
 import com.multi.drd.memberbio.MemberBioDAO;
 import com.multi.drd.memberbio.MemberBioDTO;
 import com.multi.drd.utils.DateUtils;
@@ -259,6 +258,23 @@ public class RecordDAOImpl implements RecordDAO {
 	@Override
 	public int updateGoalByRecord(GoalDTO goal) {
 		return sqlSession.update("com.multi.drd.record.updateGoalByRecord", goal);
-	}
+	} 
+	
+	@Override
+	public List<RecordDTO> findDailyExerciseRecordCron() {
+		
+		Date today = new Date(); 
+		Date[] dates = DateUtils.getDailyISODate(today); 
+		
+		Criteria criteria = new Criteria().andOperator( 
+					Criteria.where("date").gte(dates[0]), 
+					Criteria.where("date").lte(dates[1]), 
+					Criteria.where("totalExerciseTime").gt(0) 
+		);
+		
+		Query query = new Query(criteria);   
+		return mongoTemplate.find(query, RecordDTO.class, "record");
+
+	}	
 		
 }

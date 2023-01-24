@@ -86,7 +86,14 @@
                 <a class="nav-link" href="/goal/readAll">
                 	<i class="fas fa-chart-pie"></i>
                     <span>목표</span></a>
-            </li>
+            </li> 
+            
+             <!-- Nav Item - FAQ -->
+	         <li class="nav-item">
+	         	<a class="nav-link" href="/faq/faq">
+	            	<i class="fas fa-info-circle"></i>
+	                	<span>FAQ</span></a>
+	         </li>
             
              <!-- Nav Item - 게시판 --> 
              <!-- 운동 후기 및 Q&A 관련. 아직 구현 안해서 제외 -->

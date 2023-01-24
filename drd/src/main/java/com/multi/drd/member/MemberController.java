@@ -71,7 +71,6 @@ public class MemberController {
 			  model.addAttribute("isLoginFailed", true);
 			  viewName = "member/login"; 
 		  }  
-		  
 		  return viewName;
 	} 
 	
@@ -95,11 +94,11 @@ public class MemberController {
 		 PersonalRoutineDTO pRoutine = new PersonalRoutineDTO();
 		 pRoutine.setRoutineSEQ(routine.getRoutineSEQ());
 		 pRoutine.setCardioObj(routine.getCardioObj()); 
-		 pRoutine.setFitnessObj(routine.getFitnessObj()); 
+		 pRoutine.setFitnessObj(routine.getFitnessObj());  
 		
-		boolean isRegistered = memberService.register(member, memberBio, pRoutine) > 0;   
+		 boolean isRegistered = memberService.register(member, memberBio, pRoutine) > 0;   
 		
-		String viewName = "";  
+		 String viewName = "";  
 		
 		 // 회원 가입 성공 시 
 		 if(isRegistered) {   
@@ -162,7 +161,14 @@ public class MemberController {
 	 public String logout(SessionStatus status) {
 		 status.setComplete(); // 세션에 있는 memeber 객체를 제거 
 		 return "main/main";
-	 } 
+	 }  
+
+	 // FAQ 페이지로 이동
+	 @RequestMapping(value = "/faqPage", method = RequestMethod.GET)
+	 public String faqPage() {
+		 
+		 return "faq/faq";
+	 }  
 	 
 	 // ---- 테스트용 메소드 ----
 	/* 로그인 및 회원 가입 시 세션이 제대로 생성 되었는 지 확인하기 위함

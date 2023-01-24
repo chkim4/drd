@@ -414,7 +414,5 @@ public class RecordServiceImpl implements RecordService {
 		// DAO 호출
 		dao.updateMemberBioByRecord(memberBio);
 		dao.updateGoalByRecord(goal);
-	}
-
-	
+	}	
 }
