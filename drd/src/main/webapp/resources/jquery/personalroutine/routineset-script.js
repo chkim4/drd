@@ -3,6 +3,10 @@ var cardioSEQ = -1;
 var personalRoutineSEQ = -1; 
 var fitnessarray= [];
 var cardioarray = [];
+var afterfitnessSEQ = -1;
+var beforefitnessSEQ = -1;
+var aftercardioSEQ = -1;
+var beforecardioSEQ = -1;
 function setPersonalRoutineSEQ(key){
 	personalRoutineSEQ = key;
 }
@@ -11,6 +15,15 @@ function setFitnessArray(array){
 }
 function setCardioArray(array){
 	cardioarray = array;
+}
+function refreshPR(){  
+     $("#check").load(window.location.href + "#check");
+}
+function refreshF(){  
+     $("#myroutine_fitnessList").load(window.location.href + "#myroutine_fitnessList");
+}
+function refreshC(){  
+     $("#myroutine_cardioList").load(window.location.href + "#myroutine_cardioList");
 }
 function selectPersonalRoutine_onclick(){
 	$.ajax({
@@ -27,23 +40,29 @@ function selectPersonalRoutine_onclick(){
 	})//end ajax1
 	function successRun1(data){
 			mydata = "<div class='w-100' style='float:left; width:100%'>"
-			+"<div style='float:left; width:70%'>name</div>"
-			+"<div style='float:left; width:10%'>set</div>"
-			+"<div style='float:left; width:10%'>count</div>"
-			+"<div style='float:left; width:10%'>weight</div>"
+			+"<div style='float:left; width:40%'>name</div>"
+			+"<div style='float:left; width:20%'>set</div>"
+			+"<div style='float:left; width:20%'>count</div>"
+			+"<div style='float:left; width:20%'>weight</div>"
 			+"</div><br/>";
 			for (var i = 0; i < data.length; i++) {
 				mydata = mydata+
 				"<div class='fitness' style='float:left; width:100%'>"
 				+"<div class='seq' style='display: none'>"+data[i].fitnessSEQ+"</div>"
-				+"<div style='float:left; width:70%'>"+data[i].name+"</div>"
-				+"<div style='float:left; width:10%'>"+data[i].set+"</div>"
-				+"<div style='float:left; width:10%'>"+data[i].count+"</div>"
-				+"<div style='float:left; width:10%'>"+data[i].weight+"kg</div>"
+				+"<div style='float:left; width:40%'>"+data[i].name+"</div>"
+				+"<div style='float:left; width:20%'>"+data[i].set+"</div>"
+				+"<div style='float:left; width:20%'>"+data[i].count+"</div>"
+				+"<div style='float:left; width:20%'>"+data[i].weight+"kg</div>"
 				+"</div><br/>";
 			}
+            var insert1 = "무산소(Fitness) <a style='float: right; width: 10%;' href='#' onclick='searchmodalF()' class='btn btn-success btn-circle btn-sm ' data-toggle='modal' data-target='#deleteandupdatemodal'>+</a>";
+            var insert2 = "유산소(Cardio) <a style='float: right; width: 10%;' href='#' onclick='searchmodalC()' class='btn btn-success btn-circle btn-sm ' data-toggle='modal' data-target='#deleteandupdatemodal'>+</a>";
 			$("#myroutine_fitnessList").empty();
 			$("#myroutine_fitnessList").append(mydata);
+			$("#fitness_top").empty();
+			$("#fitness_top").append(insert1);
+			$("#cardio_top").empty();
+			$("#cardio_top").append(insert2);
 	}
 	$.ajax({
 		type:"post",
@@ -71,8 +90,10 @@ function selectPersonalRoutine_onclick(){
 			+"<div class='w-auto' style='float:left'>"+data[i].time+"분</div>"
 			+"</div><br/>"
 		}
+		var insert = "<a style='float: right; width: 10%;' href='#' onclick='searchmodalC()' class='btn btn-success btn-circle btn-sm ' data-toggle='modal' data-target='#deleteandupdatemodal'>+</a>";
 		$("#myroutine_cardioList").empty();
 		$("#myroutine_cardioList").append(mydata);
+		$("cardio_top").append(insert);
 	}
 }
 			
@@ -93,7 +114,7 @@ function selectFitness_onclick(){
 	}
 	})
 	function successRun1(data){
-		mydata = "<form id='updatefitness' action='/personalroutine/updatefitness' method='post'>"
+		mydata = "<form id='updatefitness' action='/personalroutine/updatefitness' method='post' target='iframe1'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.fitnessSEQ+"' name='fitnessSEQ' id= 'fitnessSEQ'>"
 				+ "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.set+"' name='set' id='set'></div></div><br/>"
@@ -111,7 +132,9 @@ function selectFitness_onclick(){
 						+ "<i class='fas fa-trash'></i>"
 					+ "</span>"
 					+ "<span class='text'>삭제하기</span>"
-				+ "</a>";
+				+ "</a>"
+                + "</div>"
+                +"</form>";
 		var array = [data.set, data.count, data.weight];
 		setFitnessArray(array);
 		$("#ajaxchangename").empty();
@@ -157,7 +180,7 @@ function selectCardio_onclick(){
 		}
 		})//end ajax1cardiochange
 		function successRun1(data){
-			mydata = "<form id='updatecardio' action='/personalroutine/updatecardio' method='post'>"
+			mydata = "<form id='updatecardio' action='/personalroutine/updatecardio' method='post' target='iframe1'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.cardioSEQ+"' name='cardioSEQ' id='cardioSEQ'>"
 				+ "<div class='w-100'>time : <div style='float:right; text-align: right;'>"
@@ -176,7 +199,8 @@ function selectCardio_onclick(){
 						+ "</span>"
 						+ "<span class='text'>삭제하기</span>"
 					+ "</a>"
-				+ "</div>";
+				+ "</div>"
+                + "</form>";
 		var array = [data.time];
 		setCardioArray(array);
 		$("#ajaxchangename").empty();
@@ -217,7 +241,8 @@ function updateFitness_onclick(){
 	return false;
 	}
 	document.getElementById("updatefitness").submit();
-	
+	refreshPR();
+	refreshF();
 }
 
 function updateCardio_onclick(){
@@ -226,7 +251,8 @@ function updateCardio_onclick(){
 	return false;
 	}
 	document.getElementById("updatecardio").submit();
-	
+	refreshPR();
+	refreshC();
 }
 
 function deleteandupdateFitness_onclick(){
@@ -266,15 +292,16 @@ function deleteandupdateFitness_onclick(){
 				console.log("case2")
 			}else{
 				head = "운동수정";
-				body = "<h4><a href='#' onclick='selectTPOFitness_onclick()'>"+data[0].name+"<div style='display:none;' class ='afterfitnessSEQ'>"+data[0].fitnessSEQ+"</div>"
-					+ "<div style='display:none;' class ='beforefitnessSEQ'>"+fitnessSEQ+"</div></a></h4>";
+				console.log(data[0].fitnessSEQ)
+				body = "<h4><div class='modalselectfitness'>"+data[0].name+"<div style='display:none;' class ='afterfitnessSEQ'>"+data[0].fitnessSEQ+"</div>"
+					+ "<div style='display:none;' class ='beforefitnessSEQ'>"+fitnessSEQ+"</div></div></h4>";
 				foot = "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
 			}
 		}else{
 			head = "운동수정";
 			for (var i = 0; i < data.length; i++) {
-				body = body + "<h4><a href='#' onclick='selectTPOFitness_onclick()'>"+data[i].name+"<div style='display:none;' class ='afterfitnessSEQ'>"+data[i].fitnessSEQ+"</div>"
-					+ "<div style='display:none;' class ='beforefitnessSEQ'>"+fitnessSEQ+"</div></a></h4>";
+				body = body + "<h4><div class='modalselectfitness'>"+data[i].name+"<div style='display:none;' class ='afterfitnessSEQ'>"+data[i].fitnessSEQ+"</div>"
+					+ "<div style='display:none;' class ='beforefitnessSEQ'>"+fitnessSEQ+"</div></div></h4>";
 			} 
 			foot = "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
 			console.log("case3")
@@ -325,17 +352,18 @@ function deleteandupdateCardio_onclick(){
 				head = "운동수정";
 				body = "대체 가능한 운동이 없습니다.";
 				foot = "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
+				
 			}else{
 				head = "운동수정";
-				body = "<h4><a href='#' onclick='selectTPOCardio_onclick()'>"+data[0].name+"<div style='display:none;' class ='aftercardioSEQ'>"+data[0].cardioSEQ+"</div>"
-					+ "<div style='display:none;' class ='beforecardioSEQ'>"+cardioSEQ+"</div></a></h4>";
+				body = "<h4><div class='modalselectcardio'>"+data[0].name+"<div style='display:none;' class ='aftercardioSEQ'>"+data[0].cardioSEQ+"</div>"
+					+ "<div style='display:none;' class ='beforecardioSEQ'>"+cardioSEQ+"</div></div></h4>";
 				foot = "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
 			}
 		}else{
 			head = "운동수정";
 			for (var i = 0; i < data.length; i++) {
-				body = body + "<h4><a href='#' onclick='selectTPOCardio_onclick()'>"+data[i].name+"<div style='display:none;' class ='aftercardioSEQ'>"+data[i].cardioSEQ+"</div>"
-					+ "<div style='display:none;' class ='beforecardioSEQ'>"+cardioSEQ+"</div></a></h4>";
+				body = body + "<h4><div class='modalselectcardio'>"+data[i].name+"<div style='display:none;' class ='aftercardioSEQ'>"+data[i].cardioSEQ+"</div>"
+					+ "<div style='display:none;' class ='beforecardioSEQ'>"+cardioSEQ+"</div></div></h4>";
 				
 			} 
 			foot = "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
@@ -367,8 +395,8 @@ function selectTPOFitness_onclick(){
 	function successRun1(data){
 		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'id ='musclegroup'>"+data.muscleGroup+"</div><br/>"
-		+ "<div style='text-align: right; float:right;'>"+data.equipment+"</div><hr/>"
-		body = mydata + "<form id='deleteandupdatefitness' action='' method='post'>"
+		+ "<div style='text-align: right; float:right;'>"+data.equipment+"</div><br/><hr/>"
+		body = mydata + "<form id='deleteandupdatefitness' action='/personalroutine/DnUF.do' method='post' target='iframe1'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.fitnessSEQ+"' name='afterfitnessSEQ' id= 'afterfitnessSEQ'>"
 				+ "<input type='hidden' value='"+beforefitnessSEQ+"' name='beforefitnessSEQ' id= 'beforefitnessSEQ'>"
@@ -414,8 +442,8 @@ function selectTPOCardio_onclick(){
 		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>"+intensity+"</div><br/>"
 		+ "<div style='text-align: right; float:right; display:none;' id ='intensity'>"+data.intensity+"</div><br/>"
-		+ "<div style='text-align: right; float:right;'>시간당 칼로리: "+data.calory+"</div><hr/>"
-		body = mydata + "<form id='deleteandupdatecardio' action='' method='post'>"
+		+ "<div style='text-align: right; float:right;'>시간당 칼로리: "+data.calory+"</div><br/><hr/>"
+		body = mydata + "<form id='deleteandupdatecardio' action='/personalroutine/DnUC.do' method='post' target='iframe1'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.cardioSEQ+"' name='aftercardioSEQ' id= 'aftercardioSEQ'>"
 				+ "<input type='hidden' value='"+beforecardioSEQ+"' name='beforecardioSEQ' id= 'beforecardioSEQ'>"
@@ -450,5 +478,218 @@ function deleteandupdatecardio_do(){
 	return false;
 	}
 	document.getElementById("deleteandupdatecardio").submit();
+	
+}
+
+function searchmodalF(){
+    $("#changetitle").empty();
+    $("#changetitle").append("운동 추가하기");
+    $("#changethings").empty();
+    var searchbar = "<div style='width: 100%;'>"
+        +"<form action='#'>"
+            +"<div class='input-group'>"
+                +"<input type='search' class='form-control bg-light border-0 small' placeholder='이름으로 검색하세요' aria-label='Search' aria-describedby='basic-addon2' name='searchname' id='searchname'>"
+                +"<div class='input-group-append'>"
+                    +"<button class='btn btn-primary' type='button' onclick='searchF()'>"
+                        +"<i class='fas fa-search fa-sm'></i>"
+                    +"</button>"
+                +"</div>"
+            +"</div>"
+        +"</form>"
+        +"</div>"
+        +"<br/><hr/><br/>"
+        +"<div style='width: 100%;' id='searchcontent'></div>";
+    foot = "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
+    $("#changethings").append(searchbar);
+    $("#changefoot").empty();
+	$("#changefoot").append(foot);
+}
+function searchmodalC(){
+    $("#changetitle").empty();
+    $("#changetitle").append("운동 추가하기");
+    $("#changethings").empty();
+    var searchbar = "<div style='width: 100%;'>"
+                    +"<form action='#' >"
+                        +"<div class='input-group'>"
+                            +"<input type='search' class='form-control bg-light border-0 small' placeholder='이름으로 검색하세요' aria-label='Search' aria-describedby='basic-addon2' name='searchname' id='searchname'>"
+                            +"<div class='input-group-append'>"
+                                +"<button class='btn btn-primary' type='button' onclick='searchC()'>"
+                                    +"<i class='fas fa-search fa-sm'></i>"
+                                +"</button>"
+                            +"</div>"
+                        +"</div>"
+                    +"</form>"
+                    +"</div>"
+                    +"<br/><hr/><br/>"
+                    +"<div style='width: 100%;' id='searchcontent'></div>";
+    foot = "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
+    $("#changethings").append(searchbar);
+    $("#changefoot").empty();
+	$("#changefoot").append(foot);
+}
+function searchF(){
+    var name = $("#searchname").val();
+	$.ajax({
+        type:"post",
+        url:"/personalroutine/searchFbyname",
+        data:{
+            "name":name
+        },
+        async : false,
+        success:successRun1,
+        error:function(a,b,c){
+            alert(c);
+        }
+        })
+        function successRun1(data){
+            mydata = "<div class='w-100' style='float:left; width:100%'>"
+                +"<div style='float:left; width:40%; text-align: center;'>name</div>"
+                +"<div style='float:left; width:30%; text-align: center;'>muscleGroup</div>"
+                +"<div style='float:left; width:30%; text-align: center;'>equipment</div>"
+                +"</div><br/>";
+                for (var i = 0; i < data.length; i++) {
+                    mydata = mydata+
+                    "<div class='selectafitness' style='float:left; width:100%'>"
+                    +"<div class='seq' style='display: none'>"+data[i].fitnessSEQ+"</div>"
+                    +"<div style='float:left; width:40%; text-align: center;'>"+data[i].name+"</div>"
+                    +"<div style='float:left; width:30%; text-align: center;'>"+data[i].muscleGroup+"</div>"
+                    +"<div style='float:left; width:30%; text-align: center;'>"+data[i].equipment+"</div>"
+                    +"</div><br/>";
+                }
+            $("#searchcontent").empty();
+            $("#searchcontent").append(mydata);
+        }
+}
+function searchC(){
+    var name = $("#searchname").val();
+	$.ajax({
+        type:"post",
+        url:"/personalroutine/searchCbyname",
+        data:{
+            "name":name
+        },
+        async : false,
+        success:successRun1,
+        error:function(a,b,c){
+            alert(c);
+        }
+        })
+        function successRun1(data){
+            mydata = "<div class='w-100' style='float:left; width:100%'>"
+                +"<div style='float:left; width: 60%;'>name</div>"
+                +"<div style='float:left; width: 20%;'>calory</div>"
+                +"<div style='float:left; width: 20%;'>intensity</div>"
+                +"</div><br/>";
+                for (var i = 0; i < data.length; i++) {
+                    mydata = mydata+
+                    "<div class='selectacardio' style='float:left; width:100%'>"
+                        +"<div class='seq' style='display: none'>"+data[i].cardioSEQ+"</div>"
+                        +"<div style='float:left; width: 60%;'>"+data[i].name+"</div>"
+                        +"<div style='float:left; width: 20%;'>"+data[i].calory+"</div>"
+                        +"<div style='float:left; width: 20%;'>"+data[i].intensity+"</div>"
+                    +"</div><br/>";
+                }
+            $("#searchcontent").empty();
+            $("#searchcontent").append(mydata);
+        }
+}
+function selectAFitness_onclick(){
+	fitnessSEQ = $(this).children(".seq").text();
+	$.ajax({
+		type:"post",
+		url:"/personalroutine/ajax/setfitness",
+		data:{
+			"fitnessSEQ":fitnessSEQ
+		},
+		async : false,
+		success:successRun1,
+		error:function(a,b,c){
+			alert(c);
+	}
+	})
+	
+	function successRun1(data){
+		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
+		+ "<div style='text-align: right; float:right;'id ='musclegroup'>"+data.muscleGroup+"</div><br/>"
+		+ "<div style='text-align: right; float:right;'>"+data.equipment+"</div><br/><hr/>"
+		body = mydata + "<form id='addfitness' action='/personalroutine/AF.do' method='post' target='iframe1'>"
+				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
+				+ "<input type='hidden' value='"+data.fitnessSEQ+"' name='fitnessSEQ' id= 'fitnessSEQ'>"
+				+ "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='20' name='set' id='set'></div></div><br/>"
+				+ "<div class='w-100'>count : <div style='float:right; text-align: right;'><input type='number' min='1' value='5' name='count' id='count'></div></div><br/>"
+				+ "<div class='w-100'>weight : <div style='float:right; text-align: right;'><input type='number' min='1' value='4' name='weight' id='weight'></div></div><br/>"
+				+ "</form>"
+		foot = "<button type='button' class='btn btn btn-success btn-icon-split' data-dismiss='modal' onclick='addfitness_do()'>"
+					+ "<span class='icon text-white-50'>"
+						+ "<i class='fas fa-check'></i>"
+					+ "</span>"
+					+ "<span class='text'>추가하기</span>"
+				+ "</button>"
+				+ "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";	
+		$("#changethings").empty();
+		$("#changethings").append(body);
+		$("#changefoot").empty();
+		$("#changefoot").append(foot);
+	}
+}
+function selectACardio_onclick(){
+	cardioSEQ = $(this).children(".cardioSEQ").text();
+	$.ajax({
+	type:"post",
+	url:"/personalroutine/ajax/setcardio",
+	data:{
+		"cardioSEQ":cardioSEQ
+	},
+	async : false,
+	success:successRun1,
+	error:function(a,b,c){
+		alert(c);
+	}
+	})
+	function successRun1(data){
+		intensity = "";
+		if(data.intensity==0){
+			intensity = "저강도";
+		}else{
+			intensity = "고강도";
+		}
+		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
+		+ "<div style='text-align: right; float:right;'>"+intensity+"</div><br/>"
+		+ "<div style='text-align: right; float:right; display:none;' id ='intensity'>"+data.intensity+"</div><br/>"
+		+ "<div style='text-align: right; float:right;'>시간당 칼로리: "+data.calory+"</div><br/><hr/>"
+		body = mydata + "<form id='addcardio' action='/personalroutine/AC.do' method='post' target='iframe1'>"
+				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
+				+ "<input type='hidden' value='"+data.cardioSEQ+"' name='cardioSEQ' id= cardioSEQ'>"
+				+ "<input type='hidden' value='"+data.calory+"' name='calory' id= 'calory'>"
+				+ "<div class='w-100'>time : <div style='float:right; text-align: right;'>"
+					+ "<input type='number' min='1' value='30' name='time' id='time'>"
+				+ "</div></div><br/>"
+				+ "</form>"
+		foot = "<button type='button' class='btn btn btn-success btn-icon-split' data-dismiss='modal' onclick='addcardio_do()'>"
+					+ "<span class='icon text-white-50'>"
+						+ "<i class='fas fa-check'></i>"
+					+ "</span>"
+					+ "<span class='text'>추가하기</span>"
+				+ "</button>"
+				+ "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";	
+		$("#changethings").empty();
+		$("#changethings").append(body);
+		$("#changefoot").empty();
+		$("#changefoot").append(foot);
+	}
+}
+function addfitness_do(){
+	if(!confirm("추가하시겠습니까?")){
+	return false;
+	}
+	document.getElementById("addfitness").submit();
+	
+}
+
+function addcardio_do(){
+	if(!confirm("추가하시겠습니까?")){
+	return false;
+	}
+	document.getElementById("addcardio").submit();
 	
 }
