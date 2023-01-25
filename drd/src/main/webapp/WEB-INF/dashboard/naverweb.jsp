@@ -137,7 +137,7 @@ function myFunction(){
 					  title: '나의 헬스장 등록 완료'
 					  
 					}).then(function() {
-						window.location = "/dashboard/read";
+						location.reload();
 					});
 					
 					
