@@ -8,4 +8,5 @@ public interface FitnessDAO {
 	List<FitnessDTO> findbymusclegroup(String musclegroup);
 	List<FitnessDTO> findbymusclegroupwithSEQ(Map<String, Object> map);
 	List<FitnessDTO> findbyname(String name);
+	List<FitnessDTO> findbynamewithseq(Map<String, Object> map);
 }

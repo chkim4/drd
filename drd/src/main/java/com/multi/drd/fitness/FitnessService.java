@@ -8,4 +8,6 @@ public interface FitnessService {
 	List<FitnessDTO> findbymusclegroup(String musclegroup);
 	List<FitnessDTO> findbymusclegroupwithseq(Map<String, Object> map);
 	List<FitnessDTO> findbyname(String name);
+	List<FitnessDTO> findbynamewithseq(Map<String, Object> map);
+	
 }

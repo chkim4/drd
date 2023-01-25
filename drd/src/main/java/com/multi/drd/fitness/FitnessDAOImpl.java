@@ -33,5 +33,10 @@ public class FitnessDAOImpl implements FitnessDAO {
 	public List<FitnessDTO> findbyname(String name) {
 		return sqlSession.selectList("com.multi.drd.fitness.findbyname", name);
 	}
+	@Override
+	public List<FitnessDTO> findbynamewithseq(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList("com.multi.drd.fitness.findbynamewithSEQ", map);
+	}
 
 }
