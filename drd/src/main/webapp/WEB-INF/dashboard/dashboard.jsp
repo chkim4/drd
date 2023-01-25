@@ -28,8 +28,8 @@
 <script type="text/javascript"
 	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xbsurilrkj&submodules=geocoder"></script>
 <script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
-   <script src="/sweetalert/sweetalert2.min.js"></script>
-	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
+<script src="/sweetalert/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
 </head>
 
 
@@ -93,13 +93,11 @@
 			<li class="nav-item"><a class="nav-link" href="/goal/readAll">
 					<i class="fas fa-chart-pie"></i> <span>목표</span>
 			</a></li>
-			 <!-- Nav Item - FAQ -->
-	         <li class="nav-item">
-	         	<a class="nav-link" href="/member/faqPage">
-	            	<i class="fas fa-info-circle"></i>
-	                	<span>FAQ</span></a>
-	         </li>
-			
+			<!-- Nav Item - FAQ -->
+			<li class="nav-item"><a class="nav-link" href="/member/faqPage">
+					<i class="fas fa-info-circle"></i> <span>FAQ</span>
+			</a></li>
+
 
 			<!-- Nav Item - 게시판 -->
 			<!-- 운동 후기 및 Q&A 관련. 아직 구현 안해서 제외 -->
@@ -195,8 +193,12 @@
 								<!--                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> -->
 								<!--                                     정보수정 -->
 								<!--                                 </a> -->
+								
 
 								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/mypage/readAll"> <i
+									class="fas fa-user-circle text-gray-400"></i> 마이페이지
+								</a>
 								<a class="dropdown-item" href="#" data-toggle="modal"
 									data-target="#logoutModal"> <i
 									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -258,19 +260,26 @@
 										</p>
 									</a>
 									<h5 class="card-title">${member.profileComment }</h5>
-									
-										<c:choose>
-											<c:when test="${gymInfo != null}">
-											<p class="card-text">나의 헬스장: ${gymInfo.name } <a href="/dashboard/deleteGym" id="deleteGym"
-											class="btn btn-primary"><i class="fas fa-trash"></i></a></p>
-											</c:when>
-											<c:otherwise>
-												<p class="card-text">나의 헬스장 등록하기 <a href="#" id="findGymList"
-											class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-location"></i></a></p>
-											</c:otherwise>
-										</c:choose>
-										
-									
+
+									<c:choose>
+										<c:when test="${gymInfo != null}">
+											<p class="card-text">
+												나의 헬스장: ${gymInfo.name } <a href="/dashboard/deleteGym"
+													id="deleteGym" class="btn btn-primary"><i
+													class="fas fa-trash"></i></a>
+											</p>
+										</c:when>
+										<c:otherwise>
+											<p class="card-text">
+												나의 헬스장 등록하기 <a href="#" id="findGymList"
+													class="btn btn-primary" data-toggle="modal"
+													data-target="#myModal"><i
+													class="fas fa-search-location"></i></a>
+											</p>
+										</c:otherwise>
+									</c:choose>
+
+
 
 								</div>
 								<!-- Button to Open the Modal -->
@@ -279,7 +288,7 @@
 								</button> -->
 
 								<!-- The Modal -->
-								<div  class="modal fade" id="myModal" role="dialog">
+								<div class="modal fade" id="myModal" role="dialog">
 									<div class="modal-dialog modal-xl">
 										<div class="modal-content">
 
@@ -290,7 +299,8 @@
 											</div>
 
 											<!-- Modal body -->
-											<div class="modal-body gym-content" style="overflow:hidden;">Modal body..</div>
+											<div class="modal-body gym-content" style="overflow: hidden;">Modal
+												body..</div>
 
 											<!-- Modal footer -->
 											<div class="modal-footer">
@@ -761,20 +771,20 @@
 			var cardioList = [];
 			var dateList = [];
 			var timeList = [];
-			
-			var mySwal = Swal.mixin({ 
-				confirmButtonColor: '#4E73DF',		
-				confirmButtonText: '확인'
-			  })
+
+			var mySwal = Swal.mixin({
+				confirmButtonColor : '#4E73DF',
+				confirmButtonText : '확인'
+			})
 
 			$(".gym-content").load("/dashboard/readGym");
-			 $("#deleteGym").on("click", function(){
-				 mySwal.fire({
-					  icon: 'success',
-					  title: '나의 헬스장 삭제 완료'
-					  
-					})
-			 })
+			$("#deleteGym").on("click", function() {
+				mySwal.fire({
+					icon : 'success',
+					title : '나의 헬스장 삭제 완료'
+
+				})
+			})
 
 			$(function() {
 
