@@ -38,7 +38,6 @@ import com.multi.drd.utils.JsonUtils;
 
 @Controller
 @RequestMapping("/dashboard")
-@SessionAttributes("member")
 public class DashboardController {
 	DashboardService service;
 	RecordService recordService;
@@ -60,101 +59,34 @@ public class DashboardController {
 		this.goalService = goalService;
 		this.gymService = gymService;
 	}
-
+	//사용자 기본정보
 	@RequestMapping("/read")
-	public String read(Model model, HttpSession session) throws ParseException {
+	public String read(Model model, HttpSession session) {
 		// 세션멤버정보
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
 		System.out.println("member from sesseion: " + member);
 		// 멤버프로필
 		MemberBioDTO memberBio = memberBioService.findByPK(member.getMemberSEQ());
+		System.out.println("memberBio : "+ memberBio);
 		// 가장최근기록
 		RecordDTO latestRecord = recordService.findLatestRecord(member.getMemberSEQ());
-		System.out.println("latestRecord"+latestRecord);
+		System.out.println("latestRecord :"+latestRecord);
 		
 		//등록된 gym 정보
 		GymDTO gymInfo = gymService.readGym(member.getMemberSEQ());
-		
-		// recordService.ExcerciseHourByWeek(member.getMemberSEQ());
+		System.out.println("gymInfo" + gymInfo);
 
-		// List<RecordDTO> recordMonthly =
-		// recordService.findMonthlyRecord(member.getMemberSEQ(), 2022, 12);
-		// System.out.println("excerciseHourWeekly" +excerciseHourWeekly);
-		// System.out.println("recordMonthly" +recordMonthly);
-
-		/*
-		 * List<FitnessObj> fitnessObjMonthly = new ArrayList<FitnessObj>();
-		 * List<CardioObj> cardioObjMonthly = new ArrayList<CardioObj>(); List<Date>
-		 * exerciseDateMonthly = new ArrayList<Date>(); List<String>
-		 * formattedExerciseDateMonthly = new ArrayList<String>(); List<Integer>
-		 * fitnessTimeMonthly = new ArrayList<Integer>(); List<Integer>
-		 * cardioTimeMonthly = new ArrayList<Integer>();
-		 * 
-		 * for(int i=0;i<recordMonthly.size();i++) {
-		 * exerciseDateMonthly.add(recordMonthly.get(i).getDate());
-		 * fitnessObjMonthly.add(recordMonthly.get(i).getFitnessObj());
-		 * cardioObjMonthly.add(recordMonthly.get(i).getCardioObj()); } String input =
-		 * "Thu Jun 18 20:56:02 EDT 2009"; SimpleDateFormat parser = new
-		 * SimpleDateFormat("EEE MMM d HH:mm:ss zzz yyyy");
-		 * 
-		 * SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd"); for(int i=0;
-		 * i<exerciseDateMonthly.size(); i++) {
-		 * formattedExerciseDateMonthly.add(formatter.format(exerciseDateMonthly.get(i))
-		 * ); }
-		 * 
-		 * 
-		 * 
-		 * for(int i=0;i<fitnessObjMonthly.size();i++) {
-		 * fitnessTimeMonthly.add(fitnessObjMonthly.get(i).getTotalTime()); } for(int
-		 * i=0;i<fitnessObjMonthly.size();i++) {
-		 * cardioTimeMonthly.add(cardioObjMonthly.get(i).getTotalTime()); }
-		 * 
-		 * System.out.println(exerciseDateMonthly);
-		 * System.out.println(fitnessTimeMonthly);
-		 * System.out.println(cardioTimeMonthly);
-		 * System.out.println(formattedExerciseDateMonthly);
-		 */
-
-		List<RecordDTO> recordWeekly = service.findByWeek(member.getMemberSEQ());
-		
-		List<FoodObj> foodlist = null;
-
-		for (int i = 0; i < recordWeekly.size(); i++) {
-			foodlist = recordWeekly.get(i).getFoodObj();
-		}
-		System.out.println(foodlist);
-		int takeProtein = 0;
-		int totalCalory = 0;
-
-		if (foodlist != null) {
-			for (int i = 0; i < foodlist.size(); i++) {
-				takeProtein += foodlist.get(i).getProtein();
-				totalCalory += foodlist.get(i).getCalory();
-
-			}
-		} else {
-			takeProtein = 0;
-			totalCalory = 0;
-		}
-		
+			
 		model.addAttribute("member", member);
 		model.addAttribute("memberBio", memberBio);
 		model.addAttribute("latestRecord", latestRecord);
-		model.addAttribute("takeProtein", takeProtein);
-		model.addAttribute("totalCalory", totalCalory);
 		model.addAttribute("gymInfo", gymInfo);
-		System.out.println("takeProtein" + takeProtein);
-		System.out.println("gymInfo" + gymInfo);
-
+		
+		
 		return "dashboard/dashboard";
 	}
-	@RequestMapping("/deleteGym")
-	public String delete(HttpSession session) {
-		MemberDTO member = (MemberDTO) session.getAttribute("member");
-		gymService.deleteGym(member.getMemberSEQ());
-		return "redirect:/dashboard/read";
-	}
-	/**/
+	
+	//주간 목표대비 섭취칼로리, 프로틴
 	@RequestMapping(value = "/read", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public List<Map<String, Integer>> proteinCaloryList(HttpSession session, Model model) {
@@ -175,13 +107,13 @@ public class DashboardController {
 		int takeProtein = 0;
 		int totalCalory = 0;
 
-		if (foodlist != null) {
+		if (foodlist != null) {////식단 기록있다면 합산
 			for (int i = 0; i < foodlist.size(); i++) {
 				takeProtein += foodlist.get(i).getProtein();
 				totalCalory += foodlist.get(i).getCalory();
 
 			}
-		} else {
+		} else {//없으면 기본값
 			takeProtein = 0;
 			totalCalory = 0;
 		}
@@ -210,17 +142,18 @@ public class DashboardController {
 
 	}
 
+	//주단위 월간그래프
 	@RequestMapping(value = "/readchart", method = RequestMethod.POST, produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public Map<String, Object> weekChart(HttpSession session, Model model) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		/* 목표시간 */
+		//목표시간
 		GoalDTO readGoal = goalService.readGoal(((MemberDTO) session.getAttribute("member")).getMemberSEQ());
 		int goalTime = readGoal.getGoalExerciseTime() * 5;
 		/* 일주일단위 기록 */
 		// List<AggregationResultDTO>excerciseHourWeekly =
 		// service.ExcerciseHourByWeek(member.getMemberSEQ());
-
+		//일주일단위 무산소, 유산소 운동
 		List<AggregationResultDTO> cardioMinByWeek = service
 				.cardioMinByWeek(((MemberDTO) session.getAttribute("member")).getMemberSEQ());
 		List<AggregationResultDTO> fitnessMinByWeek = service
@@ -236,7 +169,7 @@ public class DashboardController {
 			weeks.add(parsedWeek);
 		}
 		System.out.println("weeks: " + weeks);
-
+		//각 주의 첫 월요일 날짜
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Calendar cal = Calendar.getInstance();
 		for (int i = 0; i < weeks.size(); i++) {
@@ -254,13 +187,23 @@ public class DashboardController {
 		return map;
 
 	}
-
+	/*네이버지도 api 관련 기능*/
+	
+	//모달창안 네이버지도 api
 	@RequestMapping("/readGym")
 	public String naverApi(Model model) {
 		return "dashboard/naverweb";
 	}
 
-	/* 공공데이터 api 데이터 넘기기 */
+	//대시보드에서 등록한 헬스장 삭제
+	@RequestMapping("/deleteGym")
+	public String delete(HttpSession session) {
+		MemberDTO member = (MemberDTO) session.getAttribute("member");
+		gymService.deleteGym(member.getMemberSEQ());
+		return "redirect:/dashboard/read";
+	}
+
+	// 공공데이터 api 데이터 넘기기
 	@RequestMapping(value = "/gymInfo", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
 	@ResponseBody
 	public String gymInfo(Local local, Model model) throws IOException {

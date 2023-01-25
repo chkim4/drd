@@ -311,36 +311,6 @@
 										</div>
 									</div>
 								</div>
-								<%-- <div class="card-footer text-muted">
-									<div class="card-section">
-										<div class="text-label text-small mb-8px">최근 활동</div>
-										<a class="text-large hover-orange"
-											href="/activities/8277089645"> <strong> ${latestRecord.cardioObj}
-											<c:forEach var="item" items="${latestRecord.fitnessObj.fitnessList}">
-
-     <p>운동정보 : ${item.fitnessSEQ} • 세트 : ${item.set} • 횟수 : ${item.count} • 무게 : ${item.weight}</p>
-
-
-</c:forEach>
-											${latestRecord.fitnessObj}</strong> •
-											<time class="timestamp text-medium"
-												datetime="2022-12-22 20:50:00 UTC"> 날짜 :
-												<fmt:formatDate value="${latestRecord. date}" pattern="yyyy-MM-dd"/>
-												 </time>
-
-										</a>
-									</div>
-									<div class="card-section">
-										<a class="btn-card-link media media-middle"
-											href="/athlete/training/log">
-											<div class="media-body">내 트레이닝 기록</div>
-											<div class="media-right">
-												<span class="app-icon-wrapper  "><span
-													class="app-icon icon-caret-right icon-dark icon-md"></span></span>
-											</div>
-										</a>
-									</div>
-								</div> --%>
 
 							</div>
 							<!-- 프로필 끝 -->
@@ -391,9 +361,9 @@
 								<ul class="nav nav-tabs shadow" id="selectChart">
 									<li class="nav-item"><a class="nav-link active"
 										data-toggle="tab" href="#qwe"><i
-											class="fas fa-chart-pie fa-fw me-2"></i>식단</a></li>
+											class="fas fa-chart-pie fa-fw me-2"></i>섭취단백질</a></li>
 									<li class="nav-item"><a class="nav-link" data-toggle="tab"
-										href="#asd"><i class="fas fa-chart-line fa-fw me-2"></i>운동목표</a></li>
+										href="#asd"><i class="fas fa-chart-line fa-fw me-2"></i>섭취칼로리</a></li>
 								</ul>
 								<div class="tab-content card border-0 shadow mb-4">
 									<div class="tab-pane fade show active" id="qwe">
@@ -402,15 +372,7 @@
 											<div class="chart-pie pt-4 pb-2">
 												<canvas id="myChartDoughnut"></canvas>
 											</div>
-											<!-- <div class="mt-4 text-center small">
-										<span class="mr-2"> <i
-											class="fas fa-circle text-primary"></i> 식단1
-										</span> <span class="mr-2"> <i
-											class="fas fa-circle text-success"></i> 식단2
-										</span> <span class="mr-2"> <i class="fas fa-circle text-info"></i>
-											식단3
-										</span>
-									</div> -->
+											
 										</div>
 									</div>
 									<div class="tab-pane fade" id="asd">
@@ -422,12 +384,6 @@
 										</div>
 
 									</div>
-									<!-- <div class="tab-pane fade" id="zxc">
-									<p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut
-										mattis leo, vel fermentum tellus. Sed sagittis rhoncus
-										venenatis. Quisque commodo consectetur faucibus. Aenean eget
-										ultricies justo.</p>
-								</div> -->
 
 									<c:if test="${takeProtein == 0 || totalCalory == 0}">
 										<div class="card-footer">
@@ -458,81 +414,7 @@
 										</a>
 									</h6>
 								</div>
-								<!-- <div class="card-body">
-									<div class="text-center">
-										<img class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-											style="width: 25rem;" src="img/undraw_posting_photo.svg"
-											alt="...">
-									</div>
-									<p>
-										Add some quality, svg illustrations to your project courtesy
-										of <a target="_blank" rel="nofollow" href="https://undraw.co/">unDraw</a>,
-										a constantly updated collection of beautiful svg images that
-										you can use completely free and without attribution!
-									</p>
-									<a target="_blank" rel="nofollow" href="https://undraw.co/">Browse
-										Illustrations on unDraw &rarr;</a>
-								</div> -->
 							</div>
-							<div class="card shadow mb-4">
-								<!-- Card Header - Dropdown -->
-								<!-- <div
-									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">Revenue
-										Sources</h6>
-									<div class="dropdown no-arrow">
-										<a class="dropdown-toggle" href="#" role="button"
-											id="dropdownMenuLink" data-toggle="dropdown"
-											aria-haspopup="true" aria-expanded="false"> <i
-											class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-										</a>
-										<div
-											class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-											aria-labelledby="dropdownMenuLink">
-											<div class="dropdown-header">Dropdown Header:</div>
-											<a class="dropdown-item" href="#">Action</a> <a
-												class="dropdown-item" href="#">Another action</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item" href="#">Something else here</a>
-										</div>
-									</div>
-								</div> -->
-								<!--  Card Body -->
-								<!-- <div class="card-body">
-									<div class="chart-pie pt-4 pb-2">
-										<canvas id="myPieChart"></canvas>
-									</div>
-									<div class="mt-4 text-center small">
-										<span class="mr-2"> <i
-											class="fas fa-circle text-primary"></i> Direct
-										</span> <span class="mr-2"> <i
-											class="fas fa-circle text-success"></i> Social
-										</span> <span class="mr-2"> <i class="fas fa-circle text-info"></i>
-											Referral
-										</span>
-									</div>
-								</div>
-							</div> -->
-
-								<!-- Approach -->
-								<!--  <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="m-0 font-weight-bold text-primary">Development Approach</h6>
-                                </div>
-                                <div class="card-body">
-                                    <p>SB Admin 2 makes extensive use of Bootstrap 4 utility classes in order to reduce
-                                        CSS bloat and poor page performance. Custom CSS classes are used to create
-                                        custom components and custom utility classes.</p>
-                                    <p class="mb-0">Before working with this theme, you should become familiar with the
-                                        Bootstrap framework, especially the utility classes.</p>
-                                </div>
-                            </div> -->
-
-							</div>
-
-							<!-- Area Chart -->
-
-
 
 						</div>
 						<!-- 오른쪽 끝 -->
@@ -634,33 +516,7 @@
 											aria-valuenow=${memberBio.mp } aria-valuemin="0"
 											aria-valuemax="100"></div>
 									</div>
-									<%-- 
-									<div>
-									<p>
-									<c:set var="disease" scope="session" value="${member.disease }" />
-										 <c:choose>
-											<c:when test="${member.disease eq 1}">
-									           	인슐린으로 치료받고 있는 당뇨병 환자는 운동에 의한 저혈당을 방지하기 위하여 인슐린 용량을 줄여야 하며, 일단 저혈당 증상이 발생하면 즉시 탄수화물을 섭취할 수 있어야 합니다. 
-									           	자율신경병증이 있어서 	소화능력에 문제가 있는 환자는 특히 단순당 형태로 탄수화물을 섭취해야 합니다. 단순당은 설탕, 사탕, 꿀, 초콜릿, 캐러멜, 콜라, 야구르트, 주스, 사과, 배, 포도,
-									           	 복상아 통조림, 파인애플 통조림 등에 많이 포함되어 있습니다.
-									         </c:when>
-											<c:when test="${member.disease eq 2}">
-									        	고혈압 환자들의 혈압을 낮추기 위한 권고된 운동의 방법은 자전거, 걷기, 조깅, 수영과 같은 대근육 활동을 주당 3~5일 정도 비연속적으로 실시하는 것이 바람직하며, 
-												1회 운동시간은 20-60분, 강도는 최대산소섭취량의 50~85%정도로 일반적으로 미국스포츠 의학회의 이전의 지침서인 “건강한 성인에 심폐와 근력 발달과 유지를 위한 권고된
-												 운동의 양과 질”에서와 동일합니다.
-												그러나 더 낮은 강도(40~70% VO2max)에서 운동 트레이닝은 높은 강도에서 운동보다 더욱 혈압을 낮추는 것으로 나타났습니다. 그러나 현저하게 상승된 혈압(>180/105mmHg)을 
-												가진 사람들은 초기 약물학적 치료 후에 치료 양생법으로 지구력 운동 트레이닝을 추가해야 합니다.
-
-												저항 운동이나 근력 운동만 실시하는 것은 고혈압을 가진 사람들에게 혈압을 더 낮추는데에 권고되지 않으며, 이것은 지구력 운동 트레이닝과 함께 실시하는 써키트트레이닝과 같이 
-												잘 계획된 체력 프로그램의 한 부분으로 포함될 때 권고됩니다.
-									         </c:when>
-									      
-											<c:otherwise>
-									           
-									         </c:otherwise>
-									         </c:choose> 
-									</p>
-									</div> --%>
+									
 								</div>
 							</div>
 
@@ -758,11 +614,7 @@
 		</div>
 
 		<script>
-			/* var goalTimeList = "{$goalTimeList}";
-			 var fitnessMinList = "{$fitnessMinList}";
-			 var cardioMinList = "{$cardioMinList}";
-			 var excerciseWeek = "{$excerciseWeek}";
-			 */
+			
 			var proteinAndCalory = "{$proteinAndCalory}";
 
 			var protein = [];
@@ -811,78 +663,7 @@
 						console.log(calory);
 						console.log(goal);
 
-						/*  new Chart(
-						 	      document.getElementById('myChartDoughnut'),{
-						 	      type: 'doughnut',
-						 	      data: {
-						 	    	  labels: [
-						 	    		    'Red',
-						 	    		    'Blue'
-						 	    		 
-						 	    		  ],
-						 	    		  datasets: [{
-						 	    		    label: 'My First Dataset',
-						 	    		    data:  protein,
-						 	    		    backgroundColor: [
-						 	    		      'rgb(255, 99, 132)',
-						 	    		      'transparent'
-						 	    		      /*'rgb(54, 162, 235)'
-						 	    		      'rgb(255, 205, 86)'
-						 	    		    ],
-						 	    		    hoverOffset: 4,
-						 	    		    cutout:'90%',
-						 	    		    borderRadius:20
-						 	    		  }]
-						 	    	},
-						 	      options:{
-						 	     	plugins:{
-						 	     		legend:{
-						 	      			display:false,
-						 	      		}
-						 	     	},
-						 	      	tooltip:{
-						 	      		enabled:false
-						 	      	}
-						 	      },
-						 	      plugins:
-						 	    	  [stackedText]
-						 })  */
-						/* new Chart(
-						      document.getElementById('myChartDoughnut2'),{
-						      type: 'doughnut',
-						      data: {
-						    	  labels: [
-						    		    'Red',
-						    		    'Blue'
-						    		 
-						    		  ],
-						    		  datasets: [{
-						    		    label: 'My First Dataset',
-						    		    data:  calory,
-						    		    backgroundColor: [
-						    		      'rgb(255, 99, 132)',
-						    		      'transparent'
-						    		      /*'rgb(54, 162, 235)'
-						    		      'rgb(255, 205, 86)'
-						    		    ],
-						    		    hoverOffset: 4,
-						    		    cutout:'90%',
-						    		    borderRadius:20
-						    		  }]
-						    	},
-						      options:{
-						     	plugins:{
-						     		legend:{
-						      			display:false,
-						      		}
-						     	},
-						      	tooltip:{
-						      		enabled:false
-						      	}
-						      },
-						      plugins:
-						    	  [stackedText2]
-						}) */
+						
 					}
 				})
 				$.ajax({
@@ -918,18 +699,7 @@
 				myChartBar.update();
 				myChartDoughnut.update();
 				myChartDoughnut2.update();
-				/*
-				 $("#findGymList").on("click", function(){
-					$.ajax({
-						url:"/dashboard/gymInfo",
-						type:"GET",
-						success: function(data){
-							console.log(data)
-						}
-						
-					})//end ajax
-				})//end click 
-				 */
+			
 			})
 		</script>
 		<!-- Bootstrap core JavaScript-->

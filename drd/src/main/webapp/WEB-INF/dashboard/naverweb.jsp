@@ -38,14 +38,6 @@
 
 
 <script>
-/*
- 
-var mapOptions = {
-    center: new naver.maps.LatLng(37.3595704, 127.105399),
-    zoom: 10
-};
-
-var map = new naver.maps.Map('map', mapOptions); */
 
 //sweetalert 전역 설정
 var mySwal = Swal.mixin({ 
@@ -112,26 +104,9 @@ $.ajax({
 	                  '   <h3>'+ this["상호명"] +'</h3>',
 	                  '   <p>'+ this["도로명주소"] +'</p><br />',
 	                  '   <p>'+ this["전화번호"] +'</p>',
-	                  /*' <form>',
-	                  '<input id="name" type="hidden" value='+ this["상호명"]+'>' ,
-	                  '<input id="address" type="hidden" value='+ this["도로명주소"] +'>',
-	                  '<input id="telephoneNumber" type="hidden" value='+ this["전화번호"]+'>' , */
 	                  '<input type="button" class="btn" id="addFitness" onclick="myFunction()" value="나의 헬스장 추가하기" data-dismiss="modal">',
-	              /* '</form>', */
-	                 
 	                  '</div>'
 	              ].join('');
-               /*  $("#map>.iw_inner").append(
-                	  ' <form>'+
-  	                  '<input id="name" type="hidden" value='+ this["상호명"]+'>'+
-  	                  '<input id="address" type="hidden" value='+ this["도로명주소"] +'>'+
-  	                  '<input id="telephoneNumber" type="hidden" value='+ this["전화번호"]+'>'+
-  	                ' </form>'
-  	                  ) */
-				  
-               /*  $('#name').val(this["상호명"]);
-                $('#address').val(this["도로명주소"]);
-                $('#telephoneNumber').val(this["전화번호"]); */
 					              
                
             })//end each
@@ -161,7 +136,9 @@ function myFunction(){
 					  icon: 'success',
 					  title: '나의 헬스장 등록 완료'
 					  
-					})
+					}).then(function() {
+						window.location = "/dashboard/read";
+					});
 					
 					
 		      }
@@ -169,25 +146,6 @@ function myFunction(){
 	});
 }   
 
-/* 
-data["name"] = $("#name").val();
-data["address"] = $("#address").val();
-data["address"] = $("#telephoneNumber").val(); */
-
-
-
-/*function myFunction(){
-
-	 $.ajax({
-		type: "POST",
-	    url: "/gym/register",
-	  /*  data:   $('form').serialize(),
-	     dataType:'json',
-	     success: function (data) {
-	     console.log(data);
-	        	}          
-	        });
-}*/
 
             
 
