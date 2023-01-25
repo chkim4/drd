@@ -253,7 +253,7 @@ public class PersonalRoutineController {
 		
 		//fitnessObj 업데이트
 		@RequestMapping(value = "/updatefitness", method = RequestMethod.POST)
-		public void updatefitness(int personalRoutineSEQ, int fitnessSEQ, int set, int count, int weight) {
+		public String updatefitness(int personalRoutineSEQ, int fitnessSEQ, int set, int count, int weight) {
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
 			FitnessObj myFitnessObj = JsonUtils.parseFitnessList(pRoutine);
 			JsonUtils.updateBySEQ(myFitnessObj, fitnessSEQ, "set", set);
@@ -264,11 +264,13 @@ public class PersonalRoutineController {
 			map.put("personalRoutineSEQ", personalRoutineSEQ);
 			map.put("fitnessObj", fitnessObj);
 			service.updatefitness(map);
+			
+			return "redirect: /personalroutine/setpage";
 		}
 		
 		//cardioObj 업데이트 하며 전체 시간 변경
 		@RequestMapping(value = "/updatecardio", method = RequestMethod.POST)
-		public void updatecardio(int personalRoutineSEQ, int cardioSEQ, int time) {
+		public String updatecardio(int personalRoutineSEQ, int cardioSEQ, int time) {
 			PersonalRoutineDTO pRoutine = service.findOne1(personalRoutineSEQ);
 			CardioObj myCardioObj = JsonUtils.parseCardioList(pRoutine);
 			JsonUtils.updateBySEQ(myCardioObj, cardioSEQ, "time", time);
@@ -282,7 +284,9 @@ public class PersonalRoutineController {
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("personalRoutineSEQ", personalRoutineSEQ);
 			map.put("cardioObj", cardioObj);
-			service.updatecardio(map);
+			service.updatecardio(map); 
+			
+			return "redirect: /personalroutine/setpage";
 		}
 		
 		//ck additional fitness
