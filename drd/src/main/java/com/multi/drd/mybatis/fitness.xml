@@ -24,5 +24,14 @@
 		from fitness
 		where name like '%' || #{name} || '%'
 	</select>
+	<select id="findbynamewithSEQ" parameterType="Map" resultType="fitness">
+		select *
+		from fitness
+		where name like '%' || #{name} || '%'
+		and fitnessSEQ not in
+		<foreach collection="list" item="item" index="index"  open="(" close=")" separator=",">
+			#{item[index]}
+		</foreach>
+	</select>
 </mapper>
   

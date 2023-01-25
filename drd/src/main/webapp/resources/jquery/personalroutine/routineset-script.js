@@ -137,6 +137,8 @@ function selectFitness_onclick(){
                 +"</form>";
 		var array = [data.set, data.count, data.weight];
 		setFitnessArray(array);
+		console.log(fitnessSEQ);
+		console.log(data.fitnessSEQ);
 		$("#ajaxchangename").empty();
 		$("#ajaxchangename").append("운동 수정");					
 		$("#ajaxchangecontents").empty();
@@ -155,6 +157,7 @@ function selectFitness_onclick(){
 	}
 	})
 	function successRun2(data){
+	console.log(data.fitnessSEQ);
 		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'id ='musclegroup'>"+data.muscleGroup+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>"+data.equipment+"</div>"
@@ -277,12 +280,16 @@ function deleteandupdateFitness_onclick(){
 		head = "";
 		body = "";
 		foot = "";
-		console.log(data.length);
 		if(data.lengh=1){
 			if(data[0].fitnessSEQ==0){
 				head = "운동 삭제";
 				body = "직접 추가한 운동입니다.";
-				foot = "<button type='button' class='btn btn-primary' id='changesubmit' onclick=''>삭제</button>"
+				foot = "<a href='/personalroutine/deletefitness?personalRoutineSEQ="+personalRoutineSEQ+"&fitnessSEQ="+fitnessSEQ+"'><button type='submit' class='btn btn-danger btn-icon-split'>"
+						+ "<span class='icon text-white-50'>"
+							+ "<i class='fas fa-trash'></i>"
+						+ "</span>"
+						+ "<span class='text'>삭제하기</span>"
+					+ "</button></a>"
 				+ "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
 				console.log("case1")
 			}else if(data[0].fitnessSEQ==fitnessSEQ){
@@ -314,6 +321,9 @@ function deleteandupdateFitness_onclick(){
 		$("#changefoot").append(foot);
 	}
 }
+function deletecardio_button(){
+
+}
 
 function deleteandupdateCardio_onclick(){
 	cardioSEQ = $("#cardioSEQ").val();
@@ -341,12 +351,12 @@ function deleteandupdateCardio_onclick(){
 			if(data[0].cardioSEQ==0){
 				head = "운동 삭제";
 				body = "직접 추가한 운동입니다.";
-				foot = "<button type='button' class='btn btn-danger btn-icon-split' data-dismiss='modal' onclick=''>"
-					+ "<span class='icon text-white-50'>"
-						+ "<i class='fas fa-trash'></i>"
-					+ "</span>"
-					+ "<span class='text'>삭제하기</span>"
-				+ "</button>"
+				foot = "<a href='/personalroutine/deletecardio?personalRoutineSEQ="+personalRoutineSEQ+"&cardioSEQ="+cardioSEQ+"'><button type='button' class='btn btn-danger btn-icon-split'>"
+						+ "<span class='icon text-white-50'>"
+							+ "<i class='fas fa-trash'></i>"
+						+ "</span>"
+						+ "<span class='text'>삭제하기</span>"
+					+ "</button></a>"
 				+ "<button type='button' class='btn btn-secondary' data-dismiss='modal'>닫기</button>";
 			}else if(data[0].cardioSEQ==cardioSEQ){
 				head = "운동수정";
@@ -396,7 +406,7 @@ function selectTPOFitness_onclick(){
 		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'id ='musclegroup'>"+data.muscleGroup+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>"+data.equipment+"</div><br/><hr/>"
-		body = mydata + "<form id='deleteandupdatefitness' action='/personalroutine/DnUF.do' method='post' target='iframe1'>"
+		body = mydata + "<form id='deleteandupdatefitness' action='/personalroutine/DnUF.do' method='post'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.fitnessSEQ+"' name='afterfitnessSEQ' id= 'afterfitnessSEQ'>"
 				+ "<input type='hidden' value='"+beforefitnessSEQ+"' name='beforefitnessSEQ' id= 'beforefitnessSEQ'>"
@@ -443,7 +453,7 @@ function selectTPOCardio_onclick(){
 		+ "<div style='text-align: right; float:right;'>"+intensity+"</div><br/>"
 		+ "<div style='text-align: right; float:right; display:none;' id ='intensity'>"+data.intensity+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>시간당 칼로리: "+data.calory+"</div><br/><hr/>"
-		body = mydata + "<form id='deleteandupdatecardio' action='/personalroutine/DnUC.do' method='post' target='iframe1'>"
+		body = mydata + "<form id='deleteandupdatecardio' action='/personalroutine/DnUC.do' method='post'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.cardioSEQ+"' name='aftercardioSEQ' id= 'aftercardioSEQ'>"
 				+ "<input type='hidden' value='"+beforecardioSEQ+"' name='beforecardioSEQ' id= 'beforecardioSEQ'>"
@@ -533,6 +543,7 @@ function searchF(){
         type:"post",
         url:"/personalroutine/searchFbyname",
         data:{
+            "personalRoutineSEQ":personalRoutineSEQ,
             "name":name
         },
         async : false,
@@ -566,6 +577,7 @@ function searchC(){
         type:"post",
         url:"/personalroutine/searchCbyname",
         data:{
+        	"personalRoutineSEQ":personalRoutineSEQ,
             "name":name
         },
         async : false,
@@ -612,7 +624,7 @@ function selectAFitness_onclick(){
 		mydata = "<div style='text-align: center;'>"+data.name+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'id ='musclegroup'>"+data.muscleGroup+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>"+data.equipment+"</div><br/><hr/>"
-		body = mydata + "<form id='addfitness' action='/personalroutine/AF.do' method='post' target='iframe1'>"
+		body = mydata + "<form id='addfitness' action='/personalroutine/AF.do' method='post'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.fitnessSEQ+"' name='fitnessSEQ' id= 'fitnessSEQ'>"
 				+ "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='20' name='set' id='set'></div></div><br/>"
@@ -657,7 +669,7 @@ function selectACardio_onclick(){
 		+ "<div style='text-align: right; float:right;'>"+intensity+"</div><br/>"
 		+ "<div style='text-align: right; float:right; display:none;' id ='intensity'>"+data.intensity+"</div><br/>"
 		+ "<div style='text-align: right; float:right;'>시간당 칼로리: "+data.calory+"</div><br/><hr/>"
-		body = mydata + "<form id='addcardio' action='/personalroutine/AC.do' method='post' target='iframe1'>"
+		body = mydata + "<form id='addcardio' action='/personalroutine/AC.do' method='post'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.cardioSEQ+"' name='cardioSEQ' id= cardioSEQ'>"
 				+ "<input type='hidden' value='"+data.calory+"' name='calory' id= 'calory'>"
