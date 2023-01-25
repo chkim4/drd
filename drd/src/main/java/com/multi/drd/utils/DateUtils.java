@@ -81,12 +81,12 @@ public final class DateUtils {
     	 LocalDate localStartDate = today.toInstant()   // Date -> Instant
 					                .atZone(ZoneId.of("Asia/Seoul"))  // Instant -> ZonedDateTime
 					                .toLocalDate()
-    	 							.plusDays(-7);
+    	 							.plusDays(-6);
     	
     	
     	LocalDateTime localStartDateTime = LocalDateTime.of(localStartDate, LocalTime.MIDNIGHT);
     	String stringStartDate = localStartDateTime.format(isoFormatter);
-	    
+	
 	    Date startDate; 
 	    Date endDate = getDailyISODate(today)[1];
 		
@@ -96,7 +96,6 @@ public final class DateUtils {
 			e.printStackTrace(); 
 			return null;
 		} 
-	      
 	    Date[] dates = {startDate, endDate};
     	
     	return dates;	

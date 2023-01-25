@@ -300,11 +300,11 @@ public class RecordServiceImpl implements RecordService {
 			else {
 				record.setTotalExerciseTime(originalRecord.getTotalExerciseTime() - originalRecord.getFitnessObj().getTotalTime());
 			}
+		
 		}// if cardioObj || fitnessObj	 
 		
 		
-		result = dao.deleteField(record, field); 
-		
+		result = dao.deleteField(record, field);
 		if(isExerciseDelete) {
 			updateMemberDataByRecord(member);
 		}

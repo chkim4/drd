@@ -55,7 +55,7 @@ public class GoalController {
 		}
 		
 		//주간 기록
-		List<RecordDTO> weeklyRecord = service.findByWeek(member.getMemberSEQ()); 
+		List<RecordDTO> weeklyRecord = service.findByWeek(member.getMemberSEQ());   
 		 
 		// 현재 사용자의 목표 
 		GoalDTO goal = service.readGoal(((MemberDTO)session.getAttribute("member")).getMemberSEQ());
@@ -65,28 +65,38 @@ public class GoalController {
 		
 		// => 주간 기록 정보 저장: 총 운동 시간, 총 섭취 칼로리 및 단백질
 		int weeklyExerciseTime = 0; 
-		int weeklyCalory = 0;
 		int weeklyProtein = 0; 
 		
 		if(weeklyRecord == null) {
 			weeklyExerciseTime = 0; 
-			weeklyCalory = 0;
 			weeklyProtein = 0; 
 		}else {
 			for (RecordDTO record : weeklyRecord) { 
 				weeklyExerciseTime+= record.getTotalExerciseTime();
-				weeklyCalory += record.getTotalCalory();
 				
-				for (FoodObj food : record.getFoodObj()) {
-					weeklyProtein += food.getProtein();
+				if(record.getFoodObj() != null) {
+					for (FoodObj food : record.getFoodObj()) {
+						weeklyProtein += food.getProtein();
+					}
 				}
+				
 			}
-		}
+		} 
+		
+		//일간 기록 
+		RecordDTO record = recordservice.findTodayRecord(memberSEQ);
+		int dailyCalory = 0; 
+		
+		if(record != null && record.getFoodObj() != null) {
+			for (FoodObj food : record.getFoodObj()) {
+				dailyCalory += food.getCalory();
+			}
+		}	
 		
 		
-		int goalExerciseTime = goal.getGoalExerciseTime(); // goal 테이블의 goalExerciseTime은 주간 기준임.
-		int goalCalory = goal.getGoalCalory(); 
-		int goalProtein = goal.getGoalProtein()*7; // goal 테이블의 goalProtein과 goalCalory는 하루 기준임.
+		int goalExerciseTime = goal.getGoalExerciseTime(); // goal 테이블의 goalExerciseTime, goalProtein은 주간 기준임.
+		int goalCalory = goal.getGoalCalory(); 	// goal 테이블의 goalCalory는 하루 기준임.
+		int goalProtein = goal.getGoalProtein(); // 
 		
 		pRoutine.getCardioObj();
 		pRoutine.getFitnessObj();
@@ -107,13 +117,10 @@ public class GoalController {
 		model.addAttribute("desiredWeight", desiredWeight);
 		// model.addAttribute("cardioTotalTime", cardioTotalTime);
 		// model.addAttribute("fitnessTotalTime", fitnessTotalTime);
-				
-		// 추가사항
-		
-		
+			
 		// 기록 관련
 		model.addAttribute("weeklyExerciseTime", weeklyExerciseTime);
-		model.addAttribute("weeklyCalory", weeklyCalory);
+		model.addAttribute("dailyCalory", dailyCalory);
 		model.addAttribute("weeklyProtein", weeklyProtein); 
 		// 목표 관련
 		model.addAttribute("goalExerciseTime", goalExerciseTime); 
