@@ -451,7 +451,9 @@
 									<h6 class="m-0 font-weight-bold text-primary">
 										<a href="#">
 											<div class>
-												목표관리 <i class="fas fa-angle-right"></i>
+												<a href="/goal/readAll">목표관리 
+													<i class="fas fa-angle-right" ></i>
+												</a>
 											</div>
 										</a>
 									</h6>

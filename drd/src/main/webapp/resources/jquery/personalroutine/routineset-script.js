@@ -114,7 +114,7 @@ function selectFitness_onclick(){
 	}
 	})
 	function successRun1(data){
-		mydata = "<form id='updatefitness' action='/personalroutine/updatefitness' method='post' target='iframe1'>"
+		mydata = "<form id='updatefitness' action='/personalroutine/updatefitness' method='post'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.fitnessSEQ+"' name='fitnessSEQ' id= 'fitnessSEQ'>"
 				+ "<div class='w-100'>set : <div style='float:right; text-align: right;'><input type='number' min='1' value='"+data.set+"' name='set' id='set'></div></div><br/>"
@@ -180,7 +180,7 @@ function selectCardio_onclick(){
 		}
 		})//end ajax1cardiochange
 		function successRun1(data){
-			mydata = "<form id='updatecardio' action='/personalroutine/updatecardio' method='post' target='iframe1'>"
+			mydata = "<form id='updatecardio' action='/personalroutine/updatecardio' method='post'>"
 				+ "<input type='hidden' value='"+personalRoutineSEQ+"' name='personalRoutineSEQ' id='personalRoutineSEQ'>"
 				+ "<input type='hidden' value='"+data.cardioSEQ+"' name='cardioSEQ' id='cardioSEQ'>"
 				+ "<div class='w-100'>time : <div style='float:right; text-align: right;'>"
@@ -241,8 +241,8 @@ function updateFitness_onclick(){
 	return false;
 	}
 	document.getElementById("updatefitness").submit();
-	refreshPR();
-	refreshF();
+	//refreshPR();
+	//refreshF();
 }
 
 function updateCardio_onclick(){
@@ -251,8 +251,8 @@ function updateCardio_onclick(){
 	return false;
 	}
 	document.getElementById("updatecardio").submit();
-	refreshPR();
-	refreshC();
+	//refreshPR();
+	// refreshC();
 }
 
 function deleteandupdateFitness_onclick(){
