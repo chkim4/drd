@@ -227,8 +227,8 @@
 	                        <div class="card-body">
 	                           <p> FITT 원칙과 헬스의 정석 책을 기반으로 추천합니다. </p>
 	                           <p> FITT원칙이란 미국 스포츠의학회(ACSM)의 가이드라인을 준수하여 다음 4가지의 기준으로 개인별 운동 루틴을 설계하는 것을 의미합니다.</p>
-	            			   <p> FITT원칙의 기준: F(frequency) 빈도, I(intensity) 강도, T(time) 시간, T(type) 유형</p>
-	                           <p> 하지만, FITT 원칙은 구체적인 루틴을 제시하진 않기에 초보자를 위한 구체적인 운동 루틴을 담은 헬스의 정석 책을 참고하였습니다.</p>
+	            			   <p style="font-size: 80%"> FITT원칙의 기준: F(frequency) 빈도, I(intensity) 강도, T(time) 시간, T(type) 유형</p>
+	                           <p> 구체적인 루틴은 헬스의 정석 책을 참고하였습니다.</p>
 	                           <p><a href = "https://www.verywellfit.com/f-i-t-t-principle-what-you-need-for-great-workouts-1231593"><strong>FITT 원칙에 관하여</strong></a></p>
 	                           <p><a href = "http://www.hanmunhwa.com/?p=4831"><strong>헬스의 정석 출판사 페이지</strong></a></p>
 	                        </div>
@@ -267,31 +267,31 @@
 	                    <div class="collapse" id="FAQ3">
 	                        <div class="card-body">
 	                           <p>보건복지부와 대한영양사협회에서 출간한 2015 한국인 영양소 섭취기준 활용 가이드북의 에너지 필요량 공식을 적용하였습니다.</p>
-	                           <p>하지만, 신체 활동 지수(PA)의 산출 근거가 없어서 최근 7일 운동 횟수를 기준으로 삼았고, 구체적인 내용은 아래와 같습니다.</p> 
+	                           <p>신체 활동 지수(PA)의 산출 근거로 최근 7일 운동 횟수를 기준으로 삼았고, 구체적인 내용은 아래와 같습니다.</p> 
 	                           <div style="text-align: center;">
 		                           <table class="table table-bordered" width="100%" cellspacing="0">
 	                                  <thead>
 	                                      <tr>
 	                                      	<th>최근 7일 운동 횟수</th>				                             
-	                                        <th>신체 활동 지수(PA)</th> 
+	                                        <th>신체 활동 지수(PA) (여성/남성)</th> 
 	                                      </tr>
 	                                  </thead>
 	                                  <tbody>
 	                    		     	<tr>
 	                    		     		<td>0회</td>
-	                    		     		<td>1.0(비활동적)</td>
+	                    		     		<td>1.0/1.0 (비활동적)</td>
 	                    		     	</tr>
 	                    		     	<tr>
 	                    		     		<td>1~2회</td>
-	                    		     		<td>1.1(저활동적)</td>
+	                    		     		<td>1.12/1.11 (저활동적)</td>
 	                    		     	</tr>
 	                    		     	<tr>
 	                    		     		<td>3~5회</td>
-	                    		     		<td>1.25(활동적)</td>
+	                    		     		<td>1.27/1.25 (활동적)</td>
 	                    		     	</tr>
 	                    		     	<tr>
 	                    		     		<td>6회 이상</td>
-	                    		     		<td>1.48(매우 활동적)</td>
+	                    		     		<td>1.45/1.48 (매우 활동적)</td>
 	                    		     	</tr>
 	                    		     </tbody>
 		                      	   </table> 
