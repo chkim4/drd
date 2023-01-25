@@ -5,7 +5,6 @@ public class GymDTO {
 	private String name;
 	private String address;
 	private String telephoneNumber;
-	private int memberSEQ;
 	
 	
 	public GymDTO() {
@@ -13,12 +12,11 @@ public class GymDTO {
 	}
 
 
-	public GymDTO(String name, String address, String telephoneNumber, int memberSEQ) {
+	public GymDTO(String name, String address, String telephoneNumber) {
 		super();
 		this.name = name;
 		this.address = address;
 		this.telephoneNumber = telephoneNumber;
-		this.memberSEQ = memberSEQ;
 	}
 
 
@@ -63,20 +61,11 @@ public class GymDTO {
 	}
 
 
-	public int getMemberSEQ() {
-		return memberSEQ;
-	}
-
-
-	public void setMemberSEQ(int memberSEQ) {
-		this.memberSEQ = memberSEQ;
-	}
-
 
 	@Override
 	public String toString() {
 		return "GymDTO [gymSEQ=" + gymSEQ + ", name=" + name + ", address=" + address + ", telephoneNumber="
-				+ telephoneNumber + ", memberSEQ=" + memberSEQ + "]";
+				+ telephoneNumber + "]";
 	}
 	
 	

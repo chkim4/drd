@@ -1,6 +1,9 @@
 package com.multi.drd.gym;
 
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.multi.drd.member.MemberDTO;
 
@@ -40,17 +42,30 @@ public class GymController {
 		String address = dto.getAddress();
 		String telephoneNumber = dto.getTelephoneNumber();
 		
-		GymDTO gym = new GymDTO(name, address, telephoneNumber, member.getMemberSEQ());
 		
-		if(gymService.readGym(member.getMemberSEQ()) != null) {
-			gymService.updateGym(gym);
-		} else {//값이 없다면 등록
-			gymService.registerGym(gym);
+		GymDTO gym = new GymDTO(name, address, telephoneNumber);
+		
+		GymDTO gymExists = gymService.findByGymName(name);
+		
+		if(gymExists != null) {//이미 gym테이블에 데이터가 있다면 member의 gymSEQ update
+			HashMap<String, Integer> param = new HashMap<String, Integer>();
+			param.put("gymSEQ", gymExists.getGymSEQ());
+			param.put("memberSEQ",member.getMemberSEQ());
+			System.out.println(param);
+			gymService.updateGym(param);
+		} else {//없다면 gym테이블에 insert후 update
+			gymService.insertGym(gym);
+			HashMap<String, Integer> param = new HashMap<String, Integer>();
+			param.put("gymSEQ", gym.getGymSEQ());
+			param.put("memberSEQ",member.getMemberSEQ());
+			System.out.println("insert param" + param);
+			gymService.updateGym(param);
+			
 		}
 		
-		System.out.println(gym);
 		
-		return "redirect: /dashboard/dashboard";
+		
+		return "redirect:/dashboard/read";
 	}
 	
 	

@@ -3,32 +3,40 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.drd.gym">
-	
 	<select id="readGym" resultType="gym" parameterType="Integer">
-		select * 
-		from gym
-		where memberseq = #{memberSEQ}
-	</select> 
+		select * from gym
+		where gymSEQ = (select gymSEQ
+							from member
+							where memberSEQ = #{memberSEQ})
+	</select>
 	
-	<update id="updateGym" parameterType="gym">
-		update gym
-		set name = #{name}
-		set address = #{address}
-		set telephoneNumber = #{telephoneNumber}
+	<update id="updateGymSEQ" parameterType="hashmap">
+		update member
+		set gymSEQ = #{gymSEQ}
 		where memberSEQ = #{memberSEQ}
-		and gymSEQ = gym_SEQ.currval
 	</update>
 	
-	<insert id="registerGym" parameterType="gym">
+	<update id="deleteGymSEQ" parameterType="Integer">
+		update member
+		set gymSEQ = null
+		where memberSEQ = #{memberSEQ}
+	</update>
+	
+	<select id="findByGymName" resultType="gym" parameterType="String">
+		select * 
+		from gym
+		where name = #{name}
+	</select>  
+	
+	<insert id="insertGym" parameterType="gym">
+		<selectKey keyProperty="gymSEQ" resultType="int" order="BEFORE">
+ 	    	SELECT gym_SEQ.nextval FROM DUAL <!-- member_SEQ.currval 호출을 위해 필요 --> 
+ 		</selectKey>	 
 		
- 		insert into gym(gymSEQ, name, address, telephoneNumber, memberSEQ)
-		values (gym_SEQ.nextval, #{name}, #{address}, #{telephoneNumber}, #{memberSEQ})
+ 		insert into gym(gymSEQ, name, address, telephoneNumber)
+		values (gym_SEQ.currval, #{name}, #{address}, #{telephoneNumber})
 		
 	</insert>
-	
-	<delete id="deleteGym" parameterType="Integer">
-		delete from goal where memberSEQ = #{memberSEQ}
-	</delete>
 	
 </mapper>
 
