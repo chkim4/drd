@@ -9,7 +9,10 @@
     <title>간단한 지도 표시하기</title>
     <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xbsurilrkj&submodules=geocoder"></script>
  <!--   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xbsurilrkj"></script> -->
+ 
      <script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
+      <script src="/sweetalert/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
      <style type="text/css">
      #iw_inner{
      	padding: 10px;
@@ -26,21 +29,33 @@
     font-size: 1rem;
     line-height: 1.5;
      }
+     
      </style>
 </head>
 <body>
-<div id="map" style="width:100%; height:400px;"></div>
+
+<div id="map" style="width:1100px; height:400px;"></div>
+
 
 <script>
-/* var mapOptions = {
+/*
+ 
+var mapOptions = {
     center: new naver.maps.LatLng(37.3595704, 127.105399),
     zoom: 10
 };
 
 var map = new naver.maps.Map('map', mapOptions); */
+
+//sweetalert 전역 설정
+var mySwal = Swal.mixin({ 
+				confirmButtonColor: '#4E73DF',		
+				confirmButtonText: '확인'
+			  })
+
 var map = new naver.maps.Map('map', {
     center: new naver.maps.LatLng(37.5344508, 126.9813365),
-    zoom: 14
+    zoom: 13
 });
 
 
@@ -101,18 +116,18 @@ $.ajax({
 	                  '<input id="name" type="hidden" value='+ this["상호명"]+'>' ,
 	                  '<input id="address" type="hidden" value='+ this["도로명주소"] +'>',
 	                  '<input id="telephoneNumber" type="hidden" value='+ this["전화번호"]+'>' , */
-	                  '<input type="button" class="btn" id="addFitness" onclick="myFunction()" value="나의 헬스장 추가하기">',
+	                  '<input type="button" class="btn" id="addFitness" onclick="myFunction()" value="나의 헬스장 추가하기" data-dismiss="modal">',
 	              /* '</form>', */
 	                 
 	                  '</div>'
 	              ].join('');
-                $("#map>.iw_inner").append(
+               /*  $("#map>.iw_inner").append(
                 	  ' <form>'+
   	                  '<input id="name" type="hidden" value='+ this["상호명"]+'>'+
   	                  '<input id="address" type="hidden" value='+ this["도로명주소"] +'>'+
   	                  '<input id="telephoneNumber" type="hidden" value='+ this["전화번호"]+'>'+
   	                ' </form>'
-  	                  )
+  	                  ) */
 				  
                /*  $('#name').val(this["상호명"]);
                 $('#address').val(this["도로명주소"]);
@@ -120,9 +135,10 @@ $.ajax({
 					              
                
             })//end each
+           
                 }//end success
             })//end ajax
-            
+          
 function myFunction(){
 	var data = {};
 	
@@ -140,9 +156,16 @@ function myFunction(){
 		    data:   JSON.stringify(data),
 		     dataType:'text',
 		     contentType:'application/json',
-		     success: function (data) {
-		     console.log(data);
-		        	}          
+		     success: function () {
+		    	 mySwal.fire({
+					  icon: 'success',
+					  title: '나의 헬스장 등록 완료'
+					  
+					})
+					
+					
+		      }
+	
 	});
 }   
 

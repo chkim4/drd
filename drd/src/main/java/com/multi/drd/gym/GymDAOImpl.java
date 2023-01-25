@@ -1,5 +1,7 @@
 package com.multi.drd.gym;
 
+import java.util.HashMap;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -23,23 +25,29 @@ public class GymDAOImpl implements GymDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne("com.multi.drd.gym.readGym", memberSEQ);
 	}
-
+	
 	@Override
-	public int registerGym(GymDTO gym) {
+	public int insertGym(GymDTO gym) {
 		// TODO Auto-generated method stub
-		return sqlSession.insert("com.multi.drd.gym.registerGym", gym);
+		return sqlSession.insert("com.multi.drd.gym.insertGym", gym);
 	}
 
 	@Override
-	public int updateGym(GymDTO gym) {
+	public int updateGym(HashMap<String, Integer> param) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("com.multi.drd.gym.updateGym", gym);
+		return sqlSession.update("com.multi.drd.gym.updateGymSEQ", param);
 	}
 
+	
+	@Override
+	public GymDTO findByGymName(String name) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne("com.multi.drd.gym.findByGymName", name);
+	}
 	@Override
 	public int deleteGym(int memberSEQ) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne("com.multi.drd.gym.deleteGym", memberSEQ);
+		return sqlSession.delete("com.multi.drd.gym.deleteGymSEQ", memberSEQ);
 	}
 
 }
