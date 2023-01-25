@@ -131,7 +131,7 @@
             </li>
             <!-- Nav Item - FAQ -->
 	         <li class="nav-item">
-	         	<a class="nav-link" href="/member/faq">
+	         	<a class="nav-link" href="/member/faqPage">
 	            	<i class="fas fa-info-circle"></i>
 	                	<span>FAQ</span></a>
 	         </li>

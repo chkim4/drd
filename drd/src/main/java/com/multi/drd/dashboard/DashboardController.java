@@ -116,7 +116,6 @@ public class DashboardController {
 		 */
 
 		List<RecordDTO> recordWeekly = service.findByWeek(member.getMemberSEQ());
-		System.out.println("recordWeekly " + recordWeekly.size());
 		
 		List<FoodObj> foodlist = null;
 
@@ -138,25 +137,6 @@ public class DashboardController {
 			totalCalory = 0;
 		}
 		
-		
-		
-		/* 운동횟수에 따른 목표단백질 설정 */// ---------------------------------------------------------goalController 이동
-								// recordWeekly도 복사해야
-		Map<String, Integer> amountAndSeq = new HashMap<String, Integer>();
-		if (recordWeekly.size() < 3) {
-			amountAndSeq.put("goalProtein", (int) (memberBio.getWeight() * 0.8 * 7));
-			amountAndSeq.put("memberSEQ", member.getMemberSEQ());
-		} else if (recordWeekly.size() < 6) {
-			amountAndSeq.put("goalProtein", (int) (memberBio.getWeight() * 1.0 * 7));
-			amountAndSeq.put("memberSEQ", member.getMemberSEQ());
-		} else {
-			amountAndSeq.put("goalProtein", (int) (memberBio.getWeight() * 1.2 * 7));
-			amountAndSeq.put("memberSEQ", member.getMemberSEQ());
-		}
-		System.out.println(amountAndSeq);
-		goalService.updateProtein(amountAndSeq);
-		// ----------------------------------------------------------------------------------------
-
 		model.addAttribute("member", member);
 		model.addAttribute("memberBio", memberBio);
 		model.addAttribute("latestRecord", latestRecord);
@@ -167,7 +147,6 @@ public class DashboardController {
 		System.out.println("gymInfo" + gymInfo);
 
 		return "dashboard/dashboard";
-		// return "sample/cards";
 	}
 	@RequestMapping("/deleteGym")
 	public String delete(HttpSession session) {
