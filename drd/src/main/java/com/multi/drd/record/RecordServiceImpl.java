@@ -80,7 +80,8 @@ public class RecordServiceImpl implements RecordService {
 			}
 			result = dao.updateCardio(record); 
 		}
-		else {
+		else { 
+			record.setTotalExerciseTime(record.getCardioObj().getTotalTime());
 			result = dao.createOne(record);
 		}
 		
@@ -140,6 +141,7 @@ public class RecordServiceImpl implements RecordService {
 			result = dao.updateFitness(record); 
 		}
 		else {
+			record.setTotalExerciseTime(record.getCardioObj().getTotalTime());
 			result = dao.createOne(record);
 		} 
 		updateMemberDataByRecord(member);
@@ -335,7 +337,10 @@ public class RecordServiceImpl implements RecordService {
 		
 		// 목표 설정에 필요한 변수들 
 		double goalProteinRatio = 0.8; // 운동 횟수 및 운동 시간에 따른 권장 섭취 칼로리의 비율 조정.
-		double activityLevel = 1.0; 
+		double activityLevel = 1.0;  
+		double[] activityLevelWoman = new double[] {1.0, 1.12, 1.27, 1.45}; // 여성의 ActivityLevel 값 
+		double[] activityLevelMan = new double[] {1.0, 1.11, 1.25, 1.48}; // 남성의 ActivityLevel 값
+		int activityLevelIndex = 0; 
 		int goalCalory = 0; 
 		int goalProtein = 0;
 		double rawGoalCalory = 0.0; 
@@ -356,39 +361,42 @@ public class RecordServiceImpl implements RecordService {
 		
 		avg = Double.parseDouble(String.format("%.1f", (sum*1.0)/size));
 		
-		// 2015 한국인영양소 섭취기준 활용 기준 신체 활동 지수 설정
+		
+		// 2015 한국인영양소 섭취기준 활용 기준 신체 활동 지수 설정 
 		switch(size) {	
 			case 0:
-				activityLevel = 1.0; // 일주일 0회 운동: PA: 1.0 으로 설정.  
+				activityLevelIndex = 0; // 일주일 0회 운동: PA: 1.0 으로 설정.  
 				break;
 			
 			case 1:
 			case 2:
-				activityLevel = 1.11; // 일주일 1~2회 운동: PA: 1.11로 설정 
+				activityLevelIndex = 1; // 일주일 1~2회 운동: PA: 1.12 혹은 1.11로 설정 
 				break;			
 			
 			case 3:
 			case 4:
 			case 5:
-				activityLevel = 1.25; // 일주일 3~5회 운동: PA: 1.25 으로 설정 
+				activityLevelIndex = 2; // 일주일 3~5회 운동: PA: 1.27 혹은 1.25 으로 설정 
 				break;
 			
 			case 6:
 			case 7:
-				activityLevel = 1.48; // 일주일 6회 이상 운동: PA: 1.48로 설정 
+				activityLevelIndex = 3; // 일주일 6회 이상 운동: PA: 1.45 혹은 1.48로 설정 
 				break; 
 				
 			default: 
-				activityLevel = 1.0;
+				activityLevelIndex = 0;
 				break;
 		}   
 		
 		// 여성일 경우
 		if(gender == 0) { 
+			activityLevel = activityLevelWoman[activityLevelIndex];
 			rawGoalCalory = 354-6.91 * age + activityLevel * (9.36 * weight + 726 * height); 
 		}  
 		// 남성일 경우 
-		else {		
+		else {	 
+			activityLevel = activityLevelMan[activityLevelIndex];
 			rawGoalCalory = 662-9.53 * age + activityLevel * (15.91 * weight + 539.6 * height);
 		}
 		
