@@ -25,9 +25,11 @@
 
 <!-- Custom styles for this template-->
 <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
-    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xbsurilrkj&submodules=geocoder"></script>
+<script type="text/javascript"
+	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xbsurilrkj&submodules=geocoder"></script>
 <script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
-
+<script src="/sweetalert/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
 </head>
 
 
@@ -91,6 +93,11 @@
 			<li class="nav-item"><a class="nav-link" href="/goal/readAll">
 					<i class="fas fa-chart-pie"></i> <span>목표</span>
 			</a></li>
+			<!-- Nav Item - FAQ -->
+			<li class="nav-item"><a class="nav-link" href="/member/faqPage">
+					<i class="fas fa-info-circle"></i> <span>FAQ</span>
+			</a></li>
+
 
 			<!-- Nav Item - 게시판 -->
 			<!-- 운동 후기 및 Q&A 관련. 아직 구현 안해서 제외 -->
@@ -186,8 +193,12 @@
 								<!--                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> -->
 								<!--                                     정보수정 -->
 								<!--                                 </a> -->
+								
 
 								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="/mypage/readAll"> <i
+									class="fas fa-user-circle text-gray-400"></i> 마이페이지
+								</a>
 								<a class="dropdown-item" href="#" data-toggle="modal"
 									data-target="#logoutModal"> <i
 									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -249,10 +260,26 @@
 										</p>
 									</a>
 									<h5 class="card-title">${member.profileComment }</h5>
-									<p class="card-text">
-										내가 등록한 헬스장 <a href="#" id="findGymList"
-											class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fas fa-search-location"></i></a>
-									</p>
+
+									<c:choose>
+										<c:when test="${gymInfo != null}">
+											<p class="card-text">
+												나의 헬스장: ${gymInfo.name } <a href="/dashboard/deleteGym"
+													id="deleteGym" class="btn btn-primary"><i
+													class="fas fa-trash"></i></a>
+											</p>
+										</c:when>
+										<c:otherwise>
+											<p class="card-text">
+												나의 헬스장 등록하기 <a href="#" id="findGymList"
+													class="btn btn-primary" data-toggle="modal"
+													data-target="#myModal"><i
+													class="fas fa-search-location"></i></a>
+											</p>
+										</c:otherwise>
+									</c:choose>
+
+
 
 								</div>
 								<!-- Button to Open the Modal -->
@@ -261,7 +288,7 @@
 								</button> -->
 
 								<!-- The Modal -->
-								<div class="modal" id="myModal">
+								<div class="modal fade" id="myModal" role="dialog">
 									<div class="modal-dialog modal-xl">
 										<div class="modal-content">
 
@@ -272,7 +299,8 @@
 											</div>
 
 											<!-- Modal body -->
-											<div class="modal-body gym-content">Modal body..</div>
+											<div class="modal-body gym-content" style="overflow: hidden;">Modal
+												body..</div>
 
 											<!-- Modal footer -->
 											<div class="modal-footer">
@@ -328,11 +356,9 @@
 													items="${latestRecord.fitnessObj.fitnessList}">
 
 													<p>
-														운동정보 : ${item.fitnessSEQ}
+														운동:${item.fitnessSEQ}
 														<%-- • 세트 : ${item.set} • 횟수 : ${item.count} • 무게 : ${item.weight} --%>
 													</p>
-
-
 												</c:forEach>
 												<time class="timestamp text-medium"
 													datetime="2022-12-22 20:50:00 UTC">
@@ -340,7 +366,6 @@
 													<fmt:formatDate value="${latestRecord. date}"
 														pattern="yyyy-MM-dd" />
 												</time>
-
 											</div>
 										</div>
 										<div class="col-auto">
@@ -348,6 +373,17 @@
 										</div>
 									</div>
 								</div>
+
+								<c:if test="${latestRecord == null}">
+									<div class="card-footer">
+										<span class="font-weight-bold text-primary">아직 운동기록이
+											없습니다</span> <span class="ml-3 font-weight-bold" title="기록하러 가기">
+											<a href="/record/index.do"><img
+												src="/sbadmin/img/record.png" class="mb-2" width=25px;></a>
+										</span>
+									</div>
+								</c:if>
+
 							</div>
 
 							<!-- 탭 -->
@@ -381,8 +417,10 @@
 										<div class="card-body">
 											<div class="chart-pie pt-4 pb-2">
 												<canvas id="myChartDoughnut2"></canvas>
+
 											</div>
 										</div>
+
 									</div>
 									<!-- <div class="tab-pane fade" id="zxc">
 									<p>Curabitur dignissim quis nunc vitae laoreet. Etiam ut
@@ -390,6 +428,17 @@
 										venenatis. Quisque commodo consectetur faucibus. Aenean eget
 										ultricies justo.</p>
 								</div> -->
+
+									<c:if test="${takeProtein == 0 || totalCalory == 0}">
+										<div class="card-footer">
+											<span class="font-weight-bold text-primary">아직 식단기록이
+												없습니다</span> <span class="ml-3 font-weight-bold" title="기록하러 가기">
+												<a href="/record/index.do"><img
+													src="/sbadmin/img/record.png" class="mb-2" width=25px;></a>
+											</span>
+										</div>
+									</c:if>
+
 								</div>
 							</div>
 
@@ -495,7 +544,7 @@
 								<!-- Card Header - Dropdown -->
 								<div
 									class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-									<h6 class="m-0 font-weight-bold text-primary">요일별 운동시간</h6>
+									<h6 class="m-0 font-weight-bold text-primary">주단위 운동시간</h6>
 									<div class="dropdown no-arrow">
 										<a class="dropdown-toggle" href="#" role="button"
 											id="dropdownMenuLink" data-toggle="dropdown"
@@ -525,6 +574,18 @@
 										<!-- </div> -->
 									</div>
 								</div>
+
+								<c:if test="${latestRecord == null}">
+									<div class="card-footer">
+										<p class="font-weight-bold text-primary text-center"
+											style="margin-bottom: 0">
+											아직 운동기록이 없습니다 <span class="ml-3 font-weight-bold"
+												title="기록하러 가기"> <a href="/record/index.do"><img
+													src="/sbadmin/img/record.png" class="mb-2" width=25px;></a>
+											</span>
+										</p>
+									</div>
+								</c:if>
 							</div>
 
 
@@ -683,20 +744,12 @@
 			aria-labelledby="exampleModalLabel" aria-hidden="true">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="exampleModalLabel">Ready to
-							Leave?</h5>
-						<button class="close" type="button" data-dismiss="modal"
-							aria-label="Close">
-							<span aria-hidden="true">Ã</span>
-						</button>
-					</div>
-					<div class="modal-body">Select "Logout" below if you are
-						ready to end your current session.</div>
+					<div class="modal-body">로그아웃 하시겠습니까?</div>
 					<div class="modal-footer">
 						<button class="btn btn-secondary" type="button"
-							data-dismiss="modal">Cancel</button>
-						<a class="btn btn-primary" href="login.html">Logout</a>
+							data-dismiss="modal">아니오</button>
+						<a class="btn btn-primary" href="/member/logout.do">네</a>
+
 					</div>
 				</div>
 			</div>
@@ -718,11 +771,22 @@
 			var cardioList = [];
 			var dateList = [];
 			var timeList = [];
-			
+
+			var mySwal = Swal.mixin({
+				confirmButtonColor : '#4E73DF',
+				confirmButtonText : '확인'
+			})
+
 			$(".gym-content").load("/dashboard/readGym");
-				
+			$("#deleteGym").on("click", function() {
+				mySwal.fire({
+					icon : 'success',
+					title : '나의 헬스장 삭제 완료'
+
+				})
+			})
+
 			$(function() {
-				
 
 				$.ajax({
 					url : "/dashboard/read",

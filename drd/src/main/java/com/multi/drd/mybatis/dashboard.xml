@@ -3,7 +3,7 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.multi.drd.dashboard">
-	<select id="read" resultType="member" parameterType="member">
+	<!-- <select id="read" resultType="member" parameterType="member">
 		select * from member
 		WHERE id = #{id}
 	</select>
@@ -12,6 +12,8 @@
 		where memberbioseq = (select memberseq
 							from member
 							where id = #{id})
-	</select>
+	</select> -->
+	
+	
 
 </mapper>

@@ -1,11 +1,15 @@
 package com.multi.drd.gym;
 
+import java.util.HashMap;
+
 public interface GymService {
+
+	int insertGym(GymDTO gym);
+
+	GymDTO findByGymName(String name);
+
+	int updateGym(HashMap<String, Integer> param);
 	GymDTO readGym(int memberSEQ);
 
-	int updateGym(GymDTO gym);
-
 	int deleteGym(int memberSEQ);
-
-	int registerGym(GymDTO gym);
 }
