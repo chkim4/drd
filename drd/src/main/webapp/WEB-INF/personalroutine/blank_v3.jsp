@@ -23,46 +23,60 @@
     <!-- Custom styles for this template-->
     <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    
-    <script src="/resources/jquery/personalroutine/routineset-script.js">
-    	var personalRoutineSEQ = parseInt("${member.personalRoutineSEQ}")
-    </script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#myroutine").append("${routine.name}")
-			$("#myroutinediv").attr({"data-toggle":"popover", "data-content":"${routine.description}", "tabindex":"0", "data-trigger":"focus", "data-placement":"left"})
+			$("#myroutine").append("${routine.name}<hr/>${routine.description}")
 			$("#routineperiodtxt").empty()
-			var progrss = parseInt("${progress}")
-			$("#routineperiodtxt").append(progrss+"%")
-			$("#routineperiodpersent").attr({"aria-valuenow":"${progress}","style":"width: ${progress}%", "data-toggle":"tooltip", "data-placement":"bottom", "title":"${routine.period}주 중 ${days}일 진행중"})
-			setPersonalRoutineSEQ(${member.personalRoutineSEQ})
-			$(document).on("click", "#routinelist",selectPersonalRoutine_onclick)
-			$(document).on("click", ".fitness", selectFitness_onclick)
-			$(document).on("click", ".cardio", selectCardio_onclick)
-			$(document).on("click", ".modalselectfitness", selectTPOFitness_onclick)			
-			$(document).on("click", ".modalselectcardio", selectTPOCardio_onclick)			
-			$(document).on("click", ".selectafitness", selectAFitness_onclick)
-			$(document).on("click", ".selectacardio", selectACardio_onclick)
-			$('#myModal').on('shown.bs.modal', function () {
-		  		$('#myInput').trigger('focus')
-			})
-			$(function () {
-			  $('[data-toggle="popover"]').popover()
-			})
-			$(function () {
-			  $('[data-toggle="tooltip"]').tooltip()
-			})
-			$('.popover-dismiss').popover({
-			  trigger: 'focus'
-			})
+			$("#routineperiodtxt").append("<h5>${routine.period}주 중 ${days}일 진행중<br/>(${progress}%)</h5><br/>")
+			$("#routineperiodpersent").attr({"aria-valuenow":"${progress}","style":"width: ${progress}%"})
+		
+			$("#routinelist").on("click",function(){
+				var personalRoutineSEQ = "${member.personalRoutineSEQ}"
+				$.ajax({
+				type:"post",
+				url:"/personalroutine/ajax/setfitnesslist",
+				data:{
+					"personalRoutineSEQ":personalRoutineSEQ
+				},
+				async : false,
+				success:function(data){
+					mydata = "<div class='w-100' style='float:left'><div style='float:left; width:70%'>name</div><div style='float:left; width:10%'>set</div><div style='float:left; width:10%'>count</div><div style='float:left; width:10%'>weight</div></div><br/>";
+					for (var i = 0; i < data.length; i++) {
+						mydata = mydata+
+						"<div class='fitness w-100' style='float:left'><div style='float:left; width:70%'>"+data[i].name+"</div><div style='float:left; width:10%'>"+data[i].set+"</div><div style='float:left; width:10%'>"+data[i].count+"</div><div style='float:left; width:10%'>"+data[i].weight+"kg</div></div><br/>"
+					}
+				$("#myroutine_fitnessList").empty();
+				$("#myroutine_fitnessList").append(mydata);			
+				},
+				error:function(a,b,c){
+					alert(c);
+				}
+				
+				})//end ajax1
+				$.ajax({
+					type:"post",
+					url:"/personalroutine/ajax/setcardiolist",
+					data:{
+						"personalRoutineSEQ":personalRoutineSEQ
+					},
+					async : false,
+					success:function(data){
+						mydata = "<div class='w-100' style='float:left'><div class='w-75' style='float:left'>name</div><div class='w-auto' style='float:left'>time</div></div><br/>";
+						for (var i = 0; i < data.length; i++) {
+							mydata = mydata+
+							"<div class='cardio w-100' style='float:left'><div class='w-75' style='float:left'>"+data[i].name+"</div><div class='w-auto' style='float:left'>"+data[i].time+"분</div></div><br/>"
+						}
+					$("#myroutine_cardioList").empty();
+					$("#myroutine_cardioList").append(mydata);			
+					},
+					error:function(a,b,c){
+						alert(c);
+					}
+					
+					})//end ajax2
+			})//end click
 		})//end ready
 	</script>
-	<style type="text/css">
-		#routinelist, #myroutinediv, .fitness, .cardio, .modalselectfitness, .modalselectcardio, .selectafitness, .selectacardio{
-			cursor : pointer;
-		}
-		a:visited {color:black}
-	</style>
 </head>
 
 <body id="page-top">
@@ -74,12 +88,12 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard/read">
-                <div>
-                    <img src="../resources/static/logo/drd_white.png" style="max-width: 70%"></i>
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
+                <div class="sidebar-brand-icon rotate-n-15">
+                    <i class="fas fa-laugh-wink"></i>
                 </div>
+                <div class="sidebar-brand-text mx-3">다루다 <sup>DRD</sup></div>
             </a>
-
             
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -129,12 +143,6 @@
                 	<i class="fas fa-chart-pie"></i>
                     <span>목표</span></a>
             </li>
-            <!-- Nav Item - FAQ -->
-	         <li class="nav-item">
-	         	<a class="nav-link" href="/member/faq">
-	            	<i class="fas fa-info-circle"></i>
-	                	<span>FAQ</span></a>
-	         </li>
             
              <!-- Nav Item - 게시판 --> 
              <!-- 운동 후기 및 Q&A 관련. 아직 구현 안해서 제외 -->
@@ -233,11 +241,6 @@
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     로그아웃
                                 </a>
-								<a class="dropdown-item" href="/mypage/readAll" >
-                                    <i class="fas fa-user-circle text-gray-400"></i>
-                                      마이페이지
-                                </a>
-
                             </div>
                         </li>
 
@@ -293,7 +296,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-info text-uppercase mb-1">내 루틴 정보
                                             </div>
-                                            <div class="row no-gutters align-items-center" id="myroutinediv">
+                                            <div class="row no-gutters align-items-center">
                                                 <div class="col-auto">
                                                 	<!-- 디폴트 루틴 정보 -->
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="myroutine"></div>
@@ -321,12 +324,11 @@
                                                     <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800" id="routineperiodtxt"></div>
                                                     
                                                 </div>
-                                                <br/>
                                                 <div class="col">
-                                                    <div class="progress progress-sm mr-2 ">
-                                                    <!-- 진행률 -->
+                                                    <div class="progress progress-sm mr-2">
+                                                    <!-- 루틴 진행 시간, 진행률 -->
                                                         <div class="progress-bar bg-info" role="progressbar"
-                                                            style="width: 100%; float: left;" aria-valuenow="50" aria-valuemin="0"
+                                                            style="width: 10%" aria-valuenow="50" aria-valuemin="0"
                                                             aria-valuemax="100" id="routineperiodpersent"></div>
                                                     </div>
                                                 </div>
@@ -347,27 +349,54 @@
                         <div class="col-lg-5">
 
                             <div class="card mb-4">
-                                <div class="card-header" id="fitness_top">
+                                <div class="card-header">
                                     무산소(Fitness)
                                 </div>
                                 <!-- fitnesslist 상세 정보 -->
                                 <div class="card-body" id="myroutine_fitnessList">
-									← 루틴을 선택해주세요
+                                <div class='w-100' style='float:left'>
+                                	<div style='float:left; width:70%'>name</div>
+                                	<div style='float:left; width:10%'>set</div>
+                                	<div style='float:left; width:10%'>count</div>
+                                	<div style='float:left; width:10%'>weight</div>
+                                </div>
+                                <br/>	
+                                	<c:forEach var="data" items="${myroutine_fitnessList }">
+										<div class='fitness w-100' style='float:left'>
+											<div style='float:left; width:70%'>${data.name}</div>
+											<div style='float:left; width:10%'>${data.set}</div>
+											<div style='float:left; width:10%'>${data.count}</div>
+											<div style='float:left; width:10%'>${data.weight}kg</div>
+										</div>
+										<br/>
+									</c:forEach>
+                                	
                                 </div>
                             </div>
 
                             <div class="card mb-4">
-                                <div class="card-header" id = "cardio_top">
+                                <div class="card-header">
                                     유산소(Cardio)
                                 </div>
                                 <!-- cardiolist 상세 정보 -->
                                 <div class="card-body" id="myroutine_cardioList">
-                                	← 루틴을 선택해주세요
+	                                 <div class='w-100' style='float:left'>
+		                                 <div class='w-75' style='float:left'>name</div>
+		                                 <div class='w-auto' style='float:left'>time</div>
+	                                 </div>
+	                                 <br/>
+	                                	<c:forEach var="data" items="${myroutine_cardioList }">
+											<div class='cardio w-100' style='float:left'>
+												<div class='w-75' style='float:left'>${data.name}</div>
+												<div class='w-auto' style='float:left'>${data.time}분</div>
+											</div>
+											<br/>
+										</c:forEach>
                                 </div>
                             </div>
 
                         </div>
-                        <!-- ajax -->
+                        <!-- ajax or modal -->
                         <div class="col-lg-4">
 
                             <div class="card mb-4">
@@ -375,15 +404,32 @@
                                 도움말
                             </div>
                                <div class="c" id="check">
-							
+								name_1
 								</div>
 								<hr/>
                                 <div class="card-body" id="ajaxchangecontents">
-											← 루틴선택 후 운동을 선택해주세요
+                                <form action="">
+								 set : <input type="number" min="1" value="10" name="set"><br/>
+								 count : <input type="number" min="1" value="10" name="count"><br/>
+								 weight : <input type="number" min="1" value="10" name="weight"><br/>
+								 <div style="text-align: right; ">
+						         <a href="#" class="btn btn-success btn-icon-split">
+									<span class="icon text-white-50">
+									<i class="fas fa-check"></i>
+									</span>
+									 <span class="text">수정하기</span>
+								</a>
+								 <a href="#" class="btn btn-danger btn-icon-split" >
+									<span class="icon text-white-50">
+										<i class="fas fa-trash"></i>
+									</span>
+									<span class="text">삭제하기</span>
+						         </a>	 
+								 </div>
                                 </div>
                             </div>
                         </div>
-					<!-- end ajax -->
+					<!-- end ajax or modal -->
                     </div>
                     <!-- end of row1 -->
 
@@ -417,29 +463,7 @@
             </div>
         </div>
     </div>
-	<!-- Modal -->
-	<div class="modal fade" id="deleteandupdatemodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-	  <div class="modal-dialog modal-dialog-centered" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <h5 class="modal-title" id="changetitle"></h5>
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-	          <span aria-hidden="true">&times;</span>
-	        </button>
-	      </div>
-	      <div class="modal-body" id="changethings">
-	        
-	      </div>
-	      <div class="modal-footer" id = "changefoot">
-	        <button type="button" class="btn btn-primary" id="changesubmit" onclick="">수정하기</button>
-	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!-- End of Modal -->
-	<!-- submit 꼼수 iframe -->
-	<iframe id="iframe1" name="iframe1" style="display:none"></iframe>
+
     <!-- Bootstrap core JavaScript-->
     <script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
     <script src="/sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
