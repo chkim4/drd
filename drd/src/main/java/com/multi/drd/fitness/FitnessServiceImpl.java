@@ -33,5 +33,9 @@ public class FitnessServiceImpl implements FitnessService {
 	public List<FitnessDTO> findbyname(String name) {
 		return dao.findbyname(name);
 	}
+	@Override
+	public List<FitnessDTO> findbynamewithseq(Map<String, Object> map) {
+		return dao.findbynamewithseq(map);
+	}
 
 }
