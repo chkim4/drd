@@ -46,7 +46,7 @@
 			<!-- Sidebar - Brand -->
 			<a
 				class="sidebar-brand d-flex align-items-center justify-content-center"
-				href="/member/index.do">
+				href="/dashboard/read">
 				<div>
 					<img src="../resources/static/logo/drd_white.png"
 						style="max-width: 70%;" />
