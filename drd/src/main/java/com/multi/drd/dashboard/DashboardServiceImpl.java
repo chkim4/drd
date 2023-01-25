@@ -25,19 +25,6 @@ public class DashboardServiceImpl implements DashboardService {
 		super();
 	}
 
-
-
-	/*
-	 * @Override public MemberDTO getMemberInfo(int memberSEQ) { // TODO
-	 * Auto-generated method stub return dao.read(memberSEQ); }
-	 * 
-	 * 
-	 * 
-	 * @Override public MemberBioDTO getMemberBio(int memberSEQ) { // TODO
-	 * Auto-generated method stub return dao.readbio(memberSEQ); }
-	 * 
-	 */
-
 	@Override
 	public List<AggregationResultDTO> excerciseHourByWeek(int memberSEQ) {
 		// TODO Auto-generated method stub

@@ -1,29 +1,31 @@
 /*
-*	주간기록조회 막대그래프, 선그래프
+*	주간기록조회 막대그래프: 주간 운동시간(유산소, 무산소, 목표)
 */
-    // setup 
+ // 막대그래프 setup 
     const dataBar = {
       labels: dateList,
       datasets: [{
         label: '무산소',
         data: fitnessList,
         backgroundColor: [
-          'rgba(255, 26, 104, 0.2)',
+        'rgba(54, 162, 235, 0.2)'
+         /* 'rgba(255, 26, 104, 0.2)',
           'rgba(54, 162, 235, 0.2)',
           'rgba(255, 206, 86, 0.2)',
           'rgba(75, 192, 192, 0.2)',
           'rgba(153, 102, 255, 0.2)',
           'rgba(255, 159, 64, 0.2)',
-          'rgba(0, 0, 0, 0.2)'
+          'rgba(0, 0, 0, 0.2)'*/
         ],
         borderColor: [
-          'rgba(255, 26, 104, 1)',
+        'rgba(54, 162, 235, 0.8)',
+          /*'rgba(255, 26, 104, 1)',
           'rgba(54, 162, 235, 1)',
           'rgba(255, 206, 86, 1)',
           'rgba(75, 192, 192, 1)',
           'rgba(153, 102, 255, 1)',
           'rgba(255, 159, 64, 1)',
-          'rgba(0, 0, 0, 1)'
+          'rgba(0, 0, 0, 1)'*/
         ],
         borderWidth: 1,
         order:2,
@@ -33,11 +35,13 @@
           label: '유산소',
           data: cardioList,
           backgroundColor: [
-            'rgba(255, 26, 104, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          /*  'rgba(255, 26, 104, 0.2)',*/
             
           ],
           borderColor: [
-            'rgba(255, 26, 104, 1)',
+          'rgba(255, 206, 86, 0.8)',
+            /*'rgba(255, 26, 104, 1)',*/
            
           ],
           borderWidth: 1,
@@ -47,8 +51,8 @@
         {
             label: '목표시간',
             data: timeList,
-            backgroundColor:'rgba(255, 26, 104, 0.2)',
-            borderColor:'rgba(255, 26, 104, 1)',
+            backgroundColor:'rgba(75, 192, 192, 0.2)',
+            borderColor:'rgba(75, 192, 192, 0.8)',
             tension: 0.4,
             type:'line',
             order:1
@@ -57,14 +61,14 @@
     
    
    
-    // config 
+    //막대그래프 config 
     const configBar = {
       type: 'bar',
       data:dataBar,
       options: {
-    	  plugins:{
+      	plugins:{
     		  tooltip:{
-    			  enabled:false
+    			  enabled:true
     		  }
     	  },
         scales: {
@@ -82,13 +86,17 @@
         },
           y: {
             beginAtZero: true,
-            stacked:true
+            stacked:true,
+            title:{
+            	display:true,
+            	text:'운동시간(분)'
+            }
           }
         }
       }
     };
 
-    // render init block
+    //막대그래프 render init block
     const myChartBar = new Chart(
       document.getElementById('myChartBar'),
       configBar
@@ -146,13 +154,13 @@ const stackedText2 = {
 		
 	}
 }
-
+//단백질 도넛그래프 config
 const configDoughnut = {
             	      type: 'doughnut',
             	      data: {
             	    	  labels: [
-            	    		    'Red',
-            	    		    'Blue'
+            	    		    '섭취단백질',
+            	    		    '잔여'
             	    		 
             	    		  ],
             	    		  datasets: [{
@@ -183,52 +191,18 @@ const configDoughnut = {
             	    	  [stackedText]
    		 };
    		 console.log(protein);
- // render init block
+ //도넛그래프 render init block
     const myChartDoughnut =  new Chart(
-            	      document.getElementById('myChartDoughnut'),/*{
-            	      type: 'doughnut',
-            	      data: {
-            	    	  labels: [
-            	    		    'Red',
-            	    		    'Blue'
-            	    		 
-            	    		  ],
-            	    		  datasets: [{
-            	    		    label: 'My First Dataset',
-            	    		    data:  protein,
-            	    		    backgroundColor: [
-            	    		      'rgb(255, 99, 132)',
-            	    		      'transparent'
-            	    		      /*'rgb(54, 162, 235)'
-            	    		      'rgb(255, 205, 86)'
-            	    		    ],
-            	    		    hoverOffset: 4,
-            	    		    cutout:'90%',
-            	    		    borderRadius:20
-            	    		  }]
-            	    	},
-            	      options:{
-            	     	plugins:{
-            	     		legend:{
-            	      			display:false,
-            	      		}
-            	     	},
-            	      	tooltip:{
-            	      		enabled:false
-            	      	}
-            	      },
-            	      plugins:
-            	    	  [stackedText]
-   		 }) ,*/
+       document.getElementById('myChartDoughnut'),
       configDoughnut
     );
-    
+//칼로리 도넛그래프    
   const configDoughnut2 =  {
           	      type: 'doughnut',
           	      data: {
           	    	  labels: [
-          	    		    'Red',
-          	    		    'Blue'
+          	    		    '섭취칼로리',
+          	    		    '잔여량'
           	    		 
           	    		  ],
           	    		  datasets: [{
@@ -258,42 +232,9 @@ const configDoughnut = {
           	      plugins:
           	    	  [stackedText2]
  		 };
+ 		 
 const myChartDoughnut2 = new Chart(
-          	      document.getElementById('myChartDoughnut2'),/*{
-          	      type: 'doughnut',
-          	      data: {
-          	    	  labels: [
-          	    		    'Red',
-          	    		    'Blue'
-          	    		 
-          	    		  ],
-          	    		  datasets: [{
-          	    		    label: 'My First Dataset',
-          	    		    data:  calory,
-          	    		    backgroundColor: [
-          	    		      'rgb(255, 99, 132)',
-          	    		      'transparent'
-          	    		      /*'rgb(54, 162, 235)'
-          	    		      'rgb(255, 205, 86)'
-          	    		    ],
-          	    		    hoverOffset: 4,
-          	    		    cutout:'90%',
-          	    		    borderRadius:20
-          	    		  }]
-          	    	},
-          	      options:{
-          	     	plugins:{
-          	     		legend:{
-          	      			display:false,
-          	      		}
-          	     	},
-          	      	tooltip:{
-          	      		enabled:false
-          	      	}
-          	      },
-          	      plugins:
-          	    	  [stackedText2]
- 		 }*/
+      document.getElementById('myChartDoughnut2'),
  		 configDoughnut2
  		 );
     

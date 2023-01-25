@@ -30,14 +30,11 @@ public class GymController {
 		super();
 		this.gymService = gymService;
 	}
+	//등록하려는 헬스장 정보
 	@RequestMapping(value="/register", method = RequestMethod.POST)
 	public String registerGym(@RequestBody GymDTO dto, HttpSession session, Model model, HttpServletRequest request) {
 		MemberDTO member = (MemberDTO) session.getAttribute("member");
-		/*
-		 * String name = request.getParameter("name"); String address =
-		 * request.getParameter("address"); String telephoneNumber =
-		 * request.getParameter("telephoneNumber");
-		 */
+
 		String name = dto.getName();
 		String address = dto.getAddress();
 		String telephoneNumber = dto.getTelephoneNumber();
