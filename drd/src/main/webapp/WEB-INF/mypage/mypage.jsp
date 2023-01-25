@@ -23,6 +23,8 @@
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 	rel="stylesheet">
+<script type="text/javascript"
+	src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xbsurilrkj&submodules=geocoder"></script>
 
 <!-- Custom styles for this template-->
 <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
@@ -197,12 +199,9 @@
 								<!--                                 </a> -->
 
 								<div class="dropdown-divider"></div>
-								 <a class="dropdown-item" href="/mypage/readAll" >
-                                    <i class="fas fa-user-circle text-gray-400"></i>
-                                       마이페이지
-                                </a>
-								
-								<a class="dropdown-item" href="#" data-toggle="modal"
+								<a class="dropdown-item" href="/mypage/readAll"> <i
+									class="fas fa-user-circle text-gray-400"></i> 마이페이지
+								</a> <a class="dropdown-item" href="#" data-toggle="modal"
 									data-target="#logoutModal"> <i
 									class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
 									로그아웃
@@ -330,13 +329,38 @@
 										</div>
 										<div class="col-sm-6">
 											<div class="input-group">
-												<input type="text" value=" " name="gym" id="gym" class="form-control bg-light border-0 small" readonly="readonly"
-												 aria-label="Search"
-												aria-describedby="basic-addon2">
+												<input type="text" value="${gym.name }" name="gym" id="gym"
+													class="form-control bg-light border-0 small"
+													readonly="readonly" aria-label="Search"
+													aria-describedby="basic-addon2">
 												<div class="input-group-append">
-													<button class="btn btn-primary" type="button">
+													<button class="btn btn-primary" type="button"
+														id="findGymList" data-toggle="modal" data-target="#myModal">
 														<i class="fas fa-search fa-sm"></i>
 													</button>
+									<!-- The Modal -->
+								<div class="modal fade" id="myModal" role="dialog">
+									<div class="modal-dialog modal-xl">
+										<div class="modal-content">
+
+											<!-- Modal Header -->
+											<div class="modal-header">
+												<h4 class="modal-title">나의 헬스장 등록하기</h4>
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+											</div>
+
+											<!-- Modal body -->
+											<div class="modal-body gym-content" style="overflow: hidden;">Modal
+												body..</div>
+
+											<!-- Modal footer -->
+											<div class="modal-footer">
+												<button type="button" id="gymbutton" class="btn btn-danger"
+													data-dismiss="modal">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
 												</div>
 											</div>
 										</div>
@@ -446,6 +470,10 @@
 	$(document).ready(function() {
 	$("#nickName").keyup(nickName_onKeyUp);
 	$("#checkNickNameBTN").click(checkNickNameBTN_onClick);
+	$(".gym-content").load("/dashboard/readGym");
+	$("#myModal").on('hidden.bs.modal', function(){
+		location.reload();
+	});
 	$("#updateInfoBTN").click(updateInfoBTN_onClick);
 	$("#updatePwdBTN").click(function() {
 						if ($("#userPass").val().replaceAll(" ", "") == "" || $("#userPass").val() != "${member.pass}") {
@@ -512,7 +540,10 @@
 						  });
 	}); //document.ready
 </script>
-
+	<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/date-fns/1.9.0/date_fns.min.js"
+			integrity="sha512-ToehgZGJmTS39fU8sfP9/f0h2Zo6OeXXKgpdEgzqUtPfE5By1K/ZkD8Jtp5PlfdaWfGVx+Jw5j10h63wSwM1HA=="
+			crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </body>
 
 </html>
