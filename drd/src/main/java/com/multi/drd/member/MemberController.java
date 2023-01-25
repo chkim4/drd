@@ -50,7 +50,7 @@ public class MemberController {
 		
 		// 로그인이 되어 있다면 index 페이지로 이동
 		if(session.getAttribute("member") != null) {
-			viewName = "dashboard/dashboard";
+			viewName = "redirect: /dashboard/read";
 		}
 		return viewName;
 	} 
@@ -64,7 +64,7 @@ public class MemberController {
 		  // 로그인 성공 시 
 		  if(member != null) { 
 			  model.addAttribute("member", member); 
-			  viewName = "dashboard/dashboard";  
+			  viewName = "redirect: /dashboard/read";  
 			   
 		  } 
 		  else { 
@@ -80,7 +80,7 @@ public class MemberController {
 		
 		// 로그인이 되어 있다면 index 페이지로 이동
 		if(session.getAttribute("member") != null) {
-			viewName = "dashboard/dashboard";
+			viewName = "redirect: /dashboard/read";
 		}
 		return viewName;
 	} 
@@ -103,7 +103,7 @@ public class MemberController {
 		 // 회원 가입 성공 시 
 		 if(isRegistered) {   
 			  model.addAttribute("member", member); 
-			  viewName = "dashboard/dashboard"; 
+			  viewName = "redirect: /dashboard/read"; 
 		  } 
 		  else {
 			  viewName = "member/register"; 

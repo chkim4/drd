@@ -18,30 +18,19 @@ public class MemberBioServiceImpl implements MemberBioService {
 	} 
 	
 	@Override
-	public int register(MemberBioDTO registerMemberBio) {
-		// 2015 한국인영양소 섭취기준 활용 기준 신체 활동 지수 설정
-		switch((int)registerMemberBio.getActivityLevel()) {
-			
-			case 0:
-				registerMemberBio.setActivityLevel(1.0); // 일주일 0회 운동: PA: 1.0 으로 설정. 
-				break;
-			case 1:
-				registerMemberBio.setActivityLevel(1.11); // 일주일 1~2회 운동: PA: 1.11로 설정 
-				break;			
-			case 2:
-				registerMemberBio.setActivityLevel(1.25); // 일주일 3~5회 운동: PA: 1.25 으로 설정 
-				break;
-			case 3:
-				registerMemberBio.setActivityLevel(1.48); // 일주일 6회 이상 운동: PA: 1.48로 설정 
-				break; 
-				
-			default: 
-				registerMemberBio.setActivityLevel(1.0);
-				break;
+	public int register(MemberBioDTO registerMemberBio, int gender) {
+		double[] activityLevelWoman = new double[] {1.0, 1.12, 1.27, 1.45}; // 여성의 ActivityLevel 값 
+		double[] activityLevelMan = new double[] {1.0, 1.11, 1.25, 1.48}; // 남성의 ActivityLevel 값
 		
+		// 2015 한국인영양소 섭취기준 활용 기준 신체 활동 지수 설정 
+		if(gender == 0) {
+			registerMemberBio.setActivityLevel(activityLevelWoman[(int)registerMemberBio.getActivityLevel()]);
 		} 
+		else {
+			registerMemberBio.setActivityLevel(activityLevelMan[(int)registerMemberBio.getActivityLevel()]);
+		}
+		
 		return dao.register(registerMemberBio); 
-		// throw new RuntimeException(); // 트랜잭션 테스트용
 	} 
 	
 	@Override

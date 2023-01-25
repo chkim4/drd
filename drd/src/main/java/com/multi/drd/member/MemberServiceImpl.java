@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
 		// 가입 후 MemberBio 생성
 		int registerMemberSEQ = registerMember.getMemberSEQ();
 		registerMemberBio.setMemberBioSEQ(registerMemberSEQ);   
-		memberBioService.register(registerMemberBio);
+		memberBioService.register(registerMemberBio, registerMember.getGender());
 		
 		// 가입 후 개인화된 루틴 생성 및 생성된 PersonalRoutine을 Member의 personalRoutineSEQ에 등록
 		createPersonalRoutine(pRoutine);
