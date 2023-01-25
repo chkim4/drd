@@ -33,7 +33,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/member/index.do">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/dashboard/read">
                 <div>
                     <img src="../resources/static/logo/drd_white.png" style="max-width: 70%"/>
                 </div>

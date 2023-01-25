@@ -47,6 +47,11 @@ public class MemberDAOImpl implements MemberDAO{
 	@Override
 	public MemberDTO findByEmail(String email) {
 		return sqlSession.selectOne("com.multi.drd.member.findByEmail", email);
+	} 
+	
+	@Override
+	public MemberDTO findByPK(int memberSEQ) {
+		return sqlSession.selectOne("com.multi.drd.member.findByPK", memberSEQ);
 	}
  
 	// 일단 질병 정보에 따른 루틴 추천으로 구현. 추 후 확장을 위해 리스트로 반환
@@ -70,4 +75,5 @@ public class MemberDAOImpl implements MemberDAO{
 	public int createGoal(GoalDTO goal) {
 		return sqlSession.insert("com.multi.drd.member.createGoal", goal);
 	}
+
 }

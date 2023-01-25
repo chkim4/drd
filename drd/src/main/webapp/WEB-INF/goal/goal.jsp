@@ -131,7 +131,14 @@
                 <a class="nav-link" href="/goal/readAll">
                 	<i class="fas fa-chart-pie"></i>
                     <span>목표</span></a>
-            </li>
+            </li> 
+            
+             <!-- Nav Item - FAQ -->
+	         <li class="nav-item">
+	         	<a class="nav-link" href="/member/faqPage">
+	            	<i class="fas fa-info-circle"></i>
+	                	<span>FAQ</span></a>
+	         </li>
             
              <!-- Nav Item - 게시판 --> 
              <!-- 운동 후기 및 Q&A 관련. 아직 구현 안해서 제외 -->
@@ -226,10 +233,15 @@
 <!--                                 </a> -->
                                 
                                 <div class="dropdown-divider"></div>
+                                 <a class="dropdown-item" href="/mypage/readAll" >
+                                    <i class="fas fa-user-circle text-gray-400"></i>
+                                      마이페이지
+                                </a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     로그아웃
                                 </a>
+                               
                             </div>
                         </li>
 
@@ -246,7 +258,7 @@
 					<h1 class="h1 mb-2 text-gray-800" style="font-weight: 800;">내
 						목표</h1>
 					<p class="mb-2">습관을 계획하고 맞춤목표에 도전하세요</p>
-						<c:if test="${weeklyExerciseTime == 0 || weeklyCalory == 0 || weeklyProtein ==0 }">
+						<c:if test="${weeklyExerciseTime == 0 || dailyCalory == 0 || weeklyProtein ==0 }">
 							<span class="font-weight-bold text-primary">주간 기록이 없습니다</span><span class="ml-3 font-weight-bold" style="font-size: 12px">기록하기 <a href="/record/index.do"><img src="/sbadmin/img/record.png" class="mb-2" width=25px;></a></span> 
 						</c:if>
 
@@ -691,11 +703,10 @@
             }) //document.getElementById 닫기     
 	
 	//단백질 도넛차트
-	var calory = [${goalCalory}, ${weeklyCalory}]; // weeklyCalory: 1주일 섭취 칼로리, goalCalory: 주간 목표 섭취 칼로리
+	var calory = [${goalCalory}, ${dailyCalory}]; // dailyCalory: 1일 섭취 칼로리, goalCalory: 주간 목표 섭취 칼로리
 	var protein = [${goalProtein}, ${weeklyProtein}]; // weeklyProtein: 1주일 섭취 단백질, goalProtein: 주간 목표 섭취 단백질
 	var goal = []; 
-	
-           
+	          
 	            new Chart(
                    document.getElementById('doughnutChart'),{
                 	   type: "bar",
@@ -710,7 +721,8 @@
  		          	    }]
  		          	  },
  		          	  
- 		          	  options: {
+ 		          	  options: { 
+ 		          		
  		          		responsive:true,
  		          	    title: {
  		          	      display: true,
@@ -753,8 +765,12 @@
 				                    }
 				                }
 				            ]
-				        } // scales
-				        
+				        }, // scales
+					      //수정한 부분
+					        tooltips: {
+					            position: 'custom'
+					          }
+					        
  		          	 	} //option 닫기
                    }) //document.getElementById 닫기     
 					  new Chart(
@@ -814,8 +830,14 @@
 							                    }
 							                }
 							            ]
-							        }
-			 		          	 	}
+							        }, // scales 닫기
+			 		          	 	
+							        //수정한 부분
+							        tooltips: {
+							            position: 'custom'
+							          }
+			 		          	  
+			 		          	  } //options 닫기
 							}) //new Chart 닫기
 		         
 	/* 
@@ -830,7 +852,24 @@
             'rgba(255, 159, 64, 0.4)', 
             'rgba(177, 223, 64, 0.4)' //초록
 	];
-*/
+	*/  
+	// 수정한 부분
+	Chart.Tooltip.positioners.custom = function(elements, position) {
+	    if (!elements.length) {
+	      return false;
+	    }
+	    var offset = 0;
+	    //adjust the offset left or right depending on the event position
+	    if (elements[0]._chart.width / 2 > position.x) {
+	      offset = 20;
+	    } else {
+	      offset = -20;
+	    }
+	    return {
+	      x: position.x + offset,
+	      y: position.y
+	    }
+	  }
 		   
 	</script>
 </body>

@@ -186,17 +186,23 @@ function clickDateInfo(info){
 // 현재 날짜 클릭 시 없는 이벤트 (유산소, 무산소, 식단, 상태) 추가하는 모달 띄우기
 function showDateAddList(eventList){
 	if(eventList.length == 4){
+		var today = new Date();
 		mySwal.fire({
 			icon: 'info', 
-			title: '모든 항목을 작성하였습니다. 각 항목 별로 조회 바랍니다.'
+			title: '모든 항목을 작성하였습니다. 각 항목 별로 조회 바랍니다.', 
+			html: '<button type="button" class="btn btn-danger" style="text-align: center;" onclick="deleteAllEvent(\''+today+ '\')">전체 기록 삭제</button>',
+			confirmButtonText: "닫기" 
 		})
 		return; 
 	}
 	else{
 		var notWrittenGroupId = ['cardio', 'fitness', 'food', 'status']; 
-		var content =  {icon: 'info',  
-				   		customClass: 'event-read',
-				   		html: ''};
+		var content =  {
+							icon: 'info',  
+					   		customClass: 'event-read',
+					   		html: '', 
+					   		confirmButtonText: "닫기" 
+				   		};
 		
 		// 전체 groupid 들 중 작성된 eventㅇ의 group id 제거
 		eventList.map(function(event){ 
@@ -1218,6 +1224,51 @@ function createDeleteTag(readOnly){
 function deleteCurrentRow(thisObj){  
 	$(thisObj).closest('tr').remove();	
 }
+
+// 하루의 이벤트 (유산소, 무산소, 식단, 상태 모두) 삭제. Controller의 deleteDailyRecord에 대응.
+function deleteAllEvent(date){
+	mySwal.fire({
+		icon: 'warning',
+		title: '삭제한 기록은 복구할 수 없습니다. 정말 전체 삭제하겠습니까?',
+		showCancelButton: true,
+		cancelButtonText: "취소",
+		confirmButtonText: "삭제",  
+		showLoaderOnConfirm: true, 
+		reverseButtons: true 
+		
+	}).then(function(result){
+		if(result.isConfirmed){
+			$.ajax({
+				url: "/record/deleteDailyRecord.do", 
+				type: "POST",
+				data: {"date": date},
+				success: successRun,
+				error: errorRun 
+				}) //ajax 닫기 
+				
+				function successRun(result){  
+					
+					if(result > 0){ 
+						mySwal.fire({
+						  icon: 'success',
+						  title: '성공적으로 삭제 되었습니다!',
+						})	
+					}
+					else{
+						mySwal.fire({
+						  icon: 'error',
+						  title: '업데이트 중 에러가 생겼습니다... 관리자에게 문의 바랍니다.',
+						})
+					}
+				}  
+				function errorRun(obj, msg,statusMsg){  
+					console.log(obj);
+					console.log(msg);
+					console.log(statusMsg);
+				} 	 
+		} //if(isConfirmed == "true") 닫기 
+	}) //then 닫기 
+} // deleteEvent 함수 닫기
 
 // 하나의 이벤트 (유산소, 무산소, 식단, 상태 중 1) 삭제. Controller의 deleteField에 대응.
 function deleteEvent(date, field){

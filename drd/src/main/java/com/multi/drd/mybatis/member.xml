@@ -39,6 +39,12 @@
 		where email = #{email}
 	</select>  
 
+	<select id="findByPK" resultType="member" parameterType="int">
+		select * 
+		from member 
+		where memberSEQ = #{memberSEQ}
+	</select>  
+
 	<select id="findRoutineByRegisterInfo" resultType="routine" parameterType="hashmap">
 		select * 
 		from routine
