@@ -14,18 +14,17 @@
     <title>회원 가입 페이지</title> 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-    <!-- Custom fonts for this template-->
-    <link href="/sbadmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
+    <!-- 템플릿 관련 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/js/sb-admin-2.min.js" integrity="sha512-+QnjQxxaOpoJ+AAeNgvVatHiUWEDbvHja9l46BHhmzvP0blLTXC4LsvwDVeNhGgqqGQYBQLFhdKFyjzPX6HGmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+   	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" integrity="sha512-Mk4n0eeNdGiUHlWvZRybiowkcu+Fo2t4XwsJyyDghASMeFGH6yUXcdDI3CKq12an5J8fq4EFzRVRdbjerO3RmQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /><link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
-
-    <!-- Custom styles for this template-->
-    <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	
+	<!-- sweetalert 관련 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
-    <script src="/sweetalert/sweetalert2.min.js"></script>
-	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
-        
+    <!-- 직접 제작 -->    
     <script src="/resources/jquery/member/register-script.js"></script> 
     
     <!-- jsp 내 태그와 register-script.js 내 함수들 연결 -->
@@ -254,16 +253,6 @@
         </div>
 
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
-    <script src="/sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="/sbadmin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="/sbadmin/js/sb-admin-2.min.js"></script>
 
 </body>
 

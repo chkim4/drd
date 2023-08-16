@@ -15,24 +15,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>로그인 페이지</title>
-<!-- Custom fonts for this template-->
-<link href="/sbadmin/vendor/fontawesome-free/sbadmin/css/all.min.css"
-	rel="stylesheet" type="text/css">
+
+
+<!-- 템플릿 관련 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/js/sb-admin-2.min.js" integrity="sha512-+QnjQxxaOpoJ+AAeNgvVatHiUWEDbvHja9l46BHhmzvP0blLTXC4LsvwDVeNhGgqqGQYBQLFhdKFyjzPX6HGmw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.min.css" integrity="sha512-Mk4n0eeNdGiUHlWvZRybiowkcu+Fo2t4XwsJyyDghASMeFGH6yUXcdDI3CKq12an5J8fq4EFzRVRdbjerO3RmQ==" crossorigin="anonymous" referrerpolicy="no-referrer" /><link
+    href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
+
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 	rel="stylesheet">
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-<link href="/sbadmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
-<!-- Custom styles for this template-->
-<link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <style>
 /* Make the image fully responsive */
 .carousel-inner img {
@@ -123,35 +120,12 @@
 						<h6 class="m-0 font-weight-bold text-primary" style="text-align: center;">운동 및 식단 기록</h6>
 				</div>
 				<div class="mt-3 ml-2 mr-2" style="text-align: center; color:#bdc0cc; font-size:13px;">
-					오늘의 운동과 식단을 기록할 수 있으며 </br> 목표 달성률을 확인할 수 있습니다.
+					오늘의 운동과 식단을 기록할 수 있으며 <br/> 목표 달성률을 확인할 수 있습니다.
 				</div>
 			</div>
 		</div>
-
-
-
-
-
-
-	</div>
-
-
-
-
-
 	</div>
 	<!-- end container -->
-
-	<!-- Bootstrap core JavaScript-->
-	<script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
-	<script
-		src="/sbadmin/vendor/bootstrap/sbadmin/js/bootstrap.bundle.min.js"></script>
-
-	<!-- Core plugin JavaScript-->
-	<script src="/sbadmin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-	<!-- Custom scripts for all pages-->
-	<script src="/sbadmin/js/sb-admin-2.min.js"></script>
 
 </body>
 

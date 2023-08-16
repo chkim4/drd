@@ -20,15 +20,7 @@
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<resources mapping="/sbadmin/css/**" location="/resources/static/sbadmin/css/" />
-	<resources mapping="/sbadmin/img/**" location="/resources/static/sbadmin/img/" />
-	<resources mapping="/sbadmin/js/**" location="/resources/static/sbadmin/js/" />
-	<resources mapping="/sbadmin/scss/**" location="/resources/static/sbadmin/scss/" />
-	<resources mapping="/sbadmin/vendor/**" location="/resources/static/sbadmin/vendor/" />
-	<resources mapping="/sbadmin/favicon.ico/**" location="/resources/static/sbadmin/favicon.ico" />
 	
-	<resources mapping="/sweetalert/**" location="/resources/static/sweetalert/dist/" />
-
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<beans:property name="prefix" value="/WEB-INF/" />

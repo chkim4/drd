@@ -14,31 +14,28 @@
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>  
    
-   <!-- SB Admin 관련 --> 
-   <link href="/sbadmin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link
-        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
-        rel="stylesheet">
+  	<!-- 템플릿 관련 -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/js/sb-admin-2.min.js" integrity="sha512-COtY6/Rv4GyQdDShOyay/0YI4ePJ7QeKwtJIOCQ3RNE32WOPI4IYxq6Iz5JWcQpnylt/20KBvqEROZTEj/Hopw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/css/sb-admin-2.min.css" integrity="sha512-RIG2KoKRs0GLkvl0goS0cdkTgQ3mOiF/jupXuBsMvyB3ITFpTJLnBu59eE+0R39bxDQKo2dsatA5CwHeIKVFcw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
     
-    <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
-    
-    
-    <!-- Custom styles for this template-->
-    <link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet"> 
-    
-    <!-- SweetAlert 관련 -->
-    <script src="/sweetalert/sweetalert2.min.js"></script>
-	<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">  
+ 	<!-- sweetalert 관련 -->
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	
 	<!-- Calendar 관련 --> 
 	<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.0.2/index.global.js"></script> 	
+	
+	<!-- 직접 제작 -->
 	<script src="/resources/jquery/record/index-script.js"></script>  
+	<link rel="stylesheet" href="/resources/css/record/index.css"> 
+	
 	<script type="text/javascript"> 
 	   document.addEventListener('DOMContentLoaded', onDOMContentLoaded); 
-	   // $(document).ready(function(){ onDOMContentLoaded()}); 
 	</script> 
 		
-   <link rel="stylesheet" href="/resources/css/record/index.css"> 
+   
 	
 </head>
 
@@ -195,24 +192,15 @@
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown"> 
-                                <!-- 상단바 우상단 누를 시 나오는 메뉴. 추 후 작업 시 주석 처리 예정 -->
-<!--                                 <a class="dropdown-item" href="#"> -->
-<!--                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i> -->
-<!--                                     프로필 -->
-<!--                                 </a> -->
-<!--                                 <a class="dropdown-item" href="#"> -->
-<!--                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i> -->
-<!--                                     정보수정 -->
-<!--                                 </a> -->
                                 
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="/mypage/readAll" >
                                     <i class="fas fa-user-circle text-gray-400"></i>
-                                      마이페이지
+                                                                                마이페이지
                                 </a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    로그아웃
+                                                                                로그아웃
                                 </a>
                             </div>
                         </li>
@@ -237,6 +225,7 @@
 
     </div>
     <!-- End of Page Wrapper -->
+    
 
     <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
@@ -257,16 +246,7 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap core JavaScript-->
-    <script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
-    <script src="/sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="/sbadmin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="/sbadmin/js/sb-admin-2.min.js"></script>
-
+</div>
+  
 </body>
 </html>

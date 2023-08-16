@@ -19,18 +19,33 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
-<!-- Custom fonts for this template-->
-<link href="/sbadmin/vendor/fontawesome-free/css/all.min.css"
-	rel="stylesheet" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.min.js" integrity="sha512-0QbL0ph8Tc8g5bLhfVzSqxe9GERORsKhIn1IrpxDAgUsbBGz/V7iSav2zzW325XGd1OMLdL4UiqRJj702IeqnQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+<!-- 템플릿 관련 -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/js/sb-admin-2.min.js" integrity="sha512-COtY6/Rv4GyQdDShOyay/0YI4ePJ7QeKwtJIOCQ3RNE32WOPI4IYxq6Iz5JWcQpnylt/20KBvqEROZTEj/Hopw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.3/css/sb-admin-2.min.css" integrity="sha512-RIG2KoKRs0GLkvl0goS0cdkTgQ3mOiF/jupXuBsMvyB3ITFpTJLnBu59eE+0R39bxDQKo2dsatA5CwHeIKVFcw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct" crossorigin="anonymous"></script>
+
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
 	rel="stylesheet">
+
+<!-- chart.js 관련 -->
+<script type="text/javascript"
+			src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script
-	src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-<!-- Custom styles for this template-->
-<link href="/sbadmin/css/sb-admin-2.min.css" rel="stylesheet">
-<script src="/sweetalert/sweetalert2.min.js"></script>
-<link rel="stylesheet" href="/sweetalert/sweetalert2.min.css">
+	src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<!-- 직접 제작 -->
+<script src="/resources/jquery/goal/goal-script.js"></script>
+
+
+
+
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -66,6 +81,10 @@
  		})
 	});
 </script>
+
+
+
+
 
 </head>
 
@@ -621,24 +640,8 @@
             </div>
         </div>
     </div>
-
-
-			<!-- Bootstrap core JavaScript-->
-			<script src="/sbadmin/vendor/jquery/jquery.min.js"></script>
-			<script src="/sbadmin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-			<!-- Core plugin JavaScript-->
-			<script src="/sbadmin/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-			<!-- Custom scripts for all pages-->
-			<script src="/sbadmin/js/sb-admin-2.min.js"></script>
-
-			<!-- Page level plugins -->
-			<script src="/sbadmin/vendor/chart.js/Chart.min.js"></script>
-
-			<script src="/resources/jquery/goal/goal-script.js"></script>
-			<script type="text/javascript">
-
+			
+<script type="text/javascript">
 	//운동 그래프
 	 new Chart(
             document.getElementById('timeChart'),{
