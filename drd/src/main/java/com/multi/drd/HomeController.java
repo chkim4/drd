@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class HomeController {
 	int USER_ID_MOCK = 3;
 	int[] EXERCISE_LIST_MOCK = {1,2};  
+	String str = "some test";
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
